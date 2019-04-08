@@ -1,0 +1,39 @@
+.primary {
+  color: $c-primary !important;
+}
+
+.secondary {
+  color: $c-secondary !important;
+}
+
+.white {
+  color: $c-white !important;
+}
+
+.warning, .error {
+  color: $c-red !important;
+}
+
+.checked, .success {
+  color: $c-green !important;
+}
+
+.mainnet {
+  background-color: #038789 !important;
+}
+
+.rinkeby {
+  background-color: #ebb33f !important;
+}
+
+.ropsten {
+  background-color: #e91550 !important;
+}
+
+.kovan {
+  background-color: #690496 !important;
+}
+
+.privatenet {
+  background-color: $c-black !important;
+}

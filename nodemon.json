@@ -1,0 +1,8 @@
+{
+  "verbose": true,
+  "watch": [
+    "main.js",
+    "wallet"
+  ],
+  "ext": "*"
+}

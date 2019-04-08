@@ -1,0 +1,82 @@
+@import url('https://fonts.googleapis.com/css?family=Raleway');
+
+body {
+  font-family: $font-family-base;
+  font-weight: 500;
+}
+
+@include media-breakpoint-up(xs) {
+  .full-text {
+    display: none;
+  }
+  .short-text {
+    display: inline-flex;
+  }
+}
+
+@include media-breakpoint-up(md) {
+  .full-text {
+    display: inline-flex;
+  }
+  .short-text {
+    display: none;
+  }
+}
+
+a {
+  color: $c-black;
+  font-size: 14px;
+}
+a:hover,
+a:focus {
+  color: $c-black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+span:hover,
+span:focus {
+  cursor: pointer;
+}
+
+p {
+  color: $c-black;
+  font-size: 14px;
+  margin: 0 !important;
+
+  &.lengthy {
+    word-break: break-all;
+  }
+}
+
+h1 {
+  font-weight: 700;
+  color: $c-black;
+  font-size: 24px;
+}
+
+h2 {
+  font-weight: 500;
+  color: $c-black;
+  font-size: 18px;
+}
+
+::-webkit-input-placeholder {
+  /* Edge */
+  color: $c-gray;
+}
+
+:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  color: $c-gray;
+}
+
+::placeholder {
+  color: $c-gray;
+}
+
+* {
+  min-height: 0; /* Rendering problems using flexbox in Firefox and Chrome 48 */
+  min-width: 0; /* Rendering problems using flexbox in Firefox and Chrome 48 */
+  outline: 0 none !important;
+}

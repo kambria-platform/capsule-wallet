@@ -1,0 +1,9 @@
+/node_modules
+/wallet
+/src
+/public
+/main.js
+/webpack.config.js
+/nodemon.json
+.npmrc
+.env

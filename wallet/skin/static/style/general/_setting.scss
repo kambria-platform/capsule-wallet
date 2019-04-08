@@ -1,0 +1,49 @@
+//
+// Setting font size
+// --------------------------------------------------
+$i_font: 30;
+@while $i_font > 8 {
+  .fz#{$i_font} {
+    font-size: $i_font * 1px !important;
+  }
+  $i_font: $i_font - 1;
+}
+
+//
+// Setting margin padding
+// --------------------------------------------------
+$i_marginpadding: 50;
+@while $i_marginpadding >= 0 {
+  .m#{$i_marginpadding} {
+    margin: $i_marginpadding * 1px !important;
+  }
+  .mt#{$i_marginpadding} {
+    margin-top: $i_marginpadding * 1px !important;
+  }
+  .mr#{$i_marginpadding} {
+    margin-right: $i_marginpadding * 1px !important;
+  }
+  .mb#{$i_marginpadding} {
+    margin-bottom: $i_marginpadding * 1px !important;
+  }
+  .ml#{$i_marginpadding} {
+    margin-left: $i_marginpadding * 1px !important;
+  }
+
+  .p#{$i_marginpadding} {
+    padding: $i_marginpadding * 1px !important;
+  }
+  .pt#{$i_marginpadding} {
+    padding-top: $i_marginpadding * 1px !important;
+  }
+  .pr#{$i_marginpadding} {
+    padding-right: $i_marginpadding * 1px !important;
+  }
+  .pb#{$i_marginpadding} {
+    padding-bottom: $i_marginpadding * 1px !important;
+  }
+  .pl#{$i_marginpadding} {
+    padding-left: $i_marginpadding * 1px !important;
+  }
+  $i_marginpadding: $i_marginpadding - 5;
+}
