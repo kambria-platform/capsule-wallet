@@ -57,7 +57,7 @@ class SellectWallet extends Component {
 
   render() {
     return (
-      <div className="row align-items-center wallet-body">
+      <div className="row align-items-center wallet-body animated zoomIn">
         < div className="row w-100">
           <div className="col-6 col-sm-3 col-lg">
             <div className="box active" onClick={() => this.onMetamask('softwallet')}>

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
+import ConfirmAddressHelper from './confirmAddress.helper';
 // import Loading from './core/loading';
-
-var Isoxys = require('../../lib/isoxys');
 
 // Setup CSS Module
 // import classNames from 'classnames/bind';
@@ -9,12 +8,10 @@ var Isoxys = require('../../lib/isoxys');
 // var cx = classNames.bind(style);
 
 const ERROR = 'No address found';
-const DEFAULT_HD_PATH = "m/44'/60'/0'/0";
 const LIMIT = 5, PAGE = 0;
 
 const DEFAULT_STATE = {
   addressList: [],
-  selectedAddress: null,
   i: 0,
   limit: LIMIT,
   page: PAGE,
@@ -28,7 +25,6 @@ class ConfirmAddress extends Component {
     super(props);
 
     this.state = {
-      visible: this.props.visible,
       ...DEFAULT_STATE
     }
 
@@ -37,8 +33,7 @@ class ConfirmAddress extends Component {
     this.onClose = this.onClose.bind(this);
     this.onConfirm = this.onConfirm.bind(this);
     this.onSelect = this.onSelect.bind(this);
-    this.onMore = this.onMore.bind(this);
-    this.getAddress = this.getAddress.bind(this);
+    this.onPage = this.onPage.bind(this);
   }
 
   /**
@@ -46,44 +41,37 @@ class ConfirmAddress extends Component {
    */
 
   onClose(er) {
-    this.setState({ visible: false });
     this.done(er, null);
   }
 
   onConfirm() {
     var self = this;
-    this.setState({ visible: false });
-    // Confirm Isoxys address
     if (this.props.data.wallet === 'isoxys') {
-      this.initIsoxys(this.props.data, this.state.i).then(isoxys => {
+      ConfirmAddressHelper.setAddressByIsoxys(this.props.data, this.state.i + this.state.limit * this.state.page).then(isoxys => {
         self.done(null, { provider: isoxys });
       }).catch(er => {
         self.done(er, null);
       });
     }
-    // Error occurs
     else {
       this.onClose(ERROR);
     }
 
-    // Clear history
     this.setState(DEFAULT_STATE);
   }
 
-  onSelect(index, address) {
-    this.setState({
-      selectedAddress: address,
-      i: index
-    });
+  onSelect(index) {
+    this.setState({ i: index });
   }
 
-  onMore() {
+  onPage(step) {
+    var page = this.state.page + step;
+    if (page < 0) page = 0;
+    if (page == this.state.page) return;
+
     this.setState({ loading: true }, function () {
-      var page = this.state.page + 1;
-      this.getAddressByIsoxys(this.props.data, this.state.limit, page).then(re => {
-        var addressList = this.state.addressList;
-        addressList.push(...re);
-        this.setState({ page: page, addressList: addressList });
+      ConfirmAddressHelper.getAddressByIsoxys(this.props.data, this.state.limit, page).then(re => {
+        this.setState({ page: page, addressList: re });
       }).catch(er => {
         if (er) this.onClose(ERROR);
       }).finally(() => {
@@ -92,21 +80,10 @@ class ConfirmAddress extends Component {
     });
   }
 
-  componentDidUpdate(prevProps) {
-    if (this.props.visible !== prevProps.visible) {
-      if (this.props.visible) this.getAddress(this.props.data);
-      this.setState({ visible: this.props.visible });
-    }
-  }
-
-
-  /**
-   * Data controllers
-   */
-  getAddress(data) {
-    // We don't need to get address in case of metamask
+  componentDidMount() {
+    let data = this.props.data
     if (data.wallet === 'isoxys') {
-      this.getAddressByIsoxys(data, this.state.limit, this.state.page).then(re => {
+      ConfirmAddressHelper.getAddressByIsoxys(data, this.state.limit, this.state.page).then(re => {
         return this.setState({ addressList: re });
       }).catch(er => {
         if (er) return this.onClose(ERROR);
@@ -115,110 +92,6 @@ class ConfirmAddress extends Component {
     else {
       return this.onClose(ERROR);
     }
-  }
-
-  /**
-   * Wallet conventions
-   */
-  getAddressByIsoxys(data, limit, page) {
-    var isoxys = new Isoxys(data.net, data.type, true);
-    return new Promise((resolve, reject) => {
-      switch (data.subType) {
-        // Mnemonic
-        case 'mnemonic':
-          return isoxys.getAccountsByMnemonic(
-            data.asset.mnemonic,
-            data.asset.password,
-            DEFAULT_HD_PATH,
-            limit,
-            page,
-            function (er, re) {
-              if (er || re.length <= 0) return reject(ERROR);
-              return resolve(re);
-            });
-        // Keystore
-        case 'keystore':
-          return isoxys.getAccountByKeystore(
-            data.asset.keystore,
-            data.asset.password,
-            function (er, re) {
-              if (er || !re) return reject(ERROR);
-              return resolve([re]);
-            });
-        // Ledger Nano S
-        case 'ledger-nano-s':
-          return isoxys.getAccountsByLedger(
-            DEFAULT_HD_PATH,
-            limit,
-            page,
-            function (er, re) {
-              if (er || re.length <= 0) return reject(ERROR);
-              return resolve(re);
-            });
-        // Private key
-        case 'private-key':
-          return isoxys.getAccountByPrivatekey(
-            data.asset.privateKey,
-            function (er, re) {
-              if (er || !re) return reject(ERROR);
-              return resolve([re]);
-            });
-        // Error
-        default:
-          return reject(ERROR);
-      }
-    });
-  }
-
-  initIsoxys(data, i) {
-    var isoxys = new Isoxys(data.net, data.type, true);
-    return new Promise((resolve, reject) => {
-      switch (data.subType) {
-        // Mnemonic
-        case 'mnemonic':
-          return isoxys.setAccountByMnemonic(
-            data.asset.mnemonic,
-            data.asset.password,
-            DEFAULT_HD_PATH,
-            i,
-            window.capsuleWallet.getPassphrase,
-            function (er, re) {
-              if (er) return reject(er);
-              return resolve(isoxys);
-            });
-        // Keystore
-        case 'keystore':
-          return isoxys.setAccountByKeystore(
-            data.asset.keystore,
-            data.asset.password,
-            window.capsuleWallet.getPassphrase,
-            function (er, re) {
-              if (er) return reject(er);
-              return resolve(isoxys);
-            });
-        // Ledger Nano S
-        case 'ledger-nano-s':
-          return isoxys.setAccountByLedger(
-            DEFAULT_HD_PATH,
-            i,
-            function (er, re) {
-              if (er) return reject(er);
-              return resolve(isoxys);
-            });
-        // Private key
-        case 'private-key':
-          return isoxys.setAccountByPrivatekey(
-            data.asset.privateKey,
-            window.capsuleWallet.getPassphrase,
-            function (er, re) {
-              if (er) return reject(er);
-              return resolve(isoxys);
-            });
-        // Error
-        default:
-          return reject(ERROR);
-      }
-    });
   }
 
   // UI conventions
@@ -231,7 +104,7 @@ class ConfirmAddress extends Component {
               type="checkbox"
               id={"checkbox-options-" + address}
               value={address}
-              onChange={() => this.onSelect(index, address)}
+              onChange={() => this.onSelect(index)}
               checked={index === defaultIndex} />
             <label htmlFor={"checkbox-options-" + address}>{address}</label>
           </li>
@@ -242,7 +115,7 @@ class ConfirmAddress extends Component {
 
   render() {
     return (
-      <div className="row align-items-center wallet-body">
+      <div className="row align-items-center wallet-body animated zoomIn">
         <div className="col">
           <div className="box-form">
 
@@ -254,31 +127,25 @@ class ConfirmAddress extends Component {
 
             <div className="row mb-3">
               {this.showAddresses(this.state.i, this.state.addressList)}
-            </div>
 
-            <div className="row mb-3">
-              <div className="col-12 col-sm-6 col-md-4 col-lg-3 mt-2">
-                <div className="row">
-                  <div className="col text-center">
-                    <button className="small-circle-btn"><i className="previous" /></button>
+              <div className="col-12 col-lg-6">
+                <div className="row h-100">
+                  <div className="col-4 col-sm-2 d-flex justify-content-center align-items-center mt-2 mb-2">
+                    <button className="small-circle-btn" onClick={() => { this.onPage(-1) }}><i className="previous" /></button>
                   </div>
-                  <div className="col text-center">
-                    <button className="small-circle-btn" onClick={this.onMore}>2</button>
+                  <div className="col-4 col-sm-2 d-flex justify-content-center align-items-center mt-2 mb-2">
+                    <button className="small-circle-btn">{this.state.page + 1}</button>
                   </div>
-                  <div className="col text-center">
-                    <button className="small-circle-btn"><i className="next" /></button>
+                  <div className="col-4 col-sm-2 d-flex justify-content-center align-items-center mt-2 mb-2">
+                    <button className="small-circle-btn" onClick={() => { this.onPage(1) }}><i className="next" /></button>
                   </div>
-                </div>
-              </div>
-              <div className="col-12 col-sm-6 col-md-4 col-lg-3 mt-2 ml-auto">
-                <div className="row">
-                  <div className="col text-center">
+                  <div className="col-12 col-sm-6 d-flex justify-content-center align-items-center mt-2 mb-2">
                     <button className="primary-btn" onClick={this.onConfirm}>OK</button>
                   </div>
                 </div>
               </div>
-            </div>
 
+            </div>
           </div>
         </div>
       </div>

@@ -24,7 +24,7 @@ class InputAsset extends Component {
     }
 
     this.data = this.props.data;
-    
+
     this.onSelect = this.onSelect.bind(this);
     this.onReceive = this.onReceive.bind(this);
     this.menu = this.menu.bind(this);
@@ -62,7 +62,7 @@ class InputAsset extends Component {
 
   render() {
     return (
-      <div className="row align-items-center wallet-body">
+      <div className="row align-items-center wallet-body animated zoomIn">
         <div className="col">
           <div className="box-form">
             <div className="row wallet-tab">

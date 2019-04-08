@@ -65,7 +65,7 @@ class InputPassphrase extends Component {
 
   render() {
     return (
-      <div className="row align-items-center wallet-body">
+      <div className="row align-items-center wallet-body animated zoomIn">
         <div className="col">
           <div className="box-form">
 
