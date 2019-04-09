@@ -9,12 +9,13 @@ const _default = require('./defaultConst');
  */
 var Mnemonic = function () { }
 
-Mnemonic.mnemonicToSeed = function (mnemonic, password) {
-  if (!bip39.validateMnemonic(mnemonic)) {
-    console.error('Invalid mnemonic');
-    return null;
-  }
-  return bip39.mnemonicToSeed(mnemonic.trim(), password);
+Mnemonic.mnemonicToSeed = function (mnemonic, password, callback) {
+  bip39.mnemonicToSeed(mnemonic.trim(), password).then(seed => {
+    return callback(seed);
+  }).catch(er => {
+    console.error(er);
+    return callback(null);
+  });
 }
 
 Mnemonic.seedToHDKey = function (seed) {

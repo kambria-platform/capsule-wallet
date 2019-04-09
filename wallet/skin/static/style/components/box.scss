@@ -10,23 +10,20 @@
   &:hover {
     box-shadow: 0px 19px 38px rgba(0, 0, 0, 0.3), 0px 15px 12px rgba(0, 0, 0, 0.22);
   }
-}
-
-.box.active {
-  &:hover {
-    background-color: $c-green !important;
+  &.active {
+    &:hover {
+      background-color: $c-green !important;
+    }
   }
-}
-
-.box.negative {
-  &:hover {
-    background-color: $c-red !important;
+  &.negative {
+    &:hover {
+      background-color: $c-red !important;
+    }
   }
-}
-
-.box.disabled {
-  &:hover {
-    background-color: $c-gray !important;
+  &.disabled {
+    &:hover {
+      background-color: $c-gray !important;
+    }
   }
 }
 
@@ -89,12 +86,12 @@ ul.address-checkbox li label::before {
   font-weight: 900;
   font-size: 14px;
   padding: 2px 6px 2px 2px;
-  content: "\2714";
+  content: "\2718";
   transition: transform 0.3s ease-in-out;
 }
 
 ul.address-checkbox li input[type="checkbox"]:checked + label::before {
-  content: "\2718";
+  content: "\2714";
   transform: rotate(-360deg);
   transition: transform 0.3s ease-in-out;
 }

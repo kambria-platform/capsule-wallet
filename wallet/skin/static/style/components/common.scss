@@ -10,11 +10,13 @@
   color: $c-white !important;
 }
 
-.warning, .error {
+.warning,
+.error {
   color: $c-red !important;
 }
 
-.checked, .success {
+.checked,
+.success {
   color: $c-green !important;
 }
 
@@ -36,4 +38,26 @@
 
 .privatenet {
   background-color: $c-black !important;
+}
+
+.loading {
+  -webkit-animation-name: myloading; /* Safari 4.0 - 8.0 */
+  -webkit-animation-duration: 3s; /* Safari 4.0 - 8.0 */
+  -webkit-animation-iteration-count: infinite; /* Safari 4.0 - 8.0 */
+  animation-name: myloading;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+  pointer-events: none;
+  border-bottom: 4px solid;
+  @keyframes myloading {
+    0% {
+      border-bottom-color: $c-primary;
+    }
+    50% {
+      border-bottom-color: $c-secondary;
+    }
+    100% {
+      border-bottom-color: $c-primary;
+    }
+  }
 }

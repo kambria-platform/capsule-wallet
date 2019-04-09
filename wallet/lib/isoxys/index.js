@@ -112,11 +112,13 @@ class Isoxys extends WalletInterface {
    * @param {function} getPassphrase - simulate the account locking/unlocking
    */
   setAccountByMnemonic(mnemonic, password, path, index, getPassphrase, callback) {
-    var seed = Mnemonic.mnemonicToSeed(mnemonic, password)
-    var hdk = Mnemonic.seedToHDKey(seed);
-    var account = Mnemonic.hdkeyToAccount(hdk, path, index);
-    account.getPassphrase = getPassphrase;
-    this.setWallet(account, callback);
+    let self = this;
+    Mnemonic.mnemonicToSeed(mnemonic, password, function (seed) {
+      let hdk = Mnemonic.seedToHDKey(seed);
+      let account = Mnemonic.hdkeyToAccount(hdk, path, index);
+      account.getPassphrase = getPassphrase;
+      self.setWallet(account, callback);
+    });
   }
 
   /**
@@ -129,14 +131,15 @@ class Isoxys extends WalletInterface {
    * @param {*} page - index of page
    */
   getAccountsByMnemonic(mnemonic, password, path, limit, page, callback) {
-    var list = [];
-    for (var i = page * limit; i < page * limit + limit; i++) {
-      var seed = Mnemonic.mnemonicToSeed(mnemonic, password)
-      var hdk = Mnemonic.seedToHDKey(seed);
-      var address = Mnemonic.hdkeyToAddress(hdk, path, i);
-      list.push(address);
-    }
-    return callback(null, list);
+    let list = [];
+    Mnemonic.mnemonicToSeed(mnemonic, password, function (seed) {
+      let hdk = Mnemonic.seedToHDKey(seed);
+      for (let i = page * limit; i < page * limit + limit; i++) {
+        let address = Mnemonic.hdkeyToAddress(hdk, path, i);
+        list.push(address);
+      }
+      return callback(null, list);
+    });
   }
 
 
@@ -152,9 +155,11 @@ class Isoxys extends WalletInterface {
    * @param {function} getPassphrase - simulate the account locking/unlocking 
    */
   setAccountByKeystore(input, password, getPassphrase, callback) {
-    var account = Keystore.recover(input, password);
-    account.getPassphrase = getPassphrase;
-    this.setWallet(account, callback);
+    var self = this;
+    Keystore.recover(input, password, function (account) {
+      account.getPassphrase = getPassphrase;
+      self.setWallet(account, callback);
+    });
   }
 
   /**
@@ -165,8 +170,10 @@ class Isoxys extends WalletInterface {
    * @param {*} callback 
    */
   getAccountByKeystore(input, password, callback) {
-    var account = Keystore.recover(input, password);
-    return callback(null, account.address);
+    Keystore.recover(input, password, function (account) {
+      if(!account) return callback('Cannot decrypt keystore', null);
+      return callback(null, account.address);
+    });
   }
 
 

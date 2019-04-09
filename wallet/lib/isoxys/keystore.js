@@ -7,9 +7,10 @@ var privatekey = require('./privatekey');
 var Keystore = function () { }
 
 // Faster than two above
-Keystore.recover = function (input, password) {
-  var priv = keythereum.recover(password, input);
-  return privatekey.privatekeyToAccount(priv);
+Keystore.recover = function (input, password, callback) {
+  keythereum.recover(password, input, function (priv) {
+    return callback(privatekey.privatekeyToAccount(priv));
+  });
 }
 
 module.exports = Keystore;
