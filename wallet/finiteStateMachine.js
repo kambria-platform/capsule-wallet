@@ -105,6 +105,7 @@ class FiniteStateMachine {
       this.index = this.index - 1;
       this.data = this.history[this.index];
     }
+    return this.data;
   }
 
   next(data) {

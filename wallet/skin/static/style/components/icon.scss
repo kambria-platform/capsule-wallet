@@ -10,6 +10,17 @@ i.arrow-right {
   cursor: pointer;
 }
 
+i.arrow-left {
+  background-image: url("../images/arrow-left-solid.svg");
+  background-repeat: no-repeat;
+  background-size: 50%;
+  background-position: center;
+  width: 2em;
+  height: 100%;
+  display: inline-flex;
+  cursor: pointer;
+}
+
 i.ethereum {
   background-image: url("../images/ethereum.svg");
   background-repeat: no-repeat;
@@ -147,7 +158,7 @@ i.ledger {
   background-repeat: no-repeat;
   background-size: 50%;
   background-position: center;
-  width: 100%;
+  width: 2em;
   height: 100%;
   display: inline-flex;
   cursor: pointer;
@@ -158,7 +169,7 @@ i.trezor {
   background-repeat: no-repeat;
   background-size: 50%;
   background-position: center;
-  width: 100%;
+  width: 2em;
   height: 100%;
   display: inline-flex;
   cursor: pointer;

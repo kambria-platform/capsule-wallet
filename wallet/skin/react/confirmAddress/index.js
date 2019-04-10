@@ -69,10 +69,9 @@ class ConfirmAddress extends Component {
 
     this.setState({ loading: true }, function () {
       ConfirmAddressHelper.getAddressByIsoxys(this.props.data, this.state.limit, page).then(re => {
-        this.setState({ page: page, addressList: re });
-        return this.setState({ loading: false });
+        return this.setState({ loading: false, page: page, addressList: re });
       }).catch(er => {
-        if (er) this.onClose(ERROR);
+        if (er) return this.onClose(ERROR);
       });
     });
   }
@@ -81,10 +80,9 @@ class ConfirmAddress extends Component {
     if (this.props.data.wallet === 'isoxys') {
       this.setState({ loading: true }, function () {
         ConfirmAddressHelper.getAddressByIsoxys(this.props.data, this.state.limit, this.state.page).then(re => {
-          return this.setState({ loading: false });
-          this.setState({ addressList: re });
+          return this.setState({ loading: false, addressList: re });
         }).catch(er => {
-          if (er) this.onClose(ERROR);
+          if (er) return this.onClose(ERROR);
         });
       });
     }
@@ -97,7 +95,7 @@ class ConfirmAddress extends Component {
   showAddresses(defaultIndex, addressList) {
     return addressList.map((address, index) => {
       return (
-        <ul key={address} className="col-12 col-lg-6 address-checkbox justify-content-center">
+        <ul key={address} className="col-12 col-lg-6 address-checkbox justify-content-center animated fadeInUp">
           <li >
             <input
               type="checkbox"

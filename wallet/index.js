@@ -54,6 +54,10 @@ class CapsuleWallet extends Component {
         self.setState({ passphrase: true, returnPassphrase: callback });
       });
     }
+    window.capsuleWallet.back = function () {
+      let state = self.FSM.back();
+      return self.setState({ step: state.step });
+    }
   }
 
   componentDidUpdate(prevProps) {

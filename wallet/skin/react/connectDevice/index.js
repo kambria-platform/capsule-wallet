@@ -8,8 +8,9 @@ import TrezorAsset from './trezor';
 // var cx = classNames.bind(style);
 
 const MENU = [
-  { key: 'ledger-nano-s', label: '', icon: 'ledger', status: 'active' },
-  { key: 'trezor', label: '(comming soon)', icon: 'trezor', status: 'active' },
+  { key: 'ledger-nano-s', label: 'Ledger', icon: 'ledger', status: 'active', css: '' },
+  { key: 'trezor', label: 'Trezor', icon: 'trezor', status: 'active', css: '' },
+  { key: 'back', label: 'Back', icon: 'arrow-left', status: 'standard', css: 'ml-auto' },
 ];
 
 
@@ -33,8 +34,9 @@ class ConnectDevice extends Component {
     this.props.done(null, null);
   }
 
-  onSelect(subType) {
-    this.setState({ subType: subType });
+  onSelect(key) {
+    if (key === 'back') return window.capsuleWallet.back();
+    return this.setState({ subType: key });
   }
 
   onConnect(data) {
@@ -45,10 +47,19 @@ class ConnectDevice extends Component {
     return MENU.map(item => {
       return (
         <div key={item.key}
-          className={"col col-md-2 wallet-nav " + item.status + (item.key === this.state.subType ? ' selected' : '')}
+          className={
+            "col col-md-2 wallet-nav"
+            + " " + item.status
+            + (item.key === this.state.subType ? " selected" : "")
+            + " " + (item.css ? item.css : "")
+          }
           onClick={() => this.onSelect(item.key)}>
-          <i className={item.icon} />
-        </div>)
+          <div className="d-flex h-100 justify-content-center align-items-center">
+            <i className={item.icon} />
+            <p>{item.label}</p>
+          </div>
+        </div>
+      );
     });
   }
 

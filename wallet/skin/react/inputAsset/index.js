@@ -9,9 +9,10 @@ import PrivateKeyAsset from './privateKey';
 // var cx = classNames.bind(style);
 
 const MENU = [
-  { key: 'mnemonic', label: 'Seed', icon: 'seed', status: 'negative' },
-  { key: 'keystore', label: 'Keystore', icon: 'keystore', status: 'negative' },
-  { key: 'private-key', label: 'Private Key', icon: 'privatekey', status: 'negative' },
+  { key: 'mnemonic', label: 'Seed', icon: 'seed', status: 'negative', css: '' },
+  { key: 'keystore', label: 'Keystore', icon: 'keystore', status: 'negative', css: '' },
+  { key: 'private-key', label: 'Private Key', icon: 'privatekey', status: 'negative', css: '' },
+  { key: 'back', label: 'Back', icon: 'arrow-left', status: 'standard', css: 'ml-auto' },
 ];
 
 
@@ -32,7 +33,8 @@ class InputAsset extends Component {
   }
 
   onSelect(key) {
-    this.setState({ subType: key });
+    if (key === 'back') return window.capsuleWallet.back();
+    return this.setState({ subType: key });
   }
 
   onReceive(data) {
@@ -43,7 +45,12 @@ class InputAsset extends Component {
     return MENU.map(item => {
       return (
         <div key={item.key}
-          className={"col col-md-2 wallet-nav " + item.status + (item.key === this.state.subType ? ' selected' : '')}
+          className={
+            "col col-md-2 wallet-nav"
+            + " " + item.status
+            + (item.key === this.state.subType ? ' selected' : '')
+            + " " + (item.css ? item.css : "")
+          }
           onClick={() => { this.onSelect(item.key) }}>
           <div className="d-flex h-100 justify-content-center align-items-center">
             <i className={item.icon} />
