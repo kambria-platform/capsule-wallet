@@ -11,6 +11,14 @@ class Footer extends Component {
     super(props);
   }
 
+  support() {
+    window.capsuleWallet.support();
+  }
+
+  term() {
+    window.capsuleWallet.term();
+  }
+
   render() {
     return (
       <div className="row wallet-footer">
@@ -20,10 +28,10 @@ class Footer extends Component {
               <button className="circle-btn"><i className="prevent-fish" /></button>
             </div>
             <div className="col text-center">
-              <button className="circle-btn"><i className="term-privacy" /></button>
+              <button className="circle-btn" onClick={this.term}><i className="term-privacy" /></button>
             </div>
             <div className="col text-center">
-              <button className="circle-btn"><i className="support" /></button>
+              <button className="circle-btn" onClick={this.support}><i className="support" /></button>
             </div>
           </div>
         </div>

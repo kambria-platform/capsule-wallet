@@ -20,6 +20,7 @@ class InputPassphrase extends Component {
 
     this.state = {
       visible: this.props.visible,
+      net: null,
       ...DEFAULT_STATE
     }
 
@@ -54,6 +55,7 @@ class InputPassphrase extends Component {
   componentDidUpdate(prevProps) {
     if (this.props.visible !== prevProps.visible) {
       this.setState({
+        net: this.net.visible,
         visible: this.props.visible,
         ...DEFAULT_STATE
       }, () => {
@@ -73,7 +75,7 @@ class InputPassphrase extends Component {
             <button className="close-btn" onClick={() => { this.onClose() }} />
           </div>
           <div className="container">
-            <Header />
+            <Header net={this.state.net} />
             <div className="row align-items-center wallet-body">
               <div className="col">
                 <div className="box-form">

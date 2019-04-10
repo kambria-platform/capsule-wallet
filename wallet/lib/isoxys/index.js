@@ -1,6 +1,6 @@
 var WalletInterface = require('../interface/walletInterface');
 var async = {
-  eachOf: require('async/eachOf')
+  eachOfSeries: require('async/eachOfSeries')
 }
 var util = require('../util');
 var Provider = require('../provider');
@@ -215,7 +215,7 @@ class Isoxys extends WalletInterface {
     if (!path) {
       return callback(null, []);
     } else if (coll.length > 0) {
-      async.eachOf(coll, function (i, index, cb) {
+      async.eachOfSeries(coll, function (i, index, cb) {
         var dpath = util.addDPath(path, i);
         Ledger.getAddress(dpath, function (er, addr) {
           if (er) return cb(er);

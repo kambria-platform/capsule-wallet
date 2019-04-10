@@ -47,12 +47,22 @@ class CapsuleWallet extends Component {
     this.onData = this.onData.bind(this);
     this.onClose = this.onClose.bind(this);
 
+    /**
+     * Group of global functions
+     */
     var self = this;
     window.capsuleWallet = { author: 'Tu Phan', git: 'https://github.com/sontuphan/capsule-wallet' }
+    window.capsuleWallet.net = this.state.net;
     window.capsuleWallet.getPassphrase = function (callback) {
       self.setState({ passphrase: false, returnPassphrase: null }, () => {
         self.setState({ passphrase: true, returnPassphrase: callback });
       });
+    }
+    window.capsuleWallet.term = function () {
+      window.open('https://github.com/sontuphan/capsule-wallet/blob/master/LICENSE', '_blank');
+    }
+    window.capsuleWallet.support = function () {
+      window.open('https://github.com/sontuphan/capsule-wallet/issues', '_blank');
     }
     window.capsuleWallet.back = function () {
       let state = self.FSM.back();

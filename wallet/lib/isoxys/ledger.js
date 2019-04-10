@@ -17,7 +17,6 @@ Ledger.getAddress = function (dpath, callback) {
     if (er) return callback(er, null);
     if (!transport) return callback(error.UNSUPPORT_U2F, null);
 
-
     var eth = new Eth(transport);
     eth.getAddress(dpath, false, false).then(re => {
       if (!re || !re.address) return callback(error.CANNOT_CONNECT_HARDWARE, null);
@@ -52,9 +51,8 @@ Ledger.signTransaction = function (dpath, rawTx, callback) {
 Ledger.getTransport = function (callback) {
   TransportU2F.isSupported().then(re => {
     if (!re) return callback(error.UNSUPPORT_U2F, null);
-
-    TransportU2F.create(_default.TIMEOUT, _default.TIMEOUT).then(re => {
-      return callback(null, re);
+    return TransportU2F.create().then(transport => {
+      return callback(null, transport);
     }).catch(er => {
       return callback(er, null);
     });
