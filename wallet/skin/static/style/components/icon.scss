@@ -175,6 +175,17 @@ i.trezor {
   cursor: pointer;
 }
 
+i.mew-solid {
+  background-image: url("../images/mew-solid.svg");
+  background-repeat: no-repeat;
+  background-size: 50%;
+  background-position: center;
+  width: 2em;
+  height: 100%;
+  display: inline-flex;
+  cursor: pointer;
+}
+
 i.more {
   background-image: url("../images/ellipsis-h-solid.svg");
   background-repeat: no-repeat;

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import LedgerNanoSAsset from './ledgerNanoS';
-import TrezorAsset from './trezor';
+import MewAsset from './mew';
 
 // Setup CSS Module
 // import classNames from 'classnames/bind';
@@ -8,18 +7,17 @@ import TrezorAsset from './trezor';
 // var cx = classNames.bind(style);
 
 const MENU = [
-  { key: 'ledger-nano-s', label: 'Ledger', icon: 'ledger', status: 'active', css: '' },
-  { key: 'trezor', label: 'Trezor', icon: 'trezor', status: 'active', css: '' },
+  { key: 'mew', label: 'MEW', icon: 'mew-solid', status: 'active', css: '' },
   { key: 'back', label: 'Back', icon: 'arrow-left', status: 'standard', css: 'ml-auto' },
 ];
 
 
-class ConnectDevice extends Component {
+class EstablishConnection extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      subType: 'ledger-nano-s'
+      subType: 'mew'
     }
 
     this.data = this.props.data;
@@ -60,8 +58,7 @@ class ConnectDevice extends Component {
   }
 
   device() {
-    if (this.state.subType === 'ledger-nano-s') return <LedgerNanoSAsset done={this.onConnect} />
-    if (this.state.subType === 'trezor') return <TrezorAsset done={this.onConnect} />
+    if (this.state.subType === 'mew') return <MewAsset done={this.onConnect} />
   }
 
   render() {
@@ -76,8 +73,8 @@ class ConnectDevice extends Component {
           </div>
         </div>
       </div>
-    );
+    )
   }
 }
 
-export default ConnectDevice;
+export default EstablishConnection;

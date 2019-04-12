@@ -66,7 +66,7 @@ class ConfirmAddressHelper {
             data.asset.password,
             DEFAULT_HD_PATH,
             i,
-            window.capsuleWallet.getPassphrase,
+            window.capsuleWallet.getPassphrase.open,
             function (er, re) {
               if (er) return reject(er);
               return resolve(isoxys);
@@ -76,7 +76,7 @@ class ConfirmAddressHelper {
           return isoxys.setAccountByKeystore(
             data.asset.keystore,
             data.asset.password,
-            window.capsuleWallet.getPassphrase,
+            window.capsuleWallet.getPassphrase.open,
             function (er, re) {
               if (er) return reject(er);
               return resolve(isoxys);
@@ -94,7 +94,7 @@ class ConfirmAddressHelper {
         case 'private-key':
           return isoxys.setAccountByPrivatekey(
             data.asset.privateKey,
-            window.capsuleWallet.getPassphrase,
+            window.capsuleWallet.getPassphrase.open,
             function (er, re) {
               if (er) return reject(er);
               return resolve(isoxys);

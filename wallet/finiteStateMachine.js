@@ -1,7 +1,7 @@
 /**
  * Defined states
  */
-const STATE = ['Idle', 'SelectWallet', 'InputAsset', 'ConnectDevice', 'ConfirmAddress', 'Error', 'Success'];
+const STATE = ['Idle', 'SelectWallet', 'InputAsset', 'EstablishConnection', 'ConnectDevice', 'ConfirmAddress', 'Error', 'Success'];
 const MACHINE = {
   Idle: {
     currentState: 'Idle',
@@ -14,6 +14,7 @@ const MACHINE = {
     nextState: [
       { step: 'InputAsset', pattern: { wallet: 'isoxys', type: 'softwallet' } },
       { step: 'ConnectDevice', pattern: { wallet: 'isoxys', type: 'hardwallet' } },
+      { step: 'EstablishConnection', pattern: { wallet: 'mew', type: 'hybridwallet' } },
       { step: 'Success', pattern: { wallet: 'metamask', type: 'softwallet' } },
       { step: 'Error', pattern: { wallet: '*', type: '*' } }
     ]
@@ -27,10 +28,18 @@ const MACHINE = {
       { step: 'Error', pattern: { subType: '*' } },
     ]
   },
+  EstablishConnection: {
+    currentState: 'EstablishConnection',
+    nextState: [
+      { step: 'Success', pattern: { provider: true } },
+      { step: 'Error', pattern: { provider: false } },
+    ]
+  },
   ConnectDevice: {
     currentState: 'ConnectDevice',
     nextState: [
       { step: 'ConfirmAddress', pattern: { subType: 'ledger-nano-s' } },
+      { step: 'Error', pattern: { subType: '*' } },
     ]
   },
   ConfirmAddress: {

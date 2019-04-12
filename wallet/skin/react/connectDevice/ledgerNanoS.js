@@ -7,9 +7,9 @@ var Isoxys = require('../../../lib/isoxys');
 // var cx = classNames.bind(style);
 
 const STATUS = {
-  INIT: 'Please connect the devide and click the button!',
-  TEST: 'Connecting...',
-  FAIL: 'Cannot connect the devide!'
+  INIT: 'Please connecting your wallet and click the button!',
+  TEST: 'Waiting for the connection',
+  FAIL: 'Cannot connect your wallet!'
 }
 
 
@@ -48,10 +48,10 @@ class LedgerNanoSAsset extends Component {
         </div>
         <div className="row mb-3">
           <div className="col-8 col-lg-9 d-flex align-items-end">
-            <p className={"text-bottom" + (this.state.message === STATUS.FAIL ? " warning" : "")}>{this.state.message}</p>
+            <p className={"text-left" + (this.state.message === STATUS.FAIL ? " warning" : "")}>{this.state.message}</p>
           </div>
           <div className="col-4 col-lg-3 d-flex">
-            <button className="primary-btn" onClick={this.checkTheConnection}>Connect</button>
+            <button className="primary-btn" onClick={this.checkTheConnection}>Go</button>
           </div>
         </div>
       </div>

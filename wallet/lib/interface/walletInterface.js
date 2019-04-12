@@ -18,7 +18,7 @@ class WalletInterface {
     this.emitter = new Emitter();
 
     this.net = net ? util.chainCode(net) : 1;
-    this.type = type === TYPE.HARDWALLET ? TYPE.HARDWALLET : TYPE.SOFTWALLET;
+    this.type = type;
     this.restricted = restricted;
     this.provider = null;
     this.web3 = null;
@@ -59,8 +59,16 @@ class WalletInterface {
   getAccount() {
     var self = this;
     return new Promise((resolve, reject) => {
-      if (self.type === TYPE.HARDWALLET && this.user.account) return resolve(this.user.account);
+      if (
+        (
+          self.type === TYPE.HARDWALLET
+          || self.type === TYPE.HYBRIDWALLET
+        )
+        && this.user.account
+      ) return resolve(this.user.account);
+
       self.web3.eth.getAccounts((er, re) => {
+        console.log(er, re)
         if (er) return reject(er);
         if (re.length <= 0 || !re[0] || !self.isAddress(re[0])) return reject(ERROR.CANNOT_GET_ACCOUNT);
         return resolve(re[0]);

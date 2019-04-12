@@ -3,15 +3,13 @@ var util = require('../util');
 
 const error = require('../constant/error');
 
-class HardWallet {
+class HybridWallet {
   /**
    * @constructor
    * @param {*} net - chainCode
    * @param {*} accOpts - accOpts = {
    *   signTransaction: (function) ...
    *   getAddress: (function) ...
-   *   path: (string) ...
-   *   index: (optional) ...
    * }
    */
   constructor(net) {
@@ -28,7 +26,7 @@ class HardWallet {
       dataHandler: function () { /* Turn off default logs */ },
       errorHandler: function () { /* Turn off default logs */ },
       getAccounts: function (callback) {
-        self.hardware.getAddress(self.dpath, function (er, addr) {
+        self.hybridware.getAddress(function (er, addr) {
           if (er) return callback(er, null);
           if (!addr) return callback(null, []);
           return callback(null, [addr.toLowerCase()]);
@@ -40,12 +38,14 @@ class HardWallet {
       signTransaction: function (txParams, callback) {
         txParams.chainId = self.network;
         var tx = util.genRawTx(txParams, self.network);
-        self.hardware.signTransaction(self.dpath, util.unpadHex(tx.hex), function (er, signature) {
+        console.log("Tx content:", txParams)
+        self.hybridware.signTransaction(txParams, function (er, signature) {
           if (er) return callback(er, null);
           var signedTx = tx.raw;
           signedTx.v = Buffer.from(signature.v, 'hex');
           signedTx.r = Buffer.from(signature.r, 'hex');
           signedTx.s = Buffer.from(signature.s, 'hex');
+          console.log("Tx signed:", signature)
           return callback(null, util.padHex(signedTx.serialize().toString('hex')));
         });
       }
@@ -61,8 +61,7 @@ class HardWallet {
   init(accOpts, callback) {
     accOpts = accOpts || {};
     var engine = new Engine(this.network, this.opts());
-    this.hardware = null;
-    this.dpath = util.addDPath(accOpts.path, accOpts.index);
+    this.hybridware = null;
     var ok = this.setAccount(accOpts.getAddress, accOpts.signTransaction);
     if (!ok) return callback(error.CANNOT_SET_ACCOUNT, null);
     this.web3 = engine.web3;
@@ -85,9 +84,9 @@ class HardWallet {
       return false;
     }
 
-    this.hardware = { getAddress: getAddress, signTransaction: signTransaction };
+    this.hybridware = { getAddress: getAddress, signTransaction: signTransaction };
     return true;
   }
 }
 
-module.exports = HardWallet;
+module.exports = HybridWallet;

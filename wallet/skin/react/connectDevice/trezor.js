@@ -12,7 +12,7 @@ const STATUS = {
 }
 
 
-class Trezor extends Component {
+class TrezorAsset extends Component {
   constructor(props) {
     super(props);
 
@@ -40,7 +40,7 @@ class Trezor extends Component {
         </div>
         <div className="row mb-3">
           <div className="col-8 col-lg-9 d-flex align-items-end">
-            <p className="text-bottom">Comming soon</p>
+            <p className="text-left">Comming soon</p>
           </div>
           <div className="col-4 col-lg-3 d-flex">
             <button className="primary-btn" onClick={this.returnData2Parent}>Connect</button>
@@ -51,4 +51,4 @@ class Trezor extends Component {
   }
 }
 
-export default Trezor;
+export default TrezorAsset;

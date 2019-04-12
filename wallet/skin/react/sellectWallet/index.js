@@ -22,6 +22,7 @@ class SellectWallet extends Component {
     this.onClose = this.onClose.bind(this);
     this.onMetamask = this.onMetamask.bind(this);
     this.onIsoxys = this.onIsoxys.bind(this);
+    this.onMew = this.onMew.bind(this);
   }
 
   onClose() {
@@ -49,6 +50,11 @@ class SellectWallet extends Component {
     this.done(null, { wallet: 'isoxys', type: type });
   }
 
+  onMew(type) {
+    this.setState({ visible: false });
+    this.done(null, { wallet: 'mew', type: type });
+  }
+
   componentDidUpdate(prevProps) {
     if (this.props.visible !== prevProps.visible) {
       this.setState({ visible: this.props.visible });
@@ -72,15 +78,15 @@ class SellectWallet extends Component {
             </div>
           </div>
           <div className="col-6 col-sm-3 col-lg">
-            <div className="box negative" onClick={() => this.onIsoxys('softwallet')}>
-              <i className="softwallet" />
-              <p>Softwallet</p>
+            <div className="box active" onClick={() => this.onMew('hybridwallet')}>
+              <i className="mew" />
+              <p>MEW</p>
             </div>
           </div>
           <div className="col-6 col-sm-3 col-lg">
-            <div className="box disabled">
-              <i className="mew" />
-              <p>MEW (coming soon)</p>
+            <div className="box negative" onClick={() => this.onIsoxys('softwallet')}>
+              <i className="softwallet" />
+              <p>Softwallet</p>
             </div>
           </div>
         </div>

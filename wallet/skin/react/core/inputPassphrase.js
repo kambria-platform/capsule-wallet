@@ -51,6 +51,14 @@ class InputPassphrase extends Component {
     this.setState({ passphrase: e.target.value });
   }
 
+  componentDidMount() {
+    // Listen Enter button
+    let input = document.getElementById('inputPassphrase');
+    if (input) input.addEventListener('keyup', e => {
+      if (e.keyCode === 13) this.handleSubmit();
+    });
+  }
+
   componentDidUpdate(prevProps) {
     if (this.props.visible !== prevProps.visible) {
       this.setState({
@@ -90,7 +98,7 @@ class InputPassphrase extends Component {
                     </div>
                     <div className="row mb-3">
                       <div className="col-8 col-lg-9">
-                        <input type="password" className="input" placeholder="Temporary Passphrase"
+                        <input id="inputPassphrase" type="password" className="input" placeholder="Temporary Passphrase"
                           value={this.state.passphrase}
                           onChange={this.onChange}
                           ref={(name) => { this.passpharseName = name; }}></input>
