@@ -37,16 +37,11 @@ class HybridWallet {
       },
       signTransaction: function (txParams, callback) {
         txParams.chainId = self.network;
-        var tx = util.genRawTx(txParams, self.network);
-        console.log("Tx content:", txParams)
-        self.hybridware.signTransaction(txParams, function (er, signature) {
+        if (!txParams.data) txParams.data = '';
+        self.hybridware.signTransaction(JSON.stringify(txParams), function (er, signature) {
           if (er) return callback(er, null);
-          var signedTx = tx.raw;
-          signedTx.v = Buffer.from(signature.v, 'hex');
-          signedTx.r = Buffer.from(signature.r, 'hex');
-          signedTx.s = Buffer.from(signature.s, 'hex');
-          console.log("Tx signed:", signature)
-          return callback(null, util.padHex(signedTx.serialize().toString('hex')));
+          var signedTx = util.genSignedTx(signature);
+          return callback(null, signedTx);
         });
       }
     }

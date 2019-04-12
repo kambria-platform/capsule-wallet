@@ -21,7 +21,10 @@ class MEW extends WalletInterface {
   setAccountByMEW(getAuthentication, callback) {
     var self = this;
     this.mewConnectClient.on('codeDisplay', code => {
-      return getAuthentication.open(code);
+      return getAuthentication.open(code, (er, re) => {
+        // User close authentication modal
+        return callback(er, null);
+      });
     });
     this.mewConnectClient.initiatorStart(SIGNALER_URL);
     this.mewConnectClient.on('RtcConnectedEvent', () => {
@@ -54,7 +57,10 @@ class MEW extends WalletInterface {
       });
     } else {
       this.mewConnectClient.on('codeDisplay', code => {
-        return getAuthentication.open(code);
+        return getAuthentication.open(code, (er, re) => {
+          // User close authentication modal
+          return callback(er, null);
+        });
       });
       this.mewConnectClient.initiatorStart(SIGNALER_URL);
       this.mewConnectClient.on('RtcConnectedEvent', () => {
@@ -79,7 +85,10 @@ class MEW extends WalletInterface {
     }
     else {
       this.mewConnectClient.on('codeDisplay', code => {
-        return getAuthentication.open(code);
+        return getAuthentication.open(code, (er, re) => {
+          // User close authentication modal
+          return callback(er, null);
+        });
       });
       this.mewConnectClient.initiatorStart(SIGNALER_URL);
       this.mewConnectClient.on('RtcConnectedEvent', () => {

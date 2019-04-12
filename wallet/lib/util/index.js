@@ -61,10 +61,15 @@ Util.genRawTx = function (txParams) {
 }
 
 Util.signRawTx = function (txParams, priv) {
-  var rawTx = Util.genRawTx (txParams).raw;
+  var rawTx = Util.genRawTx(txParams).raw;
   rawTx.sign(Buffer.from(priv, 'hex'));
   var signedTx = Util.padHex(rawTx.serialize().toString('hex'));
   return signedTx;
+}
+
+Util.genSignedTx = function (txParams) {
+  var tx = new ethTx(txParams);
+  return Util.padHex(tx.serialize().toString('hex'));
 }
 
 Util.addDPath = function (dpath, index) {

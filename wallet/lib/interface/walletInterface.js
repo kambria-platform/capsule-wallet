@@ -68,7 +68,6 @@ class WalletInterface {
       ) return resolve(this.user.account);
 
       self.web3.eth.getAccounts((er, re) => {
-        console.log(er, re)
         if (er) return reject(er);
         if (re.length <= 0 || !re[0] || !self.isAddress(re[0])) return reject(ERROR.CANNOT_GET_ACCOUNT);
         return resolve(re[0]);
