@@ -138,7 +138,7 @@ class CapsuleWallet extends Component {
   render() {
     return (
       <div>
-        <Modal visible={this.state.visible && !this.state.passphrase} className="animated slideInUp" >
+        <Modal visible={this.state.visible} className="animated slideInUp" >
           <div className="modal-body wallet">
             <div className="row justify-content-end">
               <button className="close-btn" onClick={() => this.onClose()} />

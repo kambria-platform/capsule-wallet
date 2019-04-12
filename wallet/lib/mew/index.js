@@ -3,6 +3,7 @@ var MEWconnect = require('@myetherwallet/mewconnect-web-client');
 var Provider = require('../provider');
 
 const SIGNALER_URL = 'https://connect.mewapi.io';
+const ERROR = 'The connection was expired';
 
 
 class MEW extends WalletInterface {
@@ -11,11 +12,17 @@ class MEW extends WalletInterface {
 
     this.mewConnectClient = new MEWconnect.Initiator();
     this.connected = false;
+    this.address = null;
 
     var self = this;
-    this.mewConnectClient.on('RtcClosedEvent', () => { self.connected = false; });
-    this.mewConnectClient.on('RtcDisconnectEvent', () => { self.connected = false; });
-    this.mewConnectClient.on('RtcErrorEvent', (er) => { console.error(er) });
+    this.mewConnectClient.on('RtcClosedEvent', () => {
+      console.log('RtcClosedEvent')
+      self.connected = false;
+    });
+    this.mewConnectClient.on('RtcDisconnectEvent', () => {
+      console.log('RtcDisconnectEvent')
+      self.connected = false;
+    });
   }
 
   setAccountByMEW(getAuthentication, callback) {
@@ -23,18 +30,18 @@ class MEW extends WalletInterface {
     this.mewConnectClient.on('codeDisplay', code => {
       return getAuthentication.open(code, (er, re) => {
         // User close authentication modal
-        return callback(er, null);
+        if (er) return callback(er, null);
       });
     });
     this.mewConnectClient.initiatorStart(SIGNALER_URL);
     this.mewConnectClient.on('RtcConnectedEvent', () => {
+      if (self.connected) return; // Prevent double calls
       self.connected = true;
       getAuthentication.close();
-
       self.provider = new Provider.HybridWallet(this.net);
       var accOpts = {
-        getAddress: (cb) => self.getAddress(getAuthentication, cb),
-        signTransaction: (tx, cb) => self.signTransaction(getAuthentication, tx, cb),
+        getAddress: (cb) => self.getAddress(cb),
+        signTransaction: (tx, cb) => self.signTransaction(tx, cb),
       }
       self.provider.init(accOpts, function (er, web3) {
         if (er) return callback(er, null);
@@ -44,38 +51,25 @@ class MEW extends WalletInterface {
     });
   }
 
-  getAccountByMEW(getAuthentication, callback) {
-    return this.getAddress(getAuthentication, callback);
+  getAccountByMEW(callback) {
+    return this.getAddress(callback);
   }
 
-  getAddress(getAuthentication, callback) {
+  getAddress(callback) {
     var self = this;
+    if (this.address) return callback(null, this.address);
     if (this.connected) {
       this.mewConnectClient.sendRtcMessage('address', '');
       this.mewConnectClient.once('address', data => {
+        self.address = data.address;
         return callback(null, data.address);
       });
     } else {
-      this.mewConnectClient.on('codeDisplay', code => {
-        return getAuthentication.open(code, (er, re) => {
-          // User close authentication modal
-          return callback(er, null);
-        });
-      });
-      this.mewConnectClient.initiatorStart(SIGNALER_URL);
-      this.mewConnectClient.on('RtcConnectedEvent', () => {
-        self.connected = true;
-        getAuthentication.close();
-
-        this.mewConnectClient.sendRtcMessage('address', '');
-        this.mewConnectClient.once('address', data => {
-          return callback(null, data.address);
-        });
-      });
+      return callback(ERROR, null);
     }
   }
 
-  signTransaction(getAuthentication, txParams, callback) {
+  signTransaction(txParams, callback) {
     var self = this;
     if (this.connected) {
       this.mewConnectClient.sendRtcMessage('signTx', txParams);
@@ -84,22 +78,7 @@ class MEW extends WalletInterface {
       });
     }
     else {
-      this.mewConnectClient.on('codeDisplay', code => {
-        return getAuthentication.open(code, (er, re) => {
-          // User close authentication modal
-          return callback(er, null);
-        });
-      });
-      this.mewConnectClient.initiatorStart(SIGNALER_URL);
-      this.mewConnectClient.on('RtcConnectedEvent', () => {
-        self.connected = true;
-        getAuthentication.close();
-
-        this.mewConnectClient.sendRtcMessage('signTx', txParams);
-        this.mewConnectClient.once('signTx', data => {
-          return callback(null, data);
-        });
-      });
+      return callback(ERROR, null);
     }
   }
 }

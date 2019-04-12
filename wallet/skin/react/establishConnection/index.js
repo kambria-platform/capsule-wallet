@@ -20,8 +20,6 @@ class EstablishConnection extends Component {
       subType: 'mew'
     }
 
-    this.data = this.props.data;
-
     this.onSelect = this.onSelect.bind(this);
     this.onConnect = this.onConnect.bind(this);
     this.menu = this.menu.bind(this);

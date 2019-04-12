@@ -22,8 +22,6 @@ class ConnectDevice extends Component {
       subType: 'ledger-nano-s'
     }
 
-    this.data = this.props.data;
-
     this.onSelect = this.onSelect.bind(this);
     this.onConnect = this.onConnect.bind(this);
     this.menu = this.menu.bind(this);

@@ -24,8 +24,6 @@ class InputAsset extends Component {
       subType: 'mnemonic'
     }
 
-    this.data = this.props.data;
-
     this.onSelect = this.onSelect.bind(this);
     this.onReceive = this.onReceive.bind(this);
     this.menu = this.menu.bind(this);

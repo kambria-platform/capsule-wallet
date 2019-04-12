@@ -59,13 +59,7 @@ class WalletInterface {
   getAccount() {
     var self = this;
     return new Promise((resolve, reject) => {
-      if (
-        (
-          self.type === TYPE.HARDWALLET
-          || self.type === TYPE.HYBRIDWALLET
-        )
-        && this.user.account
-      ) return resolve(this.user.account);
+      if (self.type === TYPE.HARDWALLET && this.user.account) return resolve(this.user.account);
 
       self.web3.eth.getAccounts((er, re) => {
         if (er) return reject(er);
