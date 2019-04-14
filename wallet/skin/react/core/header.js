@@ -66,7 +66,7 @@ class Header extends Component {
               <h1 className="font-weight-bold secondary">CAPSULE WALLET.</h1>
             </div>
             <div className="row">
-              <h2 className="font-italic secondary">Capsule wallet will power your Dapps with multi-wallets interaction.</h2>
+              <h2 className="secondary">Capsule wallet will power your Dapps with multi-wallets interaction.</h2>
             </div>
             <div className="row flex-grow-1 justify-content-end align-items-end">
               {this.net()}

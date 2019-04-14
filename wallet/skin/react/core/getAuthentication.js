@@ -58,11 +58,11 @@ class getAuthentication extends Component {
                     </div>
                   </div>
                   <div className="wallet-form">
-                    <div className="row mb-3">
-                      <div className="col-8 col-lg-9 d-flex align-items-end">
+                    <div className="row">
+                      <div className="col-12 col-md-8 d-flex align-items-end mb-3">
                         <p className="text-left">Please using MyEtherWallet application on your phone to scan and establish the connection!</p>
                       </div>
-                      <div className="col-4 col-lg-3 d-flex">
+                      <div className="col-12 col-md-4 mb-3">
                         {this.state.qrcode ? <QRCode value={this.state.qrcode} /> : null}
                       </div>
                     </div>

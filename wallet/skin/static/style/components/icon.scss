@@ -118,6 +118,11 @@ i.metamask {
   padding-top: 100%;
   display: inline-flex;
   cursor: pointer;
+  transition: background-size 0.15s ease-out;
+
+  &:hover {
+    background-size: 53%;
+  }
 }
 
 i.mew {
@@ -129,6 +134,11 @@ i.mew {
   padding-top: 100%;
   display: inline-flex;
   cursor: pointer;
+  transition: background-size 0.15s ease-out;
+
+  &:hover {
+    background-size: 53%;
+  }
 }
 
 i.hardwallet {
@@ -140,6 +150,11 @@ i.hardwallet {
   padding-top: 100%;
   display: inline-flex;
   cursor: pointer;
+  transition: background-size 0.15s ease-out;
+
+  &:hover {
+    background-size: 53%;
+  }
 }
 
 i.softwallet {
@@ -151,6 +166,11 @@ i.softwallet {
   padding-top: 100%;
   display: inline-flex;
   cursor: pointer;
+  transition: background-size 0.15s ease-out;
+
+  &:hover {
+    background-size: 53%;
+  }
 }
 
 i.ledger {
@@ -236,6 +256,17 @@ i.github {
   background-size: 50%;
   background-position: center;
   width: 2em;
+  height: 100%;
+  display: inline-flex;
+  cursor: pointer;
+}
+
+i.kambria {
+  background-image: url("../images/kambria.svg");
+  background-repeat: no-repeat;
+  background-size: 90%;
+  background-position: center;
+  width: 6em;
   height: 100%;
   display: inline-flex;
   cursor: pointer;

@@ -47,11 +47,11 @@ class LedgerNanoSAsset extends Component {
           </div>
         </div>
         <div className="row mb-3">
-          <div className="col-8 col-lg-9 d-flex align-items-end">
+          <div className="col-6 col-md-8 col-lg-9 d-flex align-items-end">
             <p className={"text-left" + (this.state.message === STATUS.FAIL ? " warning" : "")}>{this.state.message}</p>
           </div>
-          <div className="col-4 col-lg-3 d-flex">
-            <button className="primary-btn" onClick={this.checkTheConnection}>Go</button>
+          <div className="col-6 col-md-4 col-lg-3 d-flex align-items-end">
+            <button className="primary-btn" onClick={this.checkTheConnection}>Connect</button>
           </div>
         </div>
       </div>

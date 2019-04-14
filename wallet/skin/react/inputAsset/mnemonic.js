@@ -79,10 +79,10 @@ class MnemonicAsset extends Component {
           </div>
         </div>
         <div className="row mb-3">
-          <div className="col-8 col-lg-9 d-flex align-items-end">
+          <div className="col-6 col-md-8 col-lg-9 d-flex align-items-end">
             <p className="warning text-bottom"></p>
           </div>
-          <div className="col-4 col-lg-3 d-flex">
+          <div className="col-6 col-md-4 col-lg-3 d-flex">
             <button className="primary-btn" onClick={this.handleSubmit}>OK</button>
           </div>
         </div>

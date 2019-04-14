@@ -70,11 +70,11 @@ class KeystoreAsset extends Component {
           </div>
         </div>
         <div className="row mb-3">
-          <div className="col-8 col-lg-9">
+          <div className="col-6 col-md-8 col-lg-9">
             <input id="keystore-file" type="file" accept="application/json" onChange={this.handleChangeFile} style={{ "display": "none" }} />
             <input type="text" className="input" value={this.state.filename} disabled></input>
           </div>
-          <div className="col-4 col-lg-3">
+          <div className="col-6 col-md-4 col-lg-3">
             <button className="primary-btn" onClick={() => { document.getElementById('keystore-file').click(); }}>Browse</button>
           </div>
         </div>
@@ -89,10 +89,10 @@ class KeystoreAsset extends Component {
           </div>
         </div>
         <div className="row mb-3">
-          <div className="col-8 col-lg-9 d-flex align-items-end">
+          <div className="col-6 col-md-8 col-lg-9 d-flex align-items-end">
             <p className="warning text-bottom"></p>
           </div>
-          <div className="col-4 col-lg-3 d-flex">
+          <div className="col-6 col-md-4 col-lg-3 d-flex">
             <button className="primary-btn" onClick={this.handleSubmit}>OK</button>
           </div>
         </div>
