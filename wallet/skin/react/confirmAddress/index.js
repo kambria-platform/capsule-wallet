@@ -128,13 +128,13 @@ class ConfirmAddress extends Component {
               <div className={cx("col")}>
                 <div className={cx("row", "h-100")}>
                   <div className={cx("col-4", "col-sm-2", "d-flex", "justify-content-center", "align-items-center", "mt-2", "mb-2")}>
-                    <button className={cx("small-circle-btn")} onClick={() => { this.onPage(-1) }}><i className="previous" /></button>
+                    <button className={cx("small-circle-btn")} onClick={() => { this.onPage(-1) }}><i className={cx("previous")} /></button>
                   </div>
                   <div className={cx("col-4", "col-sm-2", "d-flex", "justify-content-center", "align-items-center", "mt-2", "mb-2")}>
                     <button className={cx("small-circle-btn")}>{this.state.page + 1}</button>
                   </div>
                   <div className={cx("col-4", "col-sm-2", "d-flex", "justify-content-center", "align-items-center", "mt-2", "mb-2")}>
-                    <button className={cx("small-circle-btn")} onClick={() => { this.onPage(1) }}><i className="next" /></button>
+                    <button className={cx("small-circle-btn")} onClick={() => { this.onPage(1) }}><i className={cx("next")} /></button>
                   </div>
                   <div className={cx("col-12", "col-sm-6", "d-flex", "justify-content-center", "align-items-center", "mt-2", "mb-2")}>
                     <button className={cx("primary-btn")} onClick={this.onConfirm}>OK</button>

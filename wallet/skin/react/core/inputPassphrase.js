@@ -103,7 +103,7 @@ class InputPassphrase extends Component {
                           onChange={this.onChange}
                           ref={(name) => { this.passpharseName = name; }}></input>
                       </div>
-                      <div className={cx("col-4 col-lg-3")}>
+                      <div className={cx("col-4", "col-lg-3")}>
                         <button className={cx("primary-btn")} onClick={this.handleSubmit}>OK</button>
                       </div>
                     </div>
