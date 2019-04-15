@@ -1,11 +1,6 @@
 @import url("https://fonts.googleapis.com/css?family=Raleway");
 
 .typography {
-  body {
-    font-family: $font-family-base;
-    font-weight: 500;
-  }
-
   @include media-breakpoint-up(xs) {
     a {
       font-size: 12px;
@@ -89,6 +84,8 @@
   }
 
   * {
+    font-family: $font-family-base;
+    font-weight: 500;
     min-height: 0; /* Rendering problems using flexbox in Firefox and Chrome 48 */
     min-width: 0; /* Rendering problems using flexbox in Firefox and Chrome 48 */
     outline: 0 none !important;
