@@ -1,92 +1,94 @@
-@import url('https://fonts.googleapis.com/css?family=Raleway');
+@import url("https://fonts.googleapis.com/css?family=Raleway");
 
-body {
-  font-family: $font-family-base;
-  font-weight: 500;
-}
+.typography {
+  body {
+    font-family: $font-family-base;
+    font-weight: 500;
+  }
 
-@include media-breakpoint-up(xs) {
+  @include media-breakpoint-up(xs) {
+    a {
+      font-size: 12px;
+    }
+    p {
+      font-size: 12px;
+    }
+    .full-text {
+      display: none;
+    }
+    .short-text {
+      display: inline-flex;
+    }
+  }
+
+  @include media-breakpoint-up(md) {
+    a {
+      font-size: 14px;
+    }
+    p {
+      font-size: 14px;
+    }
+    .full-text {
+      display: inline-flex;
+    }
+    .short-text {
+      display: none;
+    }
+  }
+
   a {
-    font-size: 12px;
+    color: $c-black;
   }
+  a:hover,
+  a:focus {
+    color: $c-black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  span:hover,
+  span:focus {
+    cursor: pointer;
+  }
+
   p {
-    font-size: 12px;
+    color: $c-black;
+    margin: 0 !important;
+
+    &.lengthy {
+      word-break: break-all;
+    }
   }
-  .full-text {
-    display: none;
+
+  h1 {
+    font-weight: 700;
+    color: $c-black;
+    font-size: 24px;
   }
-  .short-text {
-    display: inline-flex;
+
+  h2 {
+    font-weight: 500;
+    color: $c-black;
+    font-size: 18px;
   }
-}
 
-@include media-breakpoint-up(md) {
-  a {
-    font-size: 14px;
+  ::-webkit-input-placeholder {
+    /* Edge */
+    color: $c-gray;
   }
-  p {
-    font-size: 14px;
+
+  :-ms-input-placeholder {
+    /* Internet Explorer 10-11 */
+    color: $c-gray;
   }
-  .full-text {
-    display: inline-flex;
+
+  ::placeholder {
+    color: $c-gray;
   }
-  .short-text {
-    display: none;
+
+  * {
+    min-height: 0; /* Rendering problems using flexbox in Firefox and Chrome 48 */
+    min-width: 0; /* Rendering problems using flexbox in Firefox and Chrome 48 */
+    outline: 0 none !important;
   }
-}
-
-a {
-  color: $c-black;
-}
-a:hover,
-a:focus {
-  color: $c-black;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-span:hover,
-span:focus {
-  cursor: pointer;
-}
-
-p {
-  color: $c-black;
-  margin: 0 !important;
-
-  &.lengthy {
-    word-break: break-all;
-  }
-}
-
-h1 {
-  font-weight: 700;
-  color: $c-black;
-  font-size: 24px;
-}
-
-h2 {
-  font-weight: 500;
-  color: $c-black;
-  font-size: 18px;
-}
-
-::-webkit-input-placeholder {
-  /* Edge */
-  color: $c-gray;
-}
-
-:-ms-input-placeholder {
-  /* Internet Explorer 10-11 */
-  color: $c-gray;
-}
-
-::placeholder {
-  color: $c-gray;
-}
-
-* {
-  min-height: 0; /* Rendering problems using flexbox in Firefox and Chrome 48 */
-  min-width: 0; /* Rendering problems using flexbox in Firefox and Chrome 48 */
-  outline: 0 none !important;
 }
