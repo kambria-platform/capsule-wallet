@@ -6,6 +6,12 @@ body {
 }
 
 @include media-breakpoint-up(xs) {
+  a {
+    font-size: 12px;
+  }
+  p {
+    font-size: 12px;
+  }
   .full-text {
     display: none;
   }
@@ -15,6 +21,12 @@ body {
 }
 
 @include media-breakpoint-up(md) {
+  a {
+    font-size: 14px;
+  }
+  p {
+    font-size: 14px;
+  }
   .full-text {
     display: inline-flex;
   }
@@ -25,7 +37,6 @@ body {
 
 a {
   color: $c-black;
-  font-size: 14px;
 }
 a:hover,
 a:focus {
@@ -41,7 +52,6 @@ span:focus {
 
 p {
   color: $c-black;
-  font-size: 14px;
   margin: 0 !important;
 
   &.lengthy {

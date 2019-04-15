@@ -1,5 +1,5 @@
 module.exports = {
-  METAMASK: 'metamask',
   HARDWALLET: 'hardwallet',
+  HYBRIDWALLET: 'hybridwallet',
   SOFTWALLET: 'softwallet'
 }

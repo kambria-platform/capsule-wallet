@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 
 // Setup CSS Module
-// import classNames from 'classnames/bind';
-// import style from 'Style/index.scss';
-// var cx = classNames.bind(style);
+import classNames from 'classnames/bind';
+import style from 'Style/index.scss';
+var cx = classNames.bind(style);
 
 
 class Header extends Component {
@@ -50,25 +50,25 @@ class Header extends Component {
     let net = this.getNetName(window.capsuleWallet.net);
     let Net = net.charAt(0).toUpperCase() + net.slice(1)
     return (
-      <div className={"box-line " + net}>
-        <i className="ethereum" />
-        <p className="my-auto">{Net} Network</p>
+      <div className={cx("box-line", net)}>
+        <i className={cx("ethereum")} />
+        <p className={cx("my-auto")}>{Net} Network</p>
       </div>
     )
   }
 
   render() {
     return (
-      <div className="row wallet-header">
-        <div className="container h-100">
-          <div className="h-100 d-flex flex-column">
-            <div className="row">
-              <h1 className="font-weight-bold secondary">CAPSULE WALLET.</h1>
+      <div className={cx("row", "wallet-header")}>
+        <div className={cx("container", "h-100")}>
+          <div className={cx("h-100", "d-flex", "flex-column")}>
+            <div className={cx("row")}>
+              <h1 className={cx("font-weight-bold", "secondary")}>CAPSULE WALLET.</h1>
             </div>
-            <div className="row">
-              <h2 className="font-italic secondary">Capsule wallet will power your Dapps with multi-wallets interaction.</h2>
+            <div className={cx("row")}>
+              <h2 className={cx("secondary")}>Capsule wallet will power your Dapps with multi-wallets interaction.</h2>
             </div>
-            <div className="row flex-grow-1 justify-content-end align-items-end">
+            <div className={cx("row", "flex-grow-1", "justify-content-end", "align-items-end")}>
               {this.net()}
             </div>
           </div>

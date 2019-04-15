@@ -1,12 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
+
+// Setup CSS Module
+import classNames from 'classnames/bind';
+import style from 'Style/index.scss';
+var cx = classNames.bind(style);
 
 let modalsShowing = 0;
 
 function modalWillShow() {
   if (modalsShowing === 0 && document) {
-    document.body.classList.add("modal-open");
+    document.body.classList.add(cx("modal-open"));
   }
 
   modalsShowing += 1;
@@ -16,7 +20,7 @@ function modalWillHide() {
   modalsShowing -= 1;
 
   if (modalsShowing === 0 && document) {
-    document.body.classList.remove("modal-open");
+    document.body.classList.remove(cx("modal-open"));
   }
 }
 
@@ -78,7 +82,7 @@ class Modal extends React.Component {
     if (this.state.visible || this.state.transitioning) {
       return (
         <div
-          className={classNames('modal-backdrop', { show: this.state.visible })}
+          className={cx('modal-backdrop', { show: this.state.visible })}
           onClick={this.props.onClickBackdrop}
           role="presentation"
           style={{ zIndex: 1040 + this.state.modalIndex }}
@@ -103,7 +107,7 @@ class Modal extends React.Component {
     return (
       <div {...wrapperProps} >
         <div
-          className={classNames('modal', { show: this.state.visible }, className)}
+          className={cx('modal', { show: this.state.visible }, className)}
           style={{
             display: ((this.state.visible || this.state.transitioning) ? 'block' : 'none'),
             zIndex: 1040 + this.state.modalIndex + 1,
@@ -114,8 +118,8 @@ class Modal extends React.Component {
           onClick={onClickBackdrop}
           {...other}
         >
-          <div className={classNames('modal-dialog', dialogClassName)} role="document" onClick={this.stopPropagation}>
-            <div className={"modal-content"}> {children} </div>
+          <div className={cx('modal-dialog', dialogClassName)} role="document" onClick={this.stopPropagation}>
+            <div className={cx("modal-content")}> {children} </div>
           </div>
         </div>
         {this.renderBackdrop()}

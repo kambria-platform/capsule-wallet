@@ -1,21 +1,21 @@
-const KAMBRIA_CODE = '55b8fc1234d845ffbea5da26f9ae70f5';
+const CODE = '35a3ead2848046f590ba4a244547f0c5';
 
 const RPC = {
   MAINNET: {
     id: 1,
-    rpc: 'https://mainnet.infura.io/v3/' + KAMBRIA_CODE
+    rpc: 'https://mainnet.infura.io/v3/' + CODE
   },
   ROPSTEN: {
     id: 3,
-    rpc: 'https://ropsten.infura.io/v3/' + KAMBRIA_CODE
+    rpc: 'https://ropsten.infura.io/v3/' + CODE
   },
   KOVAN: {
     id: 42,
-    rpc: 'https://kovan.infura.io/v3/' + KAMBRIA_CODE
+    rpc: 'https://kovan.infura.io/v3/' + CODE
   },
   RINKEBY: {
     id: 4,
-    rpc: 'https://rinkeby.infura.io/v3/' + KAMBRIA_CODE
+    rpc: 'https://rinkeby.infura.io/v3/' + CODE
   },
   DEFAULT: {
     id: '*',

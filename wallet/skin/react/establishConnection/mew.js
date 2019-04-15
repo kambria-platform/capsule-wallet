@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-var Isoxys = require('../../../lib/isoxys');
+
+var MEW = require('../../../lib/mew');
 
 // Setup CSS Module
 import classNames from 'classnames/bind';
@@ -7,39 +8,34 @@ import style from 'Style/index.scss';
 var cx = classNames.bind(style);
 
 const STATUS = {
-  INIT: 'Please connecting your wallet and click the button!',
+  INIT: 'Please using MyEtherWallet application on your phone to scan and establish the connection!',
   TEST: 'Waiting for the connection',
-  FAIL: 'Cannot connect your wallet!'
+  FAIL: 'Cannot connect the devide!'
 }
 
 
-class LedgerNanoSAsset extends Component {
+class MewAsset extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       message: STATUS.INIT,
-      loading: false
     }
 
-    this.checkTheConnection = this.checkTheConnection.bind(this);
+    this.mew = new MEW(window.capsuleWallet.net, 'hybridwallet', true);
+    this.establishTheConnection = this.establishTheConnection.bind(this);
   }
 
-  checkTheConnection() {
-    var self = this;
-    this.setState({ message: STATUS.TEST, loading: true }, () => {
-      // Fetch the first address to know whether devide connected
-      var isoxys = new Isoxys(null /** Use default for testing */, 'hardWallet', true);
-      isoxys.getAccountsByLedger("m/44'/60'/0'", 1, 0, function (er, re) {
-        if (er || re.lenght <= 0) return self.setState({ message: STATUS.FAIL, loading: false });
-        return self.props.done({ subType: 'ledger-nano-s' });
-      });
+  establishTheConnection() {
+    this.mew.setAccountByMEW(window.capsuleWallet.getAuthentication, (er, data) => {
+      if (er) return this.setState({ message: STATUS.FAIL });
+      return this.props.done({ subType: 'mew', provider: this.mew });
     });
   }
 
   render() {
     return (
-      <div className={cx("wallet-form", { "loading": this.state.loading })}>
+      <div className={cx("wallet-form")}>
         <div className={cx("row", "mb-3")}>
           <div className={cx("col", "d-flex")}>
             <i className={cx("checked")} />
@@ -51,12 +47,12 @@ class LedgerNanoSAsset extends Component {
             <p className={cx("text-left", { "warning": this.state.message === STATUS.FAIL })}>{this.state.message}</p>
           </div>
           <div className={cx("col-6", "col-md-4", "col-lg-3", "d-flex", "align-items-end")}>
-            <button className={cx("primary-btn")} onClick={this.checkTheConnection}>Connect</button>
+            <button className={cx("primary-btn")} onClick={this.establishTheConnection}>Connect</button>
           </div>
         </div>
       </div>
-    )
+    );
   }
 }
 
-export default LedgerNanoSAsset;
+export default MewAsset;
