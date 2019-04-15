@@ -140,7 +140,7 @@ class CapsuleWallet extends Component {
 
   render() {
     return (
-      <div>
+      <div className={cx("typography")}>
         <Modal visible={this.state.visible} className={cx("animated", "slideInUp")} >
           <div className={cx("modal-body", "wallet")}>
             <div className={cx("row", "justify-content-end")}>
