@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import MewAsset from './mew';
 
 // Setup CSS Module
-// import classNames from 'classnames/bind';
-// import style from 'Style/index.scss';
-// var cx = classNames.bind(style);
+import classNames from 'classnames/bind';
+import style from 'Style/index.scss';
+var cx = classNames.bind(style);
 
 const MENU = [
   { key: 'mew', label: 'MEW', icon: 'mew-solid', status: 'active', css: '' },
@@ -39,15 +39,10 @@ class EstablishConnection extends Component {
     return MENU.map(item => {
       return (
         <div key={item.key}
-          className={
-            "col col-md-2 wallet-nav"
-            + " " + item.status
-            + (item.key === this.state.subType ? " selected" : "")
-            + " " + (item.css ? item.css : "")
-          }
+          className={cx("col", "col-md-2", "wallet-nav", item.status, { "selected": item.key === this.state.subType }, item.css)}
           onClick={() => this.onSelect(item.key)}>
-          <div className="d-flex h-100 justify-content-center align-items-center">
-            <i className={item.icon} />
+          <div className={cx("d-flex", "h-100", "justify-content-center", "align-items-center")}>
+            <i className={cx(item.icon)} />
             <p>{item.label}</p>
           </div>
         </div>
@@ -61,10 +56,10 @@ class EstablishConnection extends Component {
 
   render() {
     return (
-      <div className="row align-items-center wallet-body animated zoomIn">
-        <div className="col">
-          <div className="box-form">
-            <div className="row wallet-tab">
+      <div className={cx("row", "align-items-center", "wallet-body", "animated", "zoomIn")}>
+        <div className={cx("col")}>
+          <div className={cx("box-form")}>
+            <div className={cx("row", "wallet-tab")}>
               {this.menu()}
             </div>
             {this.device()}

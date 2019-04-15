@@ -4,9 +4,9 @@ import Header from './header';
 import Author from './author';
 
 // Setup CSS Module
-// import classNames from 'classnames/bind';
-// import style from 'Style/index.scss';
-// var cx = classNames.bind(style);
+import classNames from 'classnames/bind';
+import style from 'Style/index.scss';
+var cx = classNames.bind(style);
 
 const DEFAULT_STATE = {
   passphrase: ''
@@ -75,36 +75,36 @@ class InputPassphrase extends Component {
 
   render() {
     return (
-      <Modal visible={this.state.visible} className="animated slideInUp" >
-        <div className="modal-body wallet">
-          <div className="row justify-content-end">
-            <button className="close-btn" onClick={() => { this.onClose() }} />
+      <Modal visible={this.state.visible} className={cx("animated", "slideInUp")} >
+        <div className={cx("modal-body", "wallet")}>
+          <div className={cx("row", "justify-content-end")}>
+            <button className={cx("close-btn")} onClick={() => { this.onClose() }} />
           </div>
-          <div className="container">
+          <div className={cx("container")}>
             <Header />
-            <div className="row align-items-center wallet-body">
-              <div className="col">
-                <div className="box-form">
-                  <div className="row pt-3 mb-3">
-                    <div className="col">
+            <div className={cx("row", "align-items-center", "wallet-body")}>
+              <div className={cx("col")}>
+                <div className={cx("box-form")}>
+                  <div className={cx("row", "pt-3", "mb-3")}>
+                    <div className={cx("col")}>
                       <h2>Input Your Passphrase</h2>
                     </div>
                   </div>
-                  <div className="wallet-form">
-                    <div className="row mb-3">
-                      <div className="col d-flex">
+                  <div className={cx("wallet-form")}>
+                    <div className={cx("row mb-3")}>
+                      <div className={cx("col", "d-flex")}>
                         <p>Passphrase</p>
                       </div>
                     </div>
-                    <div className="row mb-3">
-                      <div className="col-8 col-lg-9">
-                        <input id="inputPassphrase" type="password" className="input" placeholder="Temporary Passphrase"
+                    <div className={cx("row", "mb-3")}>
+                      <div className={cx("col-8", "col-lg-9")}>
+                        <input id="inputPassphrase" type="password" className={cx("input")} placeholder="Temporary Passphrase"
                           value={this.state.passphrase}
                           onChange={this.onChange}
                           ref={(name) => { this.passpharseName = name; }}></input>
                       </div>
-                      <div className="col-4 col-lg-3">
-                        <button className="primary-btn" onClick={this.handleSubmit}>OK</button>
+                      <div className={cx("col-4 col-lg-3")}>
+                        <button className={cx("primary-btn")} onClick={this.handleSubmit}>OK</button>
                       </div>
                     </div>
                   </div>

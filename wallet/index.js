@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import FiniteStateMachine from './finiteStateMachine';
 import Modal from './skin/react/core/modal';
 
-import 'Style/index.scss';
+// Setup CSS Module
+import classNames from 'classnames/bind';
+import style from 'Style/index.scss';
+var cx = classNames.bind(style);
 
 import Header from './skin/react/core/header';
 import InputPassphrase from './skin/react/core/inputPassphrase';
@@ -138,12 +141,12 @@ class CapsuleWallet extends Component {
   render() {
     return (
       <div>
-        <Modal visible={this.state.visible} className="animated slideInUp" >
-          <div className="modal-body wallet">
-            <div className="row justify-content-end">
-              <button className="close-btn" onClick={() => this.onClose()} />
+        <Modal visible={this.state.visible} className={cx("animated", "slideInUp")} >
+          <div className={cx("modal-body", "wallet")}>
+            <div className={cx("row", "justify-content-end")}>
+              <button className={cx("close-btn")} onClick={() => this.onClose()} />
             </div>
-            <div className="container">
+            <div className={cx("container")}>
               <Header />
               {this.state.step === 'SelectWallet' ? <SellectWallet data={{ ...this.FSM.data, net: this.state.net }} done={this.onData} /> : null}
               {this.state.step === 'InputAsset' ? <InputAsset data={{ ...this.FSM.data, net: this.state.net }} done={this.onData} /> : null}

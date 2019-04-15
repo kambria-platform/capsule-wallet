@@ -5,9 +5,9 @@ import Header from './header';
 import Author from './author';
 
 // Setup CSS Module
-// import classNames from 'classnames/bind';
-// import style from 'Style/index.scss';
-// var cx = classNames.bind(style);
+import classNames from 'classnames/bind';
+import style from 'Style/index.scss';
+var cx = classNames.bind(style);
 
 const ERROR = 'Used denied to autheticate';
 
@@ -42,27 +42,27 @@ class getAuthentication extends Component {
 
   render() {
     return (
-      <Modal visible={this.state.visible} className="animated slideInUp" >
-        <div className="modal-body wallet">
-          <div className="row justify-content-end">
-            <button className="close-btn" onClick={() => { this.onClose() }} />
+      <Modal visible={this.state.visible} className={cx("animated", "slideInUp")} >
+        <div className={cx("modal-body", "wallet")}>
+          <div className={cx("row", "justify-content-end")}>
+            <button className={cx("close-btn")} onClick={() => { this.onClose() }} />
           </div>
-          <div className="container">
+          <div className={cx("container")}>
             <Header />
-            <div className="row align-items-center wallet-body">
-              <div className="col">
-                <div className="box-form">
-                  <div className="row pt-3 mb-3">
-                    <div className="col">
+            <div className={cx("row", "align-items-center", "wallet-body")}>
+              <div className={cx("col")}>
+                <div className={cx("box-form")}>
+                  <div className={cx("row", "pt-3", "mb-3")}>
+                    <div className={cx("col")}>
                       <h2>Authetication</h2>
                     </div>
                   </div>
-                  <div className="wallet-form">
-                    <div className="row">
-                      <div className="col-12 col-md-8 d-flex align-items-end mb-3">
-                        <p className="text-left">Please using MyEtherWallet application on your phone to scan and establish the connection!</p>
+                  <div className={cx("wallet-form")}>
+                    <div className={cx("row")}>
+                      <div className={cx("col-12", "col-md-8", "d-flex", "align-items-end", "mb-3")}>
+                        <p className={cx("text-left")}>Please using MyEtherWallet application on your phone to scan and establish the connection!</p>
                       </div>
-                      <div className="col-12 col-md-4 mb-3">
+                      <div className={cx("col-12", "col-md-4", "mb-3")}>
                         {this.state.qrcode ? <QRCode value={this.state.qrcode} /> : null}
                       </div>
                     </div>

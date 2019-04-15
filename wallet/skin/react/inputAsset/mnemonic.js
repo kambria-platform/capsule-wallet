@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 
 // Setup CSS Module
-// import classNames from 'classnames/bind';
-// import style from 'Style/index.scss';
-// var cx = classNames.bind(style);
+import classNames from 'classnames/bind';
+import style from 'Style/index.scss';
+var cx = classNames.bind(style);
 
 const DEFAULT_STATE = {
   mnemonic: '',
@@ -51,39 +51,39 @@ class MnemonicAsset extends Component {
 
   render() {
     return (
-      <div className="wallet-form">
-        <div className="row mb-3">
-          <div className="col d-flex">
-            <i className="warning" />
-            <p className="warning">This is not recommend way to access your wallet.</p>
+      <div className={cx("wallet-form")}>
+        <div className={cx("row", "mb-3")}>
+          <div className={cx("col", "d-flex")}>
+            <i className={cx("warning")} />
+            <p className={cx("warning")}>This is not recommend way to access your wallet.</p>
           </div>
         </div>
-        <div className="row mb-3">
-          <div className="col d-flex">
+        <div className={cx("row", "mb-3")}>
+          <div className={cx("col", "d-flex")}>
             <p>Enter seed</p>
           </div>
         </div>
-        <div className="row mb-3">
-          <div className="col">
-            <input type="text" className="input" placeholder="Seed" value={this.state.mnemonic} onChange={this.handleChangeMnemonic}></input>
+        <div className={cx("row", "mb-3")}>
+          <div className={cx("col")}>
+            <input type="text" className={cx("input")} placeholder="Seed" value={this.state.mnemonic} onChange={this.handleChangeMnemonic}></input>
           </div>
         </div>
-        <div className="row mb-3">
-          <div className="col d-flex">
+        <div className={cx("row", "mb-3")}>
+          <div className={cx("col", "d-flex")}>
             <p>Enter password (Optional)</p>
           </div>
         </div>
-        <div className="row mb-3">
-          <div className="col">
-            <input type="password" className="input" placeholder="Password"  value={this.state.password} onChange={this.handleChangePassword}></input>
+        <div className={cx("row", "mb-3")}>
+          <div className={cx("col")}>
+            <input type="password" className={cx("input")} placeholder="Password" value={this.state.password} onChange={this.handleChangePassword}></input>
           </div>
         </div>
-        <div className="row mb-3">
-          <div className="col-6 col-md-8 col-lg-9 d-flex align-items-end">
-            <p className="warning text-bottom"></p>
+        <div className={cx("row", "mb-3")}>
+          <div className={cx("col-6", "col-md-8", "col-lg-9", "d-flex", "align-items-end")}>
+            <p className={cx("warning", "text-bottom")}></p>
           </div>
-          <div className="col-6 col-md-4 col-lg-3 d-flex">
-            <button className="primary-btn" onClick={this.handleSubmit}>OK</button>
+          <div className={cx("col-6", "col-md-4", "col-lg-3", "d-flex")}>
+            <button className={cx("primary-btn")} onClick={this.handleSubmit}>OK</button>
           </div>
         </div>
       </div>
