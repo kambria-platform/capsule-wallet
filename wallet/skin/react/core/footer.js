@@ -25,13 +25,13 @@ class Footer extends Component {
         <div className={cx("col-12", "col-sm-6", "col-md-4", "col-lg-3", "mt-5")} style={{ "height": "50px" }}>
           <div className={cx("row")}>
             <div className={cx("col", "text-center")}>
-              <button className={cx("circle-btn")}><i className={cx("prevent-fish")} /></button>
+              <button className={cx("circle-btn")} data-toggle="tooltip" title="Prevent phishing attack"><i className={cx("prevent-fish")} /></button>
             </div>
             <div className={cx("col", "text-center")}>
-              <button className={cx("circle-btn")} onClick={this.term}><i className={cx("term-privacy")} /></button>
+              <button className={cx("circle-btn") } onClick={this.term} data-toggle="tooltip" title="Term & Privacy"><i className={cx("term-privacy")} /></button>
             </div>
             <div className={cx("col", "text-center")}>
-              <button className={cx("circle-btn")} onClick={this.support}><i className={cx("support")} /></button>
+              <button className={cx("circle-btn")} onClick={this.support} data-toggle="tooltip" title="Get supports"><i className={cx("support")} /></button>
             </div>
           </div>
         </div>
