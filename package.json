@@ -7,9 +7,9 @@
     "release": "npm run build && npm publish",
     "build": "npm run clean && webpack --env prod",
     "clean": "rm -rf ./index.js && rm -rf ./node_modules/capsule-wallet",
-    "start": "nodemon --exec 'npm run dev'",
+    "start": "nodemon --exec 'npm run dev && npm run serve'",
     "serve": "HTTPS=true REACT_APP_ENV=development react-scripts start",
-    "dev": "webpack --env prod && npm run fake-module",
+    "dev": "webpack --env dev && npm run fake-module",
     "fake-module": "mkdir -p ./node_modules/capsule-wallet && cp -R ./index.js ./node_modules/capsule-wallet",
     "css": "sass ./wallet/skin/static/style/index.scss ./wallet/skin/static/style/index.css --style compressed",
     "test": ""
