@@ -76,7 +76,7 @@ class TestWallet extends Component {
           <button onClick={this.sendTx}>Send Tx</button>
           {this.state.error ? <a >{this.state.error}</a> : null}
         </div>
-        <Wallet visible={this.state.visible} net={3} done={this.done} />
+        <Wallet visible={this.state.visible} net={4} done={this.done} />
       </div>
     );
   }
