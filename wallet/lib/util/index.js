@@ -22,7 +22,7 @@ Util.chainCode = function (net) {
     case 'rinkeby':
       return 4;
     default:
-      return 1;
+      return null;
   }
 }
 

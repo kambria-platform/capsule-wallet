@@ -33,7 +33,7 @@ class SellectWallet extends Component {
   onMetamask(type) {
     this.setState({ visible: false });
     var self = this;
-    var metamask = new Metamask(this.data.net, type, true);
+    var metamask = new Metamask(window.capsuleWallet.net, type, true);
     metamask.setAccountByMetamask(function (er, re) {
       if (er) return self.done(er, null);
 
@@ -43,6 +43,11 @@ class SellectWallet extends Component {
         provider: metamask
       });
     });
+  }
+
+  onLedger(type) {
+    this.setState({ visible: false });
+    this.done(null, { wallet: 'ledger', type: type });
   }
 
   onIsoxys(type) {
@@ -72,7 +77,7 @@ class SellectWallet extends Component {
             </div>
           </div>
           <div className={cx("col-6", "col-sm-3", "col-lg")}>
-            <div className={cx("box", "active")} onClick={() => this.onIsoxys('hardwallet')}>
+            <div className={cx("box", "active")} onClick={() => this.onLedger('hardwallet')}>
               <i className={cx("hardwallet")} />
               <p>Hardwallet</p>
             </div>

@@ -1,10 +1,12 @@
+require("babel-polyfill");
+
 const path = require('path');
 const webpack = require('webpack');
 const TerserPlugin = require('terser-webpack-plugin');
 
 
 module.exports = {
-  entry: path.resolve(__dirname, '../main.js'),
+  entry: ["babel-polyfill", path.resolve(__dirname, '../main.js')],
   output: {
     filename: 'index.js',
     path: path.resolve(__dirname, '../'),

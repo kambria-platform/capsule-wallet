@@ -148,11 +148,11 @@ class CapsuleWallet extends Component {
             </div>
             <div className={cx("container")}>
               <Header />
-              {this.state.step === 'SelectWallet' ? <SellectWallet data={{ ...this.FSM.data, net: this.state.net }} done={this.onData} /> : null}
-              {this.state.step === 'InputAsset' ? <InputAsset data={{ ...this.FSM.data, net: this.state.net }} done={this.onData} /> : null}
-              {this.state.step === 'EstablishConnection' ? <EstablishConnection data={{ ...this.FSM.data, net: this.state.net }} done={this.onData} /> : null}
-              {this.state.step === 'ConnectDevice' ? <ConnectDevice data={{ ...this.FSM.data, net: this.state.net }} done={this.onData} /> : null}
-              {this.state.step === 'ConfirmAddress' ? <ConfirmAddress data={{ ...this.FSM.data, net: this.state.net }} done={this.onData} /> : null}
+              {this.state.step === 'SelectWallet' ? <SellectWallet data={this.FSM.data} done={this.onData} /> : null}
+              {this.state.step === 'InputAsset' ? <InputAsset data={this.FSM.data} done={this.onData} /> : null}
+              {this.state.step === 'EstablishConnection' ? <EstablishConnection data={this.FSM.data} done={this.onData} /> : null}
+              {this.state.step === 'ConnectDevice' ? <ConnectDevice data={this.FSM.data} done={this.onData} /> : null}
+              {this.state.step === 'ConfirmAddress' ? <ConfirmAddress data={this.FSM.data} done={this.onData} /> : null}
               {this.state.step === 'Error' ? <ErrorForm error={this.state.error} done={() => this.onClose(() => { this.done(this.state.error, null) })} /> : null}
               <Footer skip={() => this.onClose()} />
             </div>

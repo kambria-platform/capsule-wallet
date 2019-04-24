@@ -13,7 +13,7 @@ const MACHINE = {
     currentState: 'SelectWallet',
     nextState: [
       { step: 'InputAsset', pattern: { wallet: 'isoxys', type: 'softwallet' } },
-      { step: 'ConnectDevice', pattern: { wallet: 'isoxys', type: 'hardwallet' } },
+      { step: 'ConnectDevice', pattern: { wallet: 'ledger', type: 'hardwallet' } },
       { step: 'EstablishConnection', pattern: { wallet: 'mew', type: 'hybridwallet' } },
       { step: 'Success', pattern: { wallet: 'metamask', type: 'softwallet' } },
       { step: 'Error', pattern: { wallet: '*', type: '*' } }

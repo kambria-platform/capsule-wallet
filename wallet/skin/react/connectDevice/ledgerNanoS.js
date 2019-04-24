@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-var Isoxys = require('../../../lib/isoxys');
+var Ledger = require('../../../lib/ledger');
 
 // Setup CSS Module
 import classNames from 'classnames/bind';
@@ -29,8 +29,8 @@ class LedgerNanoSAsset extends Component {
     var self = this;
     this.setState({ message: STATUS.TEST, loading: true }, () => {
       // Fetch the first address to know whether devide connected
-      var isoxys = new Isoxys(null /** Use default for testing */, 'hardWallet', true);
-      isoxys.getAccountsByLedger("m/44'/60'/0'", 1, 0, function (er, re) {
+      var ledger = new Ledger(null /** Use default for testing */, 'hardWallet', true);
+      ledger.getAccountsByLedgerNanoS("m/44'/60'/0'", 1, 0, function (er, re) {
         if (er || re.lenght <= 0) return self.setState({ message: STATUS.FAIL, loading: false });
         return self.props.done({ subType: 'ledger-nano-s' });
       });

@@ -28,10 +28,35 @@ class ConfirmAddress extends Component {
 
     this.done = this.props.done;
 
+    this.getAddress = this.getAddress.bind(this);
     this.onClose = this.onClose.bind(this);
     this.onConfirm = this.onConfirm.bind(this);
     this.onSelect = this.onSelect.bind(this);
     this.onPage = this.onPage.bind(this);
+  }
+
+  getAddress(data, limit, page, callback) {
+    if (data.wallet === 'isoxys') {
+      this.setState({ loading: true }, function () {
+        ConfirmAddressHelper.getAddressByIsoxys(data, limit, page).then(re => {
+          return callback(null, re);
+        }).catch(er => {
+          if (er) return callback(ERROR, null);
+        });
+      });
+    }
+    else if (data.wallet === 'ledger') {
+      this.setState({ loading: true }, function () {
+        ConfirmAddressHelper.getAddressByLedger(data, limit, page).then(re => {
+          return callback(null, re);
+        }).catch(er => {
+          if (er) return callback(ERROR, null);
+        });
+      });
+    }
+    else {
+      return callback(ERROR, null);
+    }
   }
 
   /**
@@ -43,10 +68,18 @@ class ConfirmAddress extends Component {
   }
 
   onConfirm() {
-    var self = this;
+    let self = this;
+    let index = this.state.i + this.state.limit * this.state.page;
     if (this.props.data.wallet === 'isoxys') {
-      ConfirmAddressHelper.setAddressByIsoxys(this.props.data, this.state.i + this.state.limit * this.state.page).then(isoxys => {
+      ConfirmAddressHelper.setAddressByIsoxys(this.props.data, index).then(isoxys => {
         self.done(null, { provider: isoxys });
+      }).catch(er => {
+        self.done(er, null);
+      });
+    }
+    else if (this.props.data.wallet === 'ledger') {
+      ConfirmAddressHelper.setAddressByLedger(this.props.data, index).then(ledger => {
+        self.done(null, { provider: ledger });
       }).catch(er => {
         self.done(er, null);
       });
@@ -63,32 +96,24 @@ class ConfirmAddress extends Component {
   }
 
   onPage(step) {
-    var page = this.state.page + step;
+    let page = this.state.page + step;
     if (page < 0) page = 0;
     if (page == this.state.page) return;
 
-    this.setState({ loading: true }, function () {
-      ConfirmAddressHelper.getAddressByIsoxys(this.props.data, this.state.limit, page).then(re => {
-        return this.setState({ loading: false, page: page, addressList: re });
-      }).catch(er => {
-        if (er) return this.onClose(ERROR);
-      });
+    this.getAddress(this.props.data, this.state.limit, page, function (er, re) {
+      if (er) return this.onClose(ERROR);
+
+      return this.setState({ loading: false, page: page, addressList: re });
     });
   }
 
   componentDidMount() {
-    if (this.props.data.wallet === 'isoxys') {
-      this.setState({ loading: true }, function () {
-        ConfirmAddressHelper.getAddressByIsoxys(this.props.data, this.state.limit, this.state.page).then(re => {
-          return this.setState({ loading: false, addressList: re });
-        }).catch(er => {
-          if (er) return this.onClose(ERROR);
-        });
-      });
-    }
-    else {
-      return this.onClose(ERROR);
-    }
+    let self = this;
+    this.getAddress(this.props.data, this.state.limit, this.state.page, function (er, re) {
+      if (er) return self.onClose(ERROR);
+
+      return self.setState({ loading: false, addressList: re });
+    });
   }
 
   // UI conventions

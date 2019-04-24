@@ -1,4 +1,5 @@
 var Isoxys = require('../../../lib/isoxys');
+var Ledger = require('../../../lib/ledger');
 
 const DEFAULT_HD_PATH = "m/44'/60'/0'/0";
 const ERROR = 'No address found';
@@ -6,7 +7,7 @@ const ERROR = 'No address found';
 class ConfirmAddressHelper {
 
   static getAddressByIsoxys(data, limit, page) {
-    var isoxys = new Isoxys(data.net, data.type, true);
+    var isoxys = new Isoxys(window.capsuleWallet.net, data.type, true);
     return new Promise((resolve, reject) => {
       switch (data.subType) {
         // Mnemonic
@@ -30,16 +31,6 @@ class ConfirmAddressHelper {
               if (er || !re) return reject(ERROR);
               return resolve([re]);
             });
-        // Ledger Nano S
-        case 'ledger-nano-s':
-          return isoxys.getAccountsByLedger(
-            DEFAULT_HD_PATH,
-            limit,
-            page,
-            function (er, re) {
-              if (er || re.length <= 0) return reject(ERROR);
-              return resolve(re);
-            });
         // Private key
         case 'private-key':
           return isoxys.getAccountByPrivatekey(
@@ -56,7 +47,7 @@ class ConfirmAddressHelper {
   }
 
   static setAddressByIsoxys(data, i) {
-    var isoxys = new Isoxys(data.net, data.type, true);
+    var isoxys = new Isoxys(window.capsuleWallet.net, data.type, true);
     return new Promise((resolve, reject) => {
       switch (data.subType) {
         // Mnemonic
@@ -81,15 +72,6 @@ class ConfirmAddressHelper {
               if (er) return reject(er);
               return resolve(isoxys);
             });
-        // Ledger Nano S
-        case 'ledger-nano-s':
-          return isoxys.setAccountByLedger(
-            DEFAULT_HD_PATH,
-            i,
-            function (er, re) {
-              if (er) return reject(er);
-              return resolve(isoxys);
-            });
         // Private key
         case 'private-key':
           return isoxys.setAccountByPrivatekey(
@@ -98,6 +80,47 @@ class ConfirmAddressHelper {
             function (er, re) {
               if (er) return reject(er);
               return resolve(isoxys);
+            });
+        // Error
+        default:
+          return reject(ERROR);
+      }
+    });
+  }
+
+  static getAddressByLedger(data, limit, page) {
+    var ledger = new Ledger(window.capsuleWallet.net, data.type, true);
+    return new Promise((resolve, reject) => {
+      switch (data.subType) {
+        // Ledger Nano S
+        case 'ledger-nano-s':
+          return ledger.getAccountsByLedgerNanoS(
+            DEFAULT_HD_PATH,
+            limit,
+            page,
+            function (er, re) {
+              if (er || re.length <= 0) return reject(ERROR);
+              return resolve(re);
+            });
+        // Error
+        default:
+          return reject(ERROR);
+      }
+    });
+  }
+
+  static setAddressByLedger(data, i) {
+    var ledger = new Ledger(window.capsuleWallet.net, data.type, true);
+    return new Promise((resolve, reject) => {
+      switch (data.subType) {
+        // Ledger Nano S
+        case 'ledger-nano-s':
+          return ledger.setAccountByLedgerNanoS(
+            DEFAULT_HD_PATH,
+            i,
+            function (er, re) {
+              if (er) return reject(er);
+              return resolve(ledger);
             });
         // Error
         default:
