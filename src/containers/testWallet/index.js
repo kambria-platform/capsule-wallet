@@ -57,8 +57,8 @@ class TestWallet extends Component {
       to: '0x5a926b235e992d6ba52d98415e66afe5078a1690',
       value: '1000000000000000'
     }, function (er, txId) {
-      if (er) return self.setState({ error: JSON.stringify(er) });
-      return self.setState({ txId: txId.toString() });
+      if (er) return self.setState({ error: JSON.stringify(er), txId: null });
+      return self.setState({ txId: txId.toString(), error: null });
     });
   }
 

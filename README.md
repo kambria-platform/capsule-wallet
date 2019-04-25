@@ -1,8 +1,8 @@
 # Introduction
 
-Capsule Wallet is a bridge help you to power you Dapp. Capsule wallet based on Kambria Wallet core with high security as well as the transparency as a React component to quick develop.
+Capsule Wallet is a blockchain bridge help you to power your Dapp. Capsule wallet is based on [Kambria Wallet's core](https://github.com/kambria-platform/kambria-wallet) with the high security and the transparency as a React component to quick develop as well.
 
-Capsule Wallet is a community software and please feel free to use and contribute it.
+Capsule Wallet is a community software and you can feel free to use it as well as contribute it.
 
 * [View release log](./RELEASE.md)
 
@@ -20,9 +20,9 @@ npm install --save capsule-wallet
 
 Capsule Wallet component has 3 props:
 
-* visible: has `true/false` value to toogle the process.
-* net: Ethereum chaincode [(Chaincode detail)](https://ethereum.stackexchange.com/questions/17051/how-to-select-a-network-id-or-is-there-a-list-of-network-ids).
-* done: callback function that returns the provider when register had done.
+* `visible`: takes boolean value to toogle the process.
+* `net`: Ethereum chaincode [(Chaincode detail)](https://ethereum.stackexchange.com/questions/17051/how-to-select-a-network-id-or-is-there-a-list-of-network-ids).
+* `done`: callback function that returns the provider when register had done.
 
 ```
 import Wallet from 'capsule-wallet';
@@ -34,18 +34,17 @@ render() {
 }
 ```
 
-The returned provider will be assigned in `window.capsuleWallet.provider` as a global variable for your Dapp could access it anywhere.
+Returned provider will be assigned in `window.capsuleWallet.provider` as a global variable for your Dapp can access it anywhere.
 
 ### Advance use:
 
-If you don't want to use the default UI, you could develop another style on the Capsule Wallet's exported core.
+If you don't want to use the default UI or user flow, you could develop another one on the Capsule Wallet's core.
 
 ```
-import { Metamask, MEW, Isoxys } from 'capsule-wallet';
+import { Metamask, MEW, Ledger, Isoxys } from 'capsule-wallet';
 ```
 
-Following the API section to config using the modules.
-
+Following the API section below to see the configuration for using the modules.
 
 # API
 
@@ -87,7 +86,7 @@ mew.setAccountByMEW(getAuthentication, (er, re) => {
 
 ## Isoxys module
 
-Isoxys is a group of software wallets. It includes mnemonic, keystore and private key and all are sensitive data, so we do not recomment to use it.
+Isoxys is a group of software wallets. It includes mnemonic, keystore and private key. All of them are sensitive data, so we do not recommend to use it.
 
 ```
 var net = 4 \\ Your network
@@ -96,7 +95,7 @@ var restrictMode = true \\ If true, this mode won't allow network changing. If f
 
 var getPassphrase = function(callback) {
   // This function to show off the input form
-  // User must input a temporary passphrase to protect the data in this session
+  // User must enter a temporary passphrase to protect the data in this session
   // When user entered passphrase, return callback(null, passphrase)
   // If denied, return callback('Reason msg', null)
 }
@@ -197,7 +196,7 @@ ledger.setAccountByLedgerNanoS(path, index, (er, re) => {
 
 ```
 import React, { Component } from 'react';
-import Wallet from '@kambria/kambria-wallet';
+import Wallet from 'capsule-wallet';
 
 
 class Example extends Component {
@@ -277,7 +276,7 @@ class Example extends Component {
 export default Example;
 ```
 
-# For Dev
+# For Contributors
 
 ## The structure
 
@@ -308,7 +307,7 @@ Not yet
 npm start
 ```
 
-The app will be run on port 5000 with https and support hot-loading. (If the browser asks something, please trust it and process straight forward)
+The app will be run on port `3000` with `https` and support hot-loading. (If the browser asks something, please trust it and process straight forward)
 
 
 ## Cheatsheet

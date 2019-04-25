@@ -25,7 +25,7 @@ class Footer extends Component {
         <div className={cx("col-12", "col-sm-6", "col-md-4", "col-lg-3", "mt-5")} style={{ "height": "50px" }}>
           <div className={cx("row")}>
             <div className={cx("col", "text-center")}>
-              <button className={cx("circle-btn")} data-toggle="tooltip" title="Prevent phishing attack"><i className={cx("prevent-fish")} /></button>
+              <button className={cx("circle-btn")} data-toggle="tooltip" title="Prevent phishing attack (comming soon)"><i className={cx("prevent-fish")} /></button>
             </div>
             <div className={cx("col", "text-center")}>
               <button className={cx("circle-btn") } onClick={this.term} data-toggle="tooltip" title="Term & Privacy"><i className={cx("term-privacy")} /></button>
@@ -40,7 +40,7 @@ class Footer extends Component {
             <div className={cx("col", "text-right")}>
               <button onClick={this.props.skip} className={cx("line-btn")}>
                 <span className={cx("full-text")}>
-                  <p>Skip the website with limited function</p>
+                  <p>Skip to the website with limited function</p>
                   <i className={cx("arrow-right")} />
                 </span>
                 <span className={cx("short-text")}>

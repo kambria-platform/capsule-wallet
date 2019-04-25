@@ -40,10 +40,10 @@ class TrezorAsset extends Component {
         </div>
         <div className={cx("row", "mb-3")}>
           <div className={cx("col-6", "col-md-8", "col-lg-9", "d-flex", "align-items-end")}>
-            <p className={cx("text-left")}>Comming soon</p>
+            <p className={cx("text-left")}>(Comming soon)</p>
           </div>
           <div className={cx("col-6", "col-md-4", "col-lg-3", "d-flex", "align-items-end")}>
-            <button className={cx("primary-btn")} onClick={this.returnData2Parent}>Connect</button>
+            <button className={cx("primary-btn")} onClick={() => { /* Empty func */ }}>Connect</button>
           </div>
         </div>
       </div>

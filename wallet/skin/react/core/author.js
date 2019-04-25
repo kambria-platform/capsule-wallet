@@ -7,9 +7,6 @@ var cx = classNames.bind(style);
 
 
 class Author extends Component {
-  constructor(props) {
-    super(props);
-  }
 
   render() {
     return (

@@ -9,7 +9,7 @@ import classNames from 'classnames/bind';
 import style from 'Style/index.scss';
 var cx = classNames.bind(style);
 
-const ERROR = 'Used denied to autheticate';
+const ERROR = 'User denied to autheticate';
 
 
 class getAuthentication extends Component {

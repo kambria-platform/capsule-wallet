@@ -1,5 +1,18 @@
 # RELEASE LOG
 
+## 1.0.7
+
+* Minor release.
+
+### Fixes
+
+* Improve the documents.
+
+### Enhancements
+
+* Enhance code view.
+* Enhance security.
+
 ## 1.0.6
 
 * Official release.
@@ -18,7 +31,7 @@
 
 ### Introduction
 
-* Internal release.
+* Internal releases.
 
 ### Fixes
 

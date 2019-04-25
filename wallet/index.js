@@ -44,10 +44,7 @@ class CapsuleWallet extends Component {
 
     this.FSM = new FiniteStateMachine();
 
-    this.state = {
-      net: this.props.net ? this.props.net : 1, // mainnet as default
-      ...DEFAULT_STATE
-    }
+    this.state = DEFAULT_STATE;
 
     if (this.props.visible) this.setState({ step: this.FSM.next().step });
     this.done = this.props.done;
@@ -57,9 +54,9 @@ class CapsuleWallet extends Component {
     /**
      * Group of global functions
      */
-    var self = this;
+    let self = this;
     window.capsuleWallet = { author: 'Tu Phan', git: 'https://github.com/sontuphan/capsule-wallet' }
-    window.capsuleWallet.net = this.state.net;
+    window.capsuleWallet.net = this.props.net ? this.props.net : 1; // mainnet as default;
     window.capsuleWallet.getPassphrase = {
       open: function (callback) {
         self.setState({ passphrase: false, returnPassphrase: null }, () => {
@@ -106,24 +103,28 @@ class CapsuleWallet extends Component {
   onData(er, re) {
     let self = this;
 
+    // User meets error in processing
     if (er) return self.setState({ error: er, step: 'Error' }, () => {
       self.FSM.reset();
     });
 
+    // User skips the registration.
     if (!re) return self.onClose(() => {
       self.done(null, null);
-    }); // Use skip the registration.
+    });
 
+    // Move to next step
     let state = self.FSM.next(re);
+    // Error case
     if (state.step === 'Error') return self.setState({ error: ERROR, step: state.step }, () => {
       self.FSM.reset();
     });
-
+    // Success case
     if (state.step === 'Success') return self.onClose(() => {
       window.capsuleWallet.provider = re.provider;
       self.done(null, re.provider);
     });
-
+    // Still in processing
     return self.setState({ step: state.step });
   }
 
@@ -160,8 +161,8 @@ class CapsuleWallet extends Component {
           <Author />
         </Modal>
 
-        <InputPassphrase visible={this.state.passphrase} done={(er, re) => { this.state.returnPassphrase(er, re) }} />
-        <GetAuthentication visible={this.state.authetication} qrcode={this.state.qrcode} done={(er, re) => { this.state.returnAuthetication(er, re) }} />
+        <InputPassphrase visible={this.state.passphrase} done={(er, re) => this.state.returnPassphrase(er, re)} />
+        <GetAuthentication visible={this.state.authetication} qrcode={this.state.qrcode} done={(er, re) => this.state.returnAuthetication(er, re)} />
       </div>
     );
   }

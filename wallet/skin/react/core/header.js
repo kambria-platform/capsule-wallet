@@ -63,10 +63,10 @@ class Header extends Component {
         <div className={cx("container", "h-100")}>
           <div className={cx("h-100", "d-flex", "flex-column")}>
             <div className={cx("row")}>
-              <h1 className={cx("font-weight-bold", "secondary")}>CAPSULE WALLET.</h1>
+              <h1 className={cx("font-weight-bold", "secondary")}>CAPSULE WALLET</h1>
             </div>
             <div className={cx("row")}>
-              <h2 className={cx("secondary")}>Capsule wallet will power your Dapps with multi-wallets interaction.</h2>
+              <h2 className={cx("secondary", "font-italic")}>- Capsule wallet as a bridge connects the Dapps to Ethereum blockchain in many easy ways -</h2>
             </div>
             <div className={cx("row", "flex-grow-1", "justify-content-end", "align-items-end")}>
               {this.net()}

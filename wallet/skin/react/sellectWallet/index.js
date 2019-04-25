@@ -21,6 +21,7 @@ class SellectWallet extends Component {
 
     this.onClose = this.onClose.bind(this);
     this.onMetamask = this.onMetamask.bind(this);
+    this.onLedger = this.onLedger.bind(this);
     this.onIsoxys = this.onIsoxys.bind(this);
     this.onMew = this.onMew.bind(this);
   }
@@ -30,34 +31,42 @@ class SellectWallet extends Component {
     this.done(null, null);
   }
 
-  onMetamask(type) {
+  onMetamask() {
     this.setState({ visible: false });
     var self = this;
+    let type = 'softwallet';
+    let wallet = 'metamask';
     var metamask = new Metamask(window.capsuleWallet.net, type, true);
     metamask.setAccountByMetamask(function (er, re) {
       if (er) return self.done(er, null);
 
       self.done(null, {
-        wallet: 'metamask',
+        wallet: wallet,
         type: type,
         provider: metamask
       });
     });
   }
 
-  onLedger(type) {
+  onLedger() {
     this.setState({ visible: false });
-    this.done(null, { wallet: 'ledger', type: type });
+    let type = 'hardwallet';
+    let wallet = 'ledger';
+    this.done(null, { wallet: wallet, type: type });
   }
 
-  onIsoxys(type) {
+  onIsoxys() {
     this.setState({ visible: false });
-    this.done(null, { wallet: 'isoxys', type: type });
+    let type = 'softwallet';
+    let wallet = 'isoxys';
+    this.done(null, { wallet: wallet, type: type });
   }
 
-  onMew(type) {
+  onMew() {
     this.setState({ visible: false });
-    this.done(null, { wallet: 'mew', type: type });
+    let type = 'hybridwallet';
+    let wallet = 'mew';
+    this.done(null, { wallet: wallet, type: type });
   }
 
   componentDidUpdate(prevProps) {
@@ -71,25 +80,25 @@ class SellectWallet extends Component {
       <div className={cx("row", "align-items-center", "wallet-body", "animated", "fadeInUp")}>
         < div className={cx("row", "w-100")}>
           <div className={cx("col-6", "col-sm-3", "col-lg")}>
-            <div className={cx("box", "active")} onClick={() => this.onMetamask('softwallet')}>
+            <div className={cx("box", "active")} onClick={this.onMetamask}>
               <i className={cx("metamask")} />
               <p>Metamask</p>
             </div>
           </div>
           <div className={cx("col-6", "col-sm-3", "col-lg")}>
-            <div className={cx("box", "active")} onClick={() => this.onLedger('hardwallet')}>
+            <div className={cx("box", "active")} onClick={this.onLedger}>
               <i className={cx("hardwallet")} />
               <p>Hardwallet</p>
             </div>
           </div>
           <div className={cx("col-6", "col-sm-3", "col-lg")}>
-            <div className={cx("box", "active")} onClick={() => this.onMew('hybridwallet')}>
+            <div className={cx("box", "active")} onClick={this.onMew}>
               <i className={cx("mew")} />
               <p>MEW</p>
             </div>
           </div>
           <div className={cx("col-6", "col-sm-3", "col-lg")}>
-            <div className={cx("box", "negative")} onClick={() => this.onIsoxys('softwallet')}>
+            <div className={cx("box", "negative")} onClick={this.onIsoxys}>
               <i className={cx("softwallet")} />
               <p>Softwallet</p>
             </div>
