@@ -1,5 +1,6 @@
 var Isoxys = require('../../../lib/isoxys');
 var Ledger = require('../../../lib/ledger');
+var Trezor = require('../../../lib/trezor');
 
 const DEFAULT_HD_PATH = "m/44'/60'/0'/0";
 const ERROR = 'No address found';
@@ -121,6 +122,47 @@ class ConfirmAddressHelper {
             function (er, re) {
               if (er) return reject(er);
               return resolve(ledger);
+            });
+        // Error
+        default:
+          return reject(ERROR);
+      }
+    });
+  }
+
+  static getAddressByTrezor(data, limit, page) {
+    var trezor = new Trezor(window.capsuleWallet.net, data.type, true);
+    return new Promise((resolve, reject) => {
+      switch (data.subType) {
+        // Trezor One
+        case 'trezor-one':
+          return trezor.getAccountsByTrezorOne(
+            DEFAULT_HD_PATH,
+            limit,
+            page,
+            function (er, re) {
+              if (er || re.length < 0) return reject(ERROR);
+              return resolve(re);
+            });
+        // Error
+        default:
+          return reject(ERROR);
+      }
+    });
+  }
+
+  static setAddressByTrezor(data, i) {
+    var trezor = new Trezor(window.capsuleWallet.net, data.type, true);
+    return new Promise((resolve, reject) => {
+      switch (data.subType) {
+        // Trezor One
+        case 'trezor-one':
+          return trezor.setAccountByTrezorOne(
+            DEFAULT_HD_PATH,
+            i,
+            function (er, re) {
+              if (er) return reject(er);
+              return resolve(trezor);
             });
         // Error
         default:

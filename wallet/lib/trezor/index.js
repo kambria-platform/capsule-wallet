@@ -1,13 +1,9 @@
 var WalletInterface = require('../interface/walletInterface');
-var async = {
-  eachOfSeries: require('async/eachOfSeries')
-}
 var util = require('../util');
 var Provider = require('../provider');
-var LedgerNanoS = require('./ledgerNanoS');
+var TrezorOne = require('./trezorOne');
 
-
-class Ledger extends WalletInterface {
+class Trezor extends WalletInterface {
   constructor(net, type, restrict) {
     super(net, type, restrict);
   }
@@ -28,19 +24,19 @@ class Ledger extends WalletInterface {
   }
 
   /**
-   * LEDGER Nano S
+   * Trezor One
    */
 
   /**
-   * @func setAccountByLedgerNanoS
-   * Set account by Ledger Nano S
+   * @func setAccountByTrezorOne
+   * Set account by Trezor One
    * @param {*} path - root derivation path (m/44'/60'/0'/0 as default)
    * @param {*} index - (optional)
    */
-  setAccountByLedgerNanoS(path, index, callback) {
+  setAccountByTrezorOne(path, index, callback) {
     var account = {
-      getAddress: LedgerNanoS.getAddress,
-      signTransaction: LedgerNanoS.signTransaction,
+      getAddress: TrezorOne.getAddress,
+      signTransaction: TrezorOne.signTransaction,
       path: path,
       index: index
     }
@@ -48,16 +44,14 @@ class Ledger extends WalletInterface {
   }
 
   /**
-   * @func getAccountsByLedgerNanoS
-   * Get list of accounts by Ledger Nano S
+   * @func getAccountsByTrezorOne
+   * Get list of accounts by Trezor One
    * @param {*} path - root derivation path (m/44'/60'/0'/0 as default)
    * @param {*} limit 
    * @param {*} page 
    */
-  getAccountsByLedgerNanoS(path, limit, page, callback) {
-    var list = [];
+  getAccountsByTrezorOne(path, limit, page, callback) {
     var coll = [];
-
     for (var index = page * limit; index < page * limit + limit; index++) {
       coll.push(index);
     }
@@ -65,16 +59,12 @@ class Ledger extends WalletInterface {
     if (!path) {
       return callback(null, []);
     } else if (coll.length > 0) {
-      async.eachOfSeries(coll, function (i, index, cb) {
-        var dpath = util.addDPath(path, i);
-        LedgerNanoS.getAddress(dpath, function (er, addr) {
-          if (er) return cb(er);
-          if (addr) list[index] = addr;
-          return cb();
-        });
-      }, function (er) {
+      var dpath = coll.map(item => {
+        return util.addDPath(path, item);
+      });
+      TrezorOne.getAddress(dpath, function (er, re) {
         if (er) return callback(er, null);
-        return callback(null, list);
+        return callback(null, re);
       });
     }
     else {
@@ -83,4 +73,4 @@ class Ledger extends WalletInterface {
   }
 }
 
-module.exports = Ledger;
+module.exports = Trezor;

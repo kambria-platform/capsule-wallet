@@ -13,7 +13,7 @@ const MACHINE = {
     currentState: 'SelectWallet',
     nextState: [
       { step: 'InputAsset', pattern: { wallet: 'isoxys', type: 'softwallet' } },
-      { step: 'ConnectDevice', pattern: { wallet: 'ledger', type: 'hardwallet' } },
+      { step: 'ConnectDevice', pattern: { type: 'hardwallet' } },
       { step: 'EstablishConnection', pattern: { wallet: 'mew', type: 'hybridwallet' } },
       { step: 'Success', pattern: { wallet: 'metamask', type: 'softwallet' } },
       { step: 'Error', pattern: { wallet: '*', type: '*' } }
@@ -38,7 +38,8 @@ const MACHINE = {
   ConnectDevice: {
     currentState: 'ConnectDevice',
     nextState: [
-      { step: 'ConfirmAddress', pattern: { subType: 'ledger-nano-s' } },
+      { step: 'ConfirmAddress', pattern: { wallet: 'ledger', subType: 'ledger-nano-s' } },
+      { step: 'ConfirmAddress', pattern: { wallet: 'trezor', subType: 'trezor-one' } },
       { step: 'Error', pattern: { subType: '*' } },
     ]
   },

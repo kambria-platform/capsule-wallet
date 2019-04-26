@@ -54,6 +54,15 @@ class ConfirmAddress extends Component {
         });
       });
     }
+    else if (data.wallet === 'trezor') {
+      this.setState({ loading: true }, function () {
+        ConfirmAddressHelper.getAddressByTrezor(data, limit, page).then(re => {
+          return callback(null, re);
+        }).catch(er => {
+          if (er) return callback(ERROR, null);
+        });
+      });
+    }
     else {
       return callback(ERROR, null);
     }
@@ -84,6 +93,13 @@ class ConfirmAddress extends Component {
         self.done(er, null);
       });
     }
+    else if (this.props.data.wallet === 'trezor') {
+      ConfirmAddressHelper.setAddressByTrezor(this.props.data, index).then(trezor => {
+        self.done(null, { provider: trezor });
+      }).catch(er => {
+        self.done(er, null);
+      });
+    }
     else {
       this.onClose(ERROR);
     }
@@ -100,10 +116,11 @@ class ConfirmAddress extends Component {
     if (page < 0) page = 0;
     if (page == this.state.page) return;
 
+    let self = this;
     this.getAddress(this.props.data, this.state.limit, page, function (er, re) {
-      if (er) return this.onClose(ERROR);
+      if (er) return self.onClose(ERROR);
 
-      return this.setState({ loading: false, page: page, addressList: re });
+      return self.setState({ loading: false, page: page, addressList: re });
     });
   }
 

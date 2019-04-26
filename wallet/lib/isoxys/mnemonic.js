@@ -2,7 +2,7 @@ var ethUtil = require('ethereumjs-util');
 var bip39 = require('bip39');
 var HDKey = require('hdkey');
 var util = require('../util');
-const _default = require('./defaultConst');
+const _default = require('../constant/default');
 
 /**
  * Softwallet type
@@ -28,7 +28,7 @@ Mnemonic.seedToHDKey = function (seed) {
 
 Mnemonic.hdkeyToAddress = function (hdkey, dpath, index) {
   dpath = dpath || _default.ETH_DERIVATION_PATH;
-  dpath = util.addDPath(dpath, index);;
+  dpath = util.addDPath(dpath, index);
   var child = hdkey.derive(dpath);
   if (child.publicKey) var addr = ethUtil.pubToAddress(child.publicKey, true /* multi pub-format */);
   else if (child.publicKey) var addr = ethUtil.privateToAddress(child.publicKey);

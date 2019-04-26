@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+var Trezor = require('../../../lib/trezor');
 
 // Setup CSS Module
 import classNames from 'classnames/bind';
@@ -20,12 +21,18 @@ class TrezorAsset extends Component {
       message: STATUS.INIT
     }
 
-    this.returnData2Parent = this.returnData2Parent.bind(this);
+    this.checkTheConnection = this.checkTheConnection.bind(this);
   }
 
-  returnData2Parent() {
-    this.props.done({
-      subType: 'trezor'
+  checkTheConnection() {
+    var self = this;
+    this.setState({ message: STATUS.TEST, loading: true }, () => {
+      // Fetch the first address to know whether devide connected
+      var trezor = new Trezor(null /** Use default for testing */, 'hardwallet', true);
+      trezor.getAccountsByTrezorOne("m/44'/60'/0'/0", 1, 0, function (er, re) {
+        if (er || re.length < 0) return self.setState({ message: STATUS.FAIL, loading: false });
+        return self.props.done({ wallet: 'trezor', subType: 'trezor-one' });
+      });
     });
   }
 
@@ -40,10 +47,10 @@ class TrezorAsset extends Component {
         </div>
         <div className={cx("row", "mb-3")}>
           <div className={cx("col-6", "col-md-8", "col-lg-9", "d-flex", "align-items-end")}>
-            <p className={cx("text-left")}>(Comming soon)</p>
+            <p className={cx("text-left", { "warning": this.state.message === STATUS.FAIL })}>{this.state.message}</p>
           </div>
           <div className={cx("col-6", "col-md-4", "col-lg-3", "d-flex", "align-items-end")}>
-            <button className={cx("primary-btn")} onClick={() => { /* Empty func */ }}>Connect</button>
+            <button className={cx("primary-btn")} onClick={this.checkTheConnection}>Connect</button>
           </div>
         </div>
       </div>

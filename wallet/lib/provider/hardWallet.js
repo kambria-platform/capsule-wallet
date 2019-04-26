@@ -39,10 +39,9 @@ class HardWallet {
       },
       signTransaction: function (txParams, callback) {
         txParams.chainId = self.network;
-        var tx = util.genRawTx(txParams, self.network);
-        self.hardware.signTransaction(self.dpath, util.unpadHex(tx.hex), function (er, signature) {
+        self.hardware.signTransaction(self.dpath, txParams, function (er, signature) {
           if (er) return callback(er, null);
-          var signedTx = tx.raw;
+          var signedTx = util.genRawTx(txParams).raw;
           signedTx.v = Buffer.from(signature.v, 'hex');
           signedTx.r = Buffer.from(signature.r, 'hex');
           signedTx.s = Buffer.from(signature.s, 'hex');
