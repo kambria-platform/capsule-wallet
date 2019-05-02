@@ -22,7 +22,7 @@ class SoftWallet {
    * }
    */
   constructor(net) {
-    this.network = util.chainCode(net);
+    this.network = util.chainCode(net, 'number');
     this.store = new Store();
   }
 

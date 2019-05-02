@@ -7,9 +7,9 @@ import style from 'Style/index.scss';
 var cx = classNames.bind(style);
 
 const STATUS = {
-  INIT: 'Please connect the devide and click the button!',
-  TEST: 'Connecting',
-  FAIL: 'Cannot connect the devide!'
+  INIT: 'Please connecting your wallet and click the button!',
+  TEST: 'Waiting for the connection',
+  FAIL: 'Cannot connect your wallet!'
 }
 
 
@@ -28,7 +28,7 @@ class TrezorAsset extends Component {
     var self = this;
     this.setState({ message: STATUS.TEST, loading: true }, () => {
       // Fetch the first address to know whether devide connected
-      var trezor = new Trezor(null /** Use default for testing */, 'hardwallet', true);
+      var trezor = new Trezor(window.capsuleWallet.net, 'hardwallet', true);
       trezor.getAccountsByTrezorOne("m/44'/60'/0'/0", 1, 0, function (er, re) {
         if (er || re.length < 0) return self.setState({ message: STATUS.FAIL, loading: false });
         return self.props.done({ wallet: 'trezor', subType: 'trezor-one' });

@@ -16,36 +16,20 @@ TrezorConnect.manifest({
 var TrezorOne = function () { }
 
 TrezorOne.getAddress = function (dpath, callback) {
-  // Generate options
-  let options = null;
-  let flag = false; // If true, querying by bundle. If false, querying single address.
-
-  if (typeof dpath === 'object') {
-    if (dpath.length > 1) flag = true;
-    else flag = false;
-
-    let bundle = dpath.map(item => {
-      return { path: item, showOnTrezor: false }
-    });
-    options = { bundle: bundle }
-  }
-  else {
-    flag = false;
-    dpath = dpath || util.addDPath(_default.ETH_DERIVATION_PATH, _default.ACCOUNT_INDEX);
-    if (cache.get(dpath)) return callback(null, cache.get(dpath));
-    options = { path: dpath, showOnTrezor: false }
-  }
-  // Query addresses
-  TrezorConnect.ethereumGetAddress(options).then(re => {
+  TrezorConnect.ethereumGetAddress({ path: dpath, showOnTrezor: false }).then(re => {
     if (!re.success) return callback(error.CANNOT_CONNECT_HARDWARE, null);
 
-    if (flag) return callback(null, re.payload.map(item => {
-      cache.set(item.serializedPath, item.address, 5000);
-      return item.address
-    }));
-
-    cache.set(re.payload.serializedPath, re.payload.address, 5000);
     return callback(null, re.payload.address);
+  }).catch(er => {
+    return callback(er, null);
+  });
+}
+
+TrezorOne.getPublickey = function (dpath, callback) {
+  TrezorConnect.getPublicKey({ path: dpath, coin: 'eth' }).then(re => {
+    if (!re.success) return callback(error.CANNOT_CONNECT_HARDWARE, null);
+
+    return callback(null, re.payload);
   }).catch(er => {
     return callback(er, null);
   });

@@ -1,6 +1,5 @@
-var ethUtil = require('ethereumjs-util');
 var bip39 = require('bip39');
-var HDKey = require('hdkey');
+var HDKey = require('ethereumjs-wallet/hdkey');
 var util = require('../util');
 const _default = require('../constant/default');
 
@@ -29,19 +28,17 @@ Mnemonic.seedToHDKey = function (seed) {
 Mnemonic.hdkeyToAddress = function (hdkey, dpath, index) {
   dpath = dpath || _default.ETH_DERIVATION_PATH;
   dpath = util.addDPath(dpath, index);
-  var child = hdkey.derive(dpath);
-  if (child.publicKey) var addr = ethUtil.pubToAddress(child.publicKey, true /* multi pub-format */);
-  else if (child.publicKey) var addr = ethUtil.privateToAddress(child.publicKey);
-  else return null;
+  var child = hdkey.derivePath(dpath);
+  var addr = child.getWallet().getAddress();
   return util.padHex(addr.toString('hex'));
 }
 
 Mnemonic.hdkeyToAccount = function (hdkey, dpath, index) {
   dpath = dpath || _default.ETH_DERIVATION_PATH;
-  dpath = util.addDPath(dpath, index);;
-  var child = hdkey.derive(dpath);
-  var priv = child.privateKey;
-  var addr = ethUtil.privateToAddress(priv);
+  dpath = util.addDPath(dpath, index);
+  var account = hdkey.derivePath(dpath);
+  var priv = account.getWallet().getPrivateKey();
+  var addr = account.getWallet().getAddress();
   return { address: util.padHex(addr.toString('hex')), privateKey: priv.toString('hex') }
 }
 

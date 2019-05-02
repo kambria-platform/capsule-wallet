@@ -1,10 +1,8 @@
 var WalletInterface = require('../interface/walletInterface');
-var async = {
-  eachOfSeries: require('async/eachOfSeries')
-}
 var util = require('../util');
 var Provider = require('../provider');
 var LedgerNanoS = require('./ledgerNanoS');
+var cache = require('../cache');
 
 
 class Ledger extends WalletInterface {
@@ -38,8 +36,13 @@ class Ledger extends WalletInterface {
    * @param {*} index - (optional)
    */
   setAccountByLedgerNanoS(path, index, callback) {
+    let getAddress = function (dpath, callback) {
+      let loadedAddressFromCache = cache.get('ledgerNanoS-childAddress-' + dpath);
+      if (loadedAddressFromCache) return callback(null, loadedAddressFromCache);
+      return LedgerNanoS.getAddress(dpath, callback);
+    }
     var account = {
-      getAddress: LedgerNanoS.getAddress,
+      getAddress: getAddress,
       signTransaction: LedgerNanoS.signTransaction,
       path: path,
       index: index
@@ -55,30 +58,25 @@ class Ledger extends WalletInterface {
    * @param {*} page 
    */
   getAccountsByLedgerNanoS(path, limit, page, callback) {
-    var list = [];
-    var coll = [];
-
-    for (var index = page * limit; index < page * limit + limit; index++) {
-      coll.push(index);
+    let done = function (root) {
+      let addresses = util.deriveChild(limit, page, root.publicKey, root.chainCode).map(item => {
+        cache.set('ledgerNanoS-childAddress-' + util.addDPath(path, item.index), item.address, 300);
+        return item.address;
+      });
+      return callback(null, addresses);
     }
 
-    if (!path) {
-      return callback(null, []);
-    } else if (coll.length > 0) {
-      async.eachOfSeries(coll, function (i, index, cb) {
-        var dpath = util.addDPath(path, i);
-        LedgerNanoS.getAddress(dpath, function (er, addr) {
-          if (er) return cb(er);
-          if (addr) list[index] = addr;
-          return cb();
-        });
-      }, function (er) {
-        if (er) return callback(er, null);
-        return callback(null, list);
-      });
+    if (cache.get('ledgerNanoS-rootNode-' + path)) {
+      let re = cache.get('ledgerNanoS-rootNode-' + path);
+      return done(re);
     }
     else {
-      return callback(null, []);
+      LedgerNanoS.getPublickey(path, function (er, re) {
+        if (er) return callback(er, null);
+
+        cache.set('ledgerNanoS-rootNode-' + path, re, 300);
+        return done(re);
+      });
     }
   }
 }

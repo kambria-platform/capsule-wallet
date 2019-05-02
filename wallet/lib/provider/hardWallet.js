@@ -15,7 +15,7 @@ class HardWallet {
    * }
    */
   constructor(net) {
-    this.network = util.chainCode(net);
+    this.network = util.chainCode(net, 'number');
   }
 
   /**

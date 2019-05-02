@@ -1,26 +1,63 @@
 var ethTx = require('ethereumjs-tx');
+var HDKey = require('hdkey');
+var ethUtil = require('ethereumjs-util');
 
 var Util = function () { }
 
-Util.chainCode = function (net) {
+Util.chainCode = function (net, type) {
+  // if (Buffer.isBuffer(net))
   net = net.toString().toLowerCase();
   switch (net) {
     case '1':
+      if (type === 'string') return 'mainnet';
+      if (type === 'number') return 1;
+      if (type === 'buffer') return Buffer.from('01', 'hex');
       return 1;
     case 'mainnet':
+      if (type === 'string') return 'mainnet';
+      if (type === 'number') return 1;
+      if (type === 'buffer') return Buffer.from('01', 'hex');
       return 1;
     case '3':
+      if (type === 'string') return 'ropsten';
+      if (type === 'number') return 3;
+      if (type === 'buffer') return Buffer.from('03', 'hex');
       return 3;
     case 'ropsten':
+      if (type === 'string') return 'ropsten';
+      if (type === 'number') return 3;
+      if (type === 'buffer') return Buffer.from('03', 'hex');
       return 3;
     case '42':
+      if (type === 'string') return 'kovan';
+      if (type === 'number') return 42;
+      if (type === 'buffer') return Buffer.from('42', 'hex');
       return 42;
     case 'kovan':
+      if (type === 'string') return 'kovan';
+      if (type === 'number') return 42;
+      if (type === 'buffer') return Buffer.from('42', 'hex');
       return 42;
     case '4':
+      if (type === 'string') return 'rinkeby';
+      if (type === 'number') return 4;
+      if (type === 'buffer') return Buffer.from('04', 'hex');
       return 4;
     case 'rinkeby':
+      if (type === 'string') return 'rinkeby';
+      if (type === 'number') return 4;
+      if (type === 'buffer') return Buffer.from('04', 'hex');
       return 4;
+    case '5':
+      if (type === 'string') return 'goerli';
+      if (type === 'number') return 5;
+      if (type === 'buffer') return Buffer.from('05', 'hex');
+      return 5;
+    case 'goerli':
+      if (type === 'string') return 'goerli';
+      if (type === 'number') return 5;
+      if (type === 'buffer') return Buffer.from('05', 'hex');
+      return 5;
     default:
       return null;
   }
@@ -95,6 +132,20 @@ Util.addDPath = function (dpath, index) {
   }
 
   return dpath + '/' + index;
+}
+
+Util.deriveChild = function (limit, page, publicKey, chainCode) {
+  let list = [];
+  let hdKey = new HDKey();
+  hdKey.publicKey = Buffer.from(publicKey, 'hex');
+  hdKey.chainCode = Buffer.from(chainCode, 'hex');
+  for (let index = page * limit; index < page * limit + limit; index++) {
+    let child = hdKey.derive('m/' + index);
+    let addr = ethUtil.pubToAddress(child.publicKey, true /* multi pub-format */);
+    let re = { index: index.toString(), address: Util.padHex(addr.toString('hex')) }
+    list.push(re);
+  }
+  return list;
 }
 
 module.exports = Util;

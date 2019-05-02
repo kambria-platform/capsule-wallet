@@ -2,6 +2,7 @@ var WalletInterface = require('../interface/walletInterface');
 var util = require('../util');
 var Provider = require('../provider');
 var TrezorOne = require('./trezorOne');
+var cache = require('../cache');
 
 class Trezor extends WalletInterface {
   constructor(net, type, restrict) {
@@ -34,8 +35,13 @@ class Trezor extends WalletInterface {
    * @param {*} index - (optional)
    */
   setAccountByTrezorOne(path, index, callback) {
+    let getAddress = function (dpath, callback) {
+      let loadedAddressFromCache = cache.get('trezorOne-childAddress-' + dpath);
+      if (loadedAddressFromCache) return callback(null, loadedAddressFromCache);
+      return TrezorOne.getAddress(dpath, callback);
+    }
     var account = {
-      getAddress: TrezorOne.getAddress,
+      getAddress: getAddress,
       signTransaction: TrezorOne.signTransaction,
       path: path,
       index: index
@@ -51,24 +57,25 @@ class Trezor extends WalletInterface {
    * @param {*} page 
    */
   getAccountsByTrezorOne(path, limit, page, callback) {
-    var coll = [];
-    for (var index = page * limit; index < page * limit + limit; index++) {
-      coll.push(index);
+    let done = function(root){
+      let addresses = util.deriveChild(limit, page, root.publicKey, root.chainCode).map(item => {
+        cache.set('trezorOne-childAddress-' + util.addDPath(path, item.index), item.address, 300);
+        return item.address;
+      });
+      return callback(null, addresses);
     }
 
-    if (!path) {
-      return callback(null, []);
-    } else if (coll.length > 0) {
-      var dpath = coll.map(item => {
-        return util.addDPath(path, item);
-      });
-      TrezorOne.getAddress(dpath, function (er, re) {
-        if (er) return callback(er, null);
-        return callback(null, re);
-      });
+    if (cache.get('trezorOne-rootNode-' + path)) {
+      let re = cache.get('trezorOne-rootNode-' + path);
+      return done(re);
     }
     else {
-      return callback(null, []);
+      TrezorOne.getPublickey(path, function (er, re) {
+        if (er) return callback(er, null);
+
+        cache.set('trezorOne-rootNode-' + path, re, 300);
+        return done(re);
+      });
     }
   }
 }
