@@ -315,14 +315,10 @@ The app will be run on port `3000` with `https` and support hot-loading. (If the
 
 ```
 "web3": "^0.20.6",
-"connected-react-router": "^6.3.0",
 "react": "^16.8.6",
 "react-dom": "^16.8.6",
-"react-redux": "^6.0.1",
 "react-router-dom": "^4.3.1",
-"react-scripts": "2.1.8",
-"redux": "^4.0.1",
-"redux-thunk": "^2.3.0",
+"react-scripts": "2.1.8"
 ```
 
 ### Cheatsheet
