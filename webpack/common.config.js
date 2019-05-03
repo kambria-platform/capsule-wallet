@@ -1,12 +1,7 @@
-require("babel-polyfill");
-
-const path = require('path');
-const webpack = require('webpack');
-const TerserPlugin = require('terser-webpack-plugin');
-
+var path = require('path');
 
 module.exports = {
-  entry: ["babel-polyfill", path.resolve(__dirname, '../main.js')],
+  entry: ['@babel/polyfill', path.resolve(__dirname, '../main.js')],
   output: {
     filename: 'index.js',
     path: path.resolve(__dirname, '../'),
@@ -37,17 +32,6 @@ module.exports = {
         loader: 'url-loader'
       },
     ]
-  },
-  plugins: [
-    new webpack.EnvironmentPlugin({
-      NODE_ENV: 'development', // use 'development' unless process.env.NODE_ENV is defined
-      DEBUG: false
-    })
-  ],
-  optimization: {
-    minimizer: [
-      new TerserPlugin()
-    ],
   },
   resolve: {
     alias: {

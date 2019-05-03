@@ -1,3 +1,4 @@
+var webpack = require('webpack');
 var webpackMerge = require('webpack-merge');
 var commonConfig = require('./common.config');
 
@@ -19,5 +20,11 @@ module.exports = webpackMerge(commonConfig, {
         ]
       }
     ]
-  }
+  },
+  plugins: [
+    new webpack.EnvironmentPlugin({
+      NODE_ENV: 'development',
+      DEBUG: false
+    })
+  ]
 });
