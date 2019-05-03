@@ -9,13 +9,16 @@
 
 * Improve the documents.
 * Change texts more friendly.
-* Migrate (unintended) dependencies to devDependencies
+* Migrate (unintended) dependencies to devDependencies.
 * Fix bugs for mnemonic
+* Fix doublely animated.css importing
 
 ### Enhancements
 
-* Support Trezor One
-* Support HDWallet for Hardwallet (loading address 7x faster)
+* Remove webpack (Because the main application will use React and it supports Webpack, then we must not pre-build by Webpack).
+* Reduce code size from `4,056,359` bytes to `710,240` bytes (about 82% 🎉🎉🎉)
+* Support Trezor One.
+* Support HDWallet for Hardwallet (loading address 7x faster).
 
 ---
 
