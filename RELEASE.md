@@ -16,7 +16,7 @@
 ### Enhancements
 
 * Remove webpack (Because the main application will use React and it supports Webpack, so we must not pre-build by Webpack anymore).
-* Reduce code size from `4,056,359` bytes to `710,240` bytes (about 82% 🎉🎉🎉)
+* Reduce code size from `4,056,359` bytes to `710,240` bytes (about 82.5% 🎉🎉🎉).
 * Support Trezor One.
 * Support HDWallet for Hardwallet (loading address 7x faster ⚡️️️⚡️️️⚡️️️).
 

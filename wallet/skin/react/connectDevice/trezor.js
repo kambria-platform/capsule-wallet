@@ -18,7 +18,8 @@ class TrezorAsset extends Component {
     super(props);
 
     this.state = {
-      message: STATUS.INIT
+      message: STATUS.INIT,
+      loading: false
     }
 
     this.checkTheConnection = this.checkTheConnection.bind(this);
@@ -38,7 +39,7 @@ class TrezorAsset extends Component {
 
   render() {
     return (
-      <div className={cx("wallet-form")}>
+      <div className={cx("wallet-form", { "loading": this.state.loading })}>
         <div className={cx("row", "mb-3")}>
           <div className={cx("col", "d-flex")}>
             <i className={cx("checked")} />
