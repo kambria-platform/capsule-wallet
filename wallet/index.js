@@ -7,6 +7,8 @@ import classNames from 'classnames/bind';
 import style from 'Style/index.scss';
 var cx = classNames.bind(style);
 
+console.log(style)
+
 import Header from './skin/react/core/header';
 import InputPassphrase from './skin/react/core/inputPassphrase';
 import GetAuthentication from './skin/react/core/getAuthentication';

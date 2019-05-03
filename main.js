@@ -1,11 +1,11 @@
 /**
  * Client JS library
  */
-import Metamask from './wallet/lib/metamask';
-import MEW from './wallet/lib/mew';
-import Isoxys from './wallet/lib/isoxys';
-import Ledger from './wallet/lib/ledger';
+import Metamask from './dist/lib/metamask';
+import MEW from './dist/lib/mew';
+import Isoxys from './dist/lib/isoxys';
+import Ledger from './dist/lib/ledger';
 export { Metamask, MEW, Isoxys, Ledger };
 
-import CapsuleWallet from './wallet';
+import CapsuleWallet from './dist';
 export default CapsuleWallet;
