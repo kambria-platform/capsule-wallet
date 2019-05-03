@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import Wallet from 'capsule-wallet';
 
+// Fake css to test scope
+import style from './index.module.css';
+
 
 class TestWallet extends Component {
   constructor() {
@@ -65,7 +68,7 @@ class TestWallet extends Component {
   render() {
     return (
       <div>
-        <h1>Wallet testing</h1>
+        <h1 className={style.secondary}>Wallet testing</h1>
         <button onClick={() => this.register(true)}>Register</button>
 
         <div>

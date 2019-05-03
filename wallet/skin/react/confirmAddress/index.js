@@ -3,7 +3,7 @@ import ConfirmAddressHelper from './helper';
 
 // Setup CSS Module
 import classNames from 'classnames/bind';
-import style from 'Style/index.scss';
+import style from '../../static/style/index.module.css';
 var cx = classNames.bind(style);
 
 const ERROR = 'No address found';

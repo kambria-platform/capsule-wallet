@@ -4,10 +4,9 @@ import Modal from './skin/react/core/modal';
 
 // Setup CSS Module
 import classNames from 'classnames/bind';
-import style from 'Style/index.scss';
+import style from './skin/static/style/index.module.css';
 var cx = classNames.bind(style);
 
-console.log(style)
 
 import Header from './skin/react/core/header';
 import InputPassphrase from './skin/react/core/inputPassphrase';

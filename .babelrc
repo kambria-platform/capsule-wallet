@@ -5,22 +5,6 @@
   ],
   "plugins": [
     "@babel/plugin-proposal-object-rest-spread",
-    "@babel/plugin-proposal-class-properties",
-    [
-      "module-resolver",
-      {
-        "alias": {
-          "Style": "./dist/skin/static/style/"
-        }
-      }
-    ],
-    [
-      "css-modules-transform",
-      {
-        "extensions": [
-          ".scss"
-        ]
-      }
-    ]
+    "@babel/plugin-proposal-class-properties"
   ]
 }

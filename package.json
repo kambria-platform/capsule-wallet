@@ -5,13 +5,14 @@
   "main": "index.js",
   "scripts": {
     "release": "npm run build && npm publish",
-    "build": "npm run clean && babel wallet -d dist && babel main.js -o index.js && cp -R ./wallet/skin/static ./dist/skin/static",
-    "clean": "rm -rf ./index.js && rm -rf ./dist && rm -rf ./node_modules/capsule-wallet",
-    "start": "nodemon --exec 'npm run dev && npm run serve'",
+    "build": "npm run clean && npm run build-js && npm run build-static && npm run build-css",
+    "build-js": "babel wallet -d dist && babel main.js -o index.js",
+    "build-static": "mkdir -p ./dist/skin/static && cp -R ./wallet/skin/static/images ./dist/skin/static/images",
+    "build-css": "sass ./wallet/skin/static/style/index.scss ./dist/skin/static/style/index.module.css",
+    "clean": "rm -rf index.js && rm -rf dist && rm -rf ./node_modules/capsule-wallet",
+    "start": "nodemon --exec 'npm run build && npm run fake-module && npm run serve'",
     "serve": "HTTPS=true REACT_APP_ENV=development react-scripts start",
-    "dev": "npm run build && npm run fake-module",
     "fake-module": "mkdir -p ./node_modules/capsule-wallet && cp -R ./index.js ./node_modules/capsule-wallet && cp -R ./dist ./node_modules/capsule-wallet",
-    "css": "sass ./wallet/skin/static/style/index.scss ./wallet/skin/static/style/index.css",
     "test": ""
   },
   "repository": {
@@ -55,8 +56,6 @@
     "@babel/plugin-proposal-object-rest-spread": "^7.3.2",
     "@babel/preset-env": "^7.3.1",
     "@babel/preset-react": "^7.0.0",
-    "babel-plugin-css-modules-transform": "^1.6.2",
-    "babel-plugin-module-resolver": "^3.2.0",
     "node-sass": "^4.11.0",
     "nodemon": "^1.18.10"
   },
