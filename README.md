@@ -318,7 +318,7 @@ to know how to use them, you can refer to `src/*` for details.
 npm run build
 ```
 
-The `index.js` file would be the destination of compiling (only one file).
+The `index.js` file and `dist` folder would be the destination of compiling.
 
 ## How to test?
 
@@ -341,11 +341,7 @@ The app will be run on port `3000` with `https` and support hot-loading. (If the
 ### Version of important dependencies
 
 ```
-"web3": "^0.20.6",
-"react": "^16.8.6",
-"react-dom": "^16.8.6",
-"react-router-dom": "^4.3.1",
-"react-scripts": "2.1.8"
+"web3": "^0.20.6"
 ```
 
 ### Cheatsheet
