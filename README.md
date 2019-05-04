@@ -55,7 +55,7 @@ var net = 4 \\ Your network
 var type = 'softwallet' \\ Don't modify it
 var restrictMode = true \\ If true, this mode won't allow network changing. If false, vice versa.
 
-var metamask = new Metamask(net, type, true);
+var metamask = new Metamask(net, type, restrictMode);
 metamask.setAccountByMetamask(function (er, re) {
   if (er) return console.error(er);
 
@@ -76,7 +76,7 @@ var getAuthentication = function(qrcode, callback) {
   // When the connection is established, callback will be call
 }
 
-var mew = new MEW(net, type, true);
+var mew = new MEW(net, type, restrictMode);
 mew.setAccountByMEW(getAuthentication, (er, re) => {
   if (er) return console.error(er);
 
@@ -100,7 +100,7 @@ var getPassphrase = function(callback) {
   // If denied, return callback('Reason msg', null)
 }
 
-var isoxys = new Isoxys(net, type, true);
+var isoxys = new Isoxys(net, type, restrictMode);
 
 
 // Privatekey
@@ -170,7 +170,7 @@ var net = 4 \\ Your network
 var type = 'hardwallet' \\ Don't modify it
 var restrictMode = true \\ If true, this mode won't allow network changing. If false, vice versa.
 
-var ledger = new Ledger(net, type, true);
+var ledger = new Ledger(net, type, restrictMode);
 
 var path = ... // Derivation path
 var limit = ... // The number of records in a page (pagination)
@@ -178,7 +178,7 @@ var page = ... // Page index (pagination)
 ledger.getAccountsByLedgerNanoS(path, limit, page, (er, addresses) => {
   if (er) return console.error(er);
 
-  console.log('Address:', address);
+  console.log('Address list:', addresses);
 });
 
 var path = ... // Derivation path
@@ -187,6 +187,33 @@ ledger.setAccountByLedgerNanoS(path, index, (er, re) => {
   if (er) return console.error(er);
 
   console.log('Provider instance is:', ledger);
+});
+```
+
+## Trezor module
+
+```
+var net = 4 \\ Your network
+var type = 'hardwallet' \\ Don't modify it
+var restrictMode = true \\ If true, this mode won't allow network changing. If false, vice versa.
+
+var trezor = new Trezor(net, type, restrictMode);
+
+var path = ... // Derivation path
+var limit = ... // The number of records in a page (pagination)
+var page = ... // Page index (pagination)
+trezor.getAccountsByTrezorOne(path, limit, page, (er, addresses) => {
+  if (er) return console.error(er);
+
+  console.log('Address list:', addresses);
+});
+
+var path = ... // Derivation path
+var index = ... // Derivation child index
+trezor.setAccountByTrezorOne(path, index, (er, re) => {
+  if (er) return console.error(er);
+
+  console.log('Provider instance is:', trezor);
 });
 ```
 
