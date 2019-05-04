@@ -122,8 +122,8 @@ class Isoxys extends WalletInterface {
    * @param {*} page - index of page
    */
   getAccountsByMnemonic(mnemonic, password, path, limit, page, callback) {
-    let list = [];
     Mnemonic.mnemonicToSeed(mnemonic, password, function (seed) {
+      let list = [];
       let hdk = Mnemonic.seedToHDKey(seed);
       for (let i = page * limit; i < page * limit + limit; i++) {
         let address = Mnemonic.hdkeyToAddress(hdk, path, i);
