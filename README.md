@@ -51,7 +51,9 @@ Following the API section below to see the configuration for using the modules.
 ## Metamask module
 
 ```
-var net = 4 \\ Your network
+import { Metamask } from 'capsule-wallet';
+
+var net = 4 \\ Your network id
 var type = 'softwallet' \\ Don't modify it
 var restrictMode = true \\ If true, this mode won't allow network changing. If false, vice versa.
 
@@ -63,10 +65,12 @@ metamask.setAccountByMetamask(function (er, re) {
 });
 ```
 
-## MEW (Mytherwallet) module
+## MEW (MyEtherwallet) module
 
 ```
-var net = 4 \\ Your network
+import { MEW } from 'capsule-wallet';
+
+var net = 4 \\ Your network id
 var type = 'hybridwallet' \\ Don't modify it
 var restrictMode = true \\ If true, this mode won't allow network changing. If false, vice versa.
 
@@ -89,7 +93,9 @@ mew.setAccountByMEW(getAuthentication, (er, re) => {
 Isoxys is a group of software wallets. It includes mnemonic, keystore and private key. All of them are sensitive data, so we do not recommend to use it.
 
 ```
-var net = 4 \\ Your network
+import { Isoxys } from 'capsule-wallet';
+
+var net = 4 \\ Your network id
 var type = 'softwallet' \\ Don't modify it
 var restrictMode = true \\ If true, this mode won't allow network changing. If false, vice versa.
 
@@ -105,14 +111,14 @@ var isoxys = new Isoxys(net, type, restrictMode);
 
 // Privatekey
 
-var privatekey = ... // Private key here
+var privatekey = ... // Private key
 isoxys.getAccountByPrivatekey(privatekey, (er, address) => {
   if (er) return console.error(er);
 
   console.log('Address:', address);
 });
 
-var privatekey = ... // Private key here
+var privatekey = ... // Private key
 isoxys.setAccountByPrivatekey(privatekey, getPassphrase, (er, re) => {
   if (er) return console.error(er);
 
@@ -122,8 +128,8 @@ isoxys.setAccountByPrivatekey(privatekey, getPassphrase, (er, re) => {
 
 // Mnemonic
 
-var mnemonic = ... // Private key here
-var password = ... // Mnmonic password
+var mnemonic = ... // Mnemonic string
+var password = ... // Mnemonic password
 var path = ... // Derivation path
 var limit = ... // The number of records in a page (pagination)
 var page = ... // Page index (pagination)
@@ -133,8 +139,8 @@ isoxys.getAccountsByMnemonic(mnemonic, password, path, limit, page, (er, address
   console.log('Address list:', addresses);
 });
 
-var mnemonic = ... // Private key here
-var password = ... // Mnmonic password
+var mnemonic = ... // Mnemonic string
+var password = ... // Mnemonic password
 var path = ... // Derivation path
 var index = ... // Derivation child index
 isoxys.setAccountByMnemonic(mnemonic, password, path, index, getPassphrase, (er, re) => {
@@ -156,7 +162,7 @@ isoxys.getAccountByKeystore(input, password, (er, address) => {
 
 var input = ... // Json object of keystore
 var password = .. // Keystore password
-isoxys.getAccountByKeystore(input, password, getPassphrase, (er, address) => {
+isoxys.setAccountByKeystore(input, password, getPassphrase, (er, re) => {
   if (er) return console.error(er);
 
   console.log('Provider instance is:', isoxys);
@@ -166,7 +172,9 @@ isoxys.getAccountByKeystore(input, password, getPassphrase, (er, address) => {
 ## Ledger module
 
 ```
-var net = 4 \\ Your network
+import { Ledger } from 'capsule-wallet';
+
+var net = 4 \\ Your network id
 var type = 'hardwallet' \\ Don't modify it
 var restrictMode = true \\ If true, this mode won't allow network changing. If false, vice versa.
 
@@ -193,7 +201,9 @@ ledger.setAccountByLedgerNanoS(path, index, (er, re) => {
 ## Trezor module
 
 ```
-var net = 4 \\ Your network
+import { Trezor } from 'capsule-wallet';
+
+var net = 4 \\ Your network id
 var type = 'hardwallet' \\ Don't modify it
 var restrictMode = true \\ If true, this mode won't allow network changing. If false, vice versa.
 
@@ -286,10 +296,11 @@ class Example extends Component {
   }
 
   componentDidMount() {
+    var self = this;
     this.isoxys.setAccountByMnemonic(accOpts.mnemonic, accOpts.password, accOpts.path, accOpts.index, this.getPassphrase, (er, re) => {
       if (er) return console.error(er);
 
-      console.log('Provider instance is:', isoxys);
+      console.log('Provider instance is:', self.isoxys);
     });
   }
 
