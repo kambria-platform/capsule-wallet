@@ -4,8 +4,8 @@ var ethUtil = require('ethereumjs-util');
 
 var Util = function () { }
 
-Util.chainCode = function (net, type) {
-  // if (Buffer.isBuffer(net))
+Util.getNetworkId = function (net, type) {
+  if (Buffer.isBuffer(net)) net = Number(net.toString('hex'));
   net = net.toString().toLowerCase();
   switch (net) {
     case '1':

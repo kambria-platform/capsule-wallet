@@ -9,15 +9,15 @@ class WalletInterface {
 
   /**
    * Constructor
-   * @param {*} net - chain code
-   * @param {*} type - softwallet/hardwallet
+   * @param {*} net - network id
+   * @param {*} type - softwallet/hardwallet/hybridwallet
    * @param {*} restricted - disallow network change
    */
   constructor(net, type, restricted) {
     class Emitter extends EventEmitter { }
     this.emitter = new Emitter();
 
-    this.net = net ? util.chainCode(net, 'number') : 1;
+    this.net = net ? util.getNetworkId(net, 'number') : 1;
     this.type = type;
     this.restricted = restricted;
     this.provider = null;
@@ -91,7 +91,7 @@ class WalletInterface {
     var self = this;
     return new Promise((resolve, reject) => {
       self.getNetwork().then(re => {
-        self.user.network = util.chainCode(re, 'number');
+        self.user.network = util.getNetworkId(re, 'number');
         return self.getAccount();
       }).then(re => {
         self.user.account = re;
@@ -117,12 +117,12 @@ class WalletInterface {
         // Watch switching network event
         self.getNetwork().then(re => {
           if (self.restricted) {
-            if (self.user.network !== util.chainCode(re, 'number')) {
+            if (self.user.network !== util.getNetworkId(re, 'number')) {
               return self.emitter.emit('error', ERROR.INVALID_NETWORK);
             }
           }
           else {
-            if (self.user.network !== util.chainCode(re, 'number')) {
+            if (self.user.network !== util.getNetworkId(re, 'number')) {
               self.user.network = re;
               self.user.changed = CHANGED.NETWORK;
               let data = JSON.parse(JSON.stringify(self.user));

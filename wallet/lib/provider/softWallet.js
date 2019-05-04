@@ -14,7 +14,7 @@ const error = require('../constant/error');
 class SoftWallet {
   /**
    * @constructor
-   * @param {*} net - chainCode
+   * @param {*} net - Network id
    * @param {*} accOpts - accOpts = {
    *   address: ...
    *   privateKey: ...
@@ -22,7 +22,7 @@ class SoftWallet {
    * }
    */
   constructor(net) {
-    this.network = util.chainCode(net, 'number');
+    this.network = util.getNetworkId(net, 'number');
     this.store = new Store();
   }
 

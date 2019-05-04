@@ -6,7 +6,7 @@ const error = require('../constant/error');
 class HardWallet {
   /**
    * @constructor
-   * @param {*} net - chainCode
+   * @param {*} net - Network id
    * @param {*} accOpts - accOpts = {
    *   signTransaction: (function) ...
    *   getAddress: (function) ...
@@ -15,7 +15,7 @@ class HardWallet {
    * }
    */
   constructor(net) {
-    this.network = util.chainCode(net, 'number');
+    this.network = util.getNetworkId(net, 'number');
   }
 
   /**

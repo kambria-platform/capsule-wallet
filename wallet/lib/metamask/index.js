@@ -14,7 +14,7 @@ class Metamask extends WalletInterface {
     this.provider = window.ethereum;
     if (!this.provider)
       return callback(ERROR.CANNOT_FOUND_PROVIDER, null);
-    if (util.chainCode(this.provider.networkVersion, 'number') != util.chainCode(this.net, 'number'))
+    if (util.getNetworkId(this.provider.networkVersion, 'number') != util.getNetworkId(this.net, 'number'))
       return callback(ERROR.INVALID_NETWORK, null);
 
     this.provider.enable().then(re => {

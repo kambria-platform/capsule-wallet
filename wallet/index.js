@@ -36,7 +36,7 @@ const DEFAULT_STATE = {
 class CapsuleWallet extends Component {
 
   /**
-   * @props net - Chain code
+   * @props net - Network id
    * @props visible - Boolean
    * @props done - Callback function
    */

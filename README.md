@@ -21,7 +21,7 @@ npm install --save capsule-wallet
 Capsule Wallet component has 3 props:
 
 * `visible`: takes boolean value to toogle the process.
-* `net`: Ethereum chaincode [(Chaincode detail)](https://ethereum.stackexchange.com/questions/17051/how-to-select-a-network-id-or-is-there-a-list-of-network-ids).
+* `net`: Ethereum network id [(Network id detail)](https://ethereum.stackexchange.com/questions/17051/how-to-select-a-network-id-or-is-there-a-list-of-network-ids).
 * `done`: callback function that returns the provider when register had done.
 
 ```
@@ -30,7 +30,7 @@ import Wallet from 'capsule-wallet';
 // ... Something React here
 
 render() {
-  <Wallet visible={visible} net={chaincode} done={callback} />
+  <Wallet visible={visible} net={networkId} done={callback} />
 }
 ```
 
