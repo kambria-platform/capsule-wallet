@@ -41,7 +41,7 @@ Returned provider will be assigned in `window.capsuleWallet.provider` as a globa
 If you don't want to use the default UI or user flow, you could develop another one on the Capsule Wallet's core.
 
 ```
-import { Metamask, MEW, Ledger, Isoxys } from 'capsule-wallet';
+import { Metamask, MEW, Ledger, Isoxys, Trezor } from 'capsule-wallet';
 ```
 
 Following the API section below to see the configuration for using the modules.
