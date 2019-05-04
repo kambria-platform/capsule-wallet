@@ -1,7 +1,7 @@
 {
   "name": "capsule-wallet",
   "version": "1.0.8",
-  "description": "",
+  "description": "🚀 Capsule Wallet - The bridge of your Dapps to Blockchain.",
   "main": "index.js",
   "scripts": {
     "release": "npm run build && npm publish",
