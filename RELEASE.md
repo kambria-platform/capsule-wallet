@@ -1,5 +1,19 @@
 # RELEASE LOG
 
+## 1.0.9
+
+* Minor release.
+
+### Fixes
+
+* Improve the documents.
+* Change `chainCode` to `networkId` for more correction of term.
+
+### Enhancements
+
+* 
+
+---
 
 ## 1.0.8
 
