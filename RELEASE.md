@@ -1,5 +1,19 @@
 # RELEASE LOG
 
+## 1.0.10
+
+* Major release.
+
+### Fixes
+
+* Improve the documents.
+
+### Enhancements
+
+* 
+
+---
+
 ## 1.0.9
 
 * Minor release.
@@ -11,7 +25,7 @@
 
 ### Enhancements
 
-* Nothing.
+* Export Trezor module.
 
 ---
 

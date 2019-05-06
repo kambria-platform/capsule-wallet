@@ -1,6 +1,6 @@
 {
   "name": "capsule-wallet",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "🚀 Capsule Wallet - The bridge of your Dapps to Blockchain.",
   "main": "index.js",
   "scripts": {
