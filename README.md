@@ -76,7 +76,7 @@ var restrictMode = true \\ If true, this mode won't allow network changing. If f
 
 var getAuthentication = function(qrcode, callback) {
   // This function is to show off the QRcode to user
-  // User must user MEW on their phone to scan the QRcode and establish the connection
+  // User must use MEW application on their phone to scan the QRcode and establish the connection
   // When the connection is established, callback will be called
 }
 
