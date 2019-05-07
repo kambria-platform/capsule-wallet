@@ -17,14 +17,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sontuphan/capsule-wallet.git"
+    "url": "git+https://github.com/kambria-platform/capsule-wallet.git"
   },
   "author": "Tu Phan",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/sontuphan/capsule-wallet/issues"
+    "url": "https://github.com/kambria-platform/capsule-wallet/issues"
   },
-  "homepage": "https://github.com/sontuphan/capsule-wallet#readme",
+  "homepage": "https://github.com/kambria-platform/capsule-wallet#readme",
   "dependencies": {
     "@ledgerhq/hw-app-eth": "^4.48.0",
     "@ledgerhq/hw-transport-u2f": "^4.48.0",

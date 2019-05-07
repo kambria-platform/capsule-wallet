@@ -56,7 +56,7 @@ class CapsuleWallet extends Component {
      * Group of global functions
      */
     let self = this;
-    window.capsuleWallet = { author: 'Tu Phan', git: 'https://github.com/sontuphan/capsule-wallet' }
+    window.capsuleWallet = { author: 'Tu Phan', git: 'https://github.com/kambria-platform/capsule-wallet' }
     window.capsuleWallet.net = this.props.net ? this.props.net : 1; // mainnet as default;
     window.capsuleWallet.getPassphrase = {
       open: function (callback) {
@@ -79,10 +79,10 @@ class CapsuleWallet extends Component {
       },
     }
     window.capsuleWallet.term = function () {
-      window.open('https://github.com/sontuphan/capsule-wallet/blob/master/LICENSE', '_blank');
+      window.open('https://github.com/kambria-platform/capsule-wallet/blob/master/LICENSE', '_blank');
     }
     window.capsuleWallet.support = function () {
-      window.open('https://github.com/sontuphan/capsule-wallet/issues', '_blank');
+      window.open('https://github.com/kambria-platform/capsule-wallet/issues', '_blank');
     }
     window.capsuleWallet.back = function () {
       let state = self.FSM.back();
