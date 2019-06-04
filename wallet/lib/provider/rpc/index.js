@@ -9,13 +9,17 @@ const RPC = {
     id: 3,
     rpc: 'https://ropsten.infura.io/v3/' + CODE
   },
-  KOVAN: {
-    id: 42,
-    rpc: 'https://kovan.infura.io/v3/' + CODE
-  },
   RINKEBY: {
     id: 4,
     rpc: 'https://rinkeby.infura.io/v3/' + CODE
+  },
+  GOERLI: {
+    id: 5,
+    rpc: 'https://goerli.infura.io/v3/' + CODE
+  },
+  KOVAN: {
+    id: 42,
+    rpc: 'https://kovan.infura.io/v3/' + CODE
   },
   DEFAULT: {
     id: '*',
@@ -29,18 +33,22 @@ var getRPC = function (net) {
       return RPC.MAINNET.rpc;
     case 3:
       return RPC.ROPSTEN.rpc;
-    case 42:
-      return RPC.KOVAN.rpc;
     case 4:
       return RPC.RINKEBY.rpc;
+    case 5:
+      return RPC.GOERLI.rpc;
+    case 42:
+      return RPC.KOVAN.rpc;
     case 'mainnet':
       return RPC.MAINNET.rpc;
     case 'ropsten':
       return RPC.ROPSTEN.rpc;
-    case 'kovan':
-      return RPC.KOVAN.rpc;
     case 'rinkeby':
       return RPC.RINKEBY.rpc;
+    case 'goerli':
+      return RPC.GOERLI.rpc;
+    case 'kovan':
+      return RPC.KOVAN.rpc;
     default:
       return RPC.DEFAULT.rpc;
   }
