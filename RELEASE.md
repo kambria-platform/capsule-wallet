@@ -1,5 +1,21 @@
 # RELEASE LOG
 
+## 1.0.11
+
+* Minor release.
+
+### Fixes
+
+* Remove subtitle and testing logo.
+* Normalize the exported instance of modules.
+* To avoid mistaking the package funtionality, we decide to change title form "Capsule Wallet" to "Capsule Bridge".
+
+### Enhancements
+
+* Support Goerli network (Network id is 5️⃣).
+
+---
+
 ## 1.0.10
 
 * Major release.
