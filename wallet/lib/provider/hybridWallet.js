@@ -26,7 +26,7 @@ class HybridWallet {
       dataHandler: function () { /* Turn off default logs */ },
       errorHandler: function () { /* Turn off default logs */ },
       getAccounts: function (callback) {
-        self.hybridware.getAddress(function (er, addr) {
+        self.getAddress(function (er, addr) {
           if (er) return callback(er, null);
           if (!addr) return callback(null, []);
           return callback(null, [addr.toLowerCase()]);
@@ -38,7 +38,7 @@ class HybridWallet {
       signTransaction: function (txParams, callback) {
         txParams.chainId = self.network;
         if (!txParams.data) txParams.data = '';
-        self.hybridware.signTransaction(JSON.stringify(txParams), function (er, signature) {
+        self.signTransaction(JSON.stringify(txParams), function (er, signature) {
           if (er) return callback(er, null);
           var signedTx = util.genSignedTx(signature);
           return callback(null, signedTx);
@@ -56,18 +56,17 @@ class HybridWallet {
   init(accOpts, callback) {
     accOpts = accOpts || {};
     var engine = new Engine(this.network, this.opts());
-    this.hybridware = null;
     var ok = this.setAccount(accOpts.getAddress, accOpts.signTransaction);
     if (!ok) return callback(error.CANNOT_SET_ACCOUNT, null);
-    this.web3 = engine.web3;
     // We used callback to fomalize code interface with other classes
-    return callback(null, this.web3);
+    return callback(null, engine.web3);
   }
 
   /**
    * @func setAccount
    * Set up coinbase
-   * @param {*} address 
+   * @param {*} getAddress 
+   * @param {*} signTransaction 
    */
   setAccount(getAddress, signTransaction) {
     if (!getAddress || typeof getAddress !== 'function') {
@@ -79,7 +78,8 @@ class HybridWallet {
       return false;
     }
 
-    this.hybridware = { getAddress: getAddress, signTransaction: signTransaction };
+    this.getAddress = getAddress;
+    this.signTransaction = signTransaction;
     return true;
   }
 }

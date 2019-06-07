@@ -4,7 +4,24 @@ import Wallet from 'capsule-wallet';
 // Fake css to test scope
 import style from './index.module.css';
 
-
+const NET = {
+  MAINET: {
+    id: 1,
+    etherscan: ''
+  },
+  ROPSTEN: {
+    id: 3,
+    etherscan: 'ropsten.'
+  },
+  KOVAN: {
+    id: 42,
+    etherscan: 'kovan.'
+  },
+  RINKEBY: {
+    id: 4,
+    etherscan: 'rinkeby.'
+  },
+}
 class TestWallet extends Component {
   constructor() {
     super();
@@ -18,6 +35,7 @@ class TestWallet extends Component {
       error: null
     }
 
+    this.net = NET.RINKEBY;
     this.register = this.register.bind(this);
     this.done = this.done.bind(this);
     this.sendTx = this.sendTx.bind(this);
@@ -54,8 +72,7 @@ class TestWallet extends Component {
 
   sendTx() {
     var self = this;
-    var provider = this.state.provider;
-    provider.web3.eth.sendTransaction({
+    this.state.provider.web3.eth.sendTransaction({
       from: self.state.account,
       to: '0x5a926b235e992d6ba52d98415e66afe5078a1690',
       value: '1000000000000000'
@@ -75,11 +92,11 @@ class TestWallet extends Component {
           <p>Network: {this.state.network}</p>
           <p>Account: {this.state.account}</p>
           <p>Balance: {this.state.balance}</p>
-          <p>Previous tx id: <a target="_blank" rel="noopener noreferrer" href={"https://rinkeby.etherscan.io/tx/" + this.state.txId}>{this.state.txId}</a></p>
+          <p>Previous tx id: <a target="_blank" rel="noopener noreferrer" href={`https://${this.net.etherscan}etherscan.io/tx/${this.state.txId}`}>{this.state.txId}</a></p>
           <button onClick={this.sendTx}>Send Tx</button>
-          {this.state.error ? <a >{this.state.error}</a> : null}
+          {this.state.error ? <p>{this.state.error}</p> : null}
         </div>
-        <Wallet visible={this.state.visible} net={4} done={this.done} />
+        <Wallet visible={this.state.visible} net={this.net.id} done={this.done} />
       </div>
     );
   }

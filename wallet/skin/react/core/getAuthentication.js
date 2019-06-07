@@ -54,7 +54,7 @@ class getAuthentication extends Component {
                 <div className={cx("box-form")}>
                   <div className={cx("row", "pt-3", "mb-3")}>
                     <div className={cx("col")}>
-                      <h2>Authetication</h2>
+                      <h2>Authentication</h2>
                     </div>
                   </div>
                   <div className={cx("wallet-form")}>

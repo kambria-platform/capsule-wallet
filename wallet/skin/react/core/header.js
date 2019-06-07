@@ -29,10 +29,7 @@ class Header extends Component {
         <div className={cx("container", "h-100")}>
           <div className={cx("h-100", "d-flex", "flex-column")}>
             <div className={cx("row")}>
-              <h1 className={cx("font-weight-bold", "secondary")}>CAPSULE WALLET</h1>
-            </div>
-            <div className={cx("row")}>
-              <h2 className={cx("secondary")}>This is a secure bridge which connects your Dapps to Ethereum blockchain.</h2>
+              <h1 className={cx("font-weight-bold", "secondary")}>CAPSULE BRIDGE</h1>
             </div>
             <div className={cx("row", "flex-grow-1", "justify-content-end", "align-items-end")}>
               {this.net()}

@@ -62,14 +62,12 @@ class SoftWallet {
    * @param {*} callback 
    */
   init(accOpts, callback) {
-    var self = this;
     accOpts = accOpts || {};
     this.getPassphrase = accOpts.getPassphrase;
     var engine = new Engine(this.network, this.opts());
     this.setAccount(accOpts.address, accOpts.privateKey, accOpts.getPassphrase, function (er, re) {
       if (er) return callback(error.CANNOT_SET_ACCOUNT, null);
-      self.web3 = engine.web3;
-      return callback(null, self.web3);
+      return callback(null, engine.web3);
     });
   }
 

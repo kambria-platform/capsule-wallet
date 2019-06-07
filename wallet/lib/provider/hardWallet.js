@@ -28,7 +28,7 @@ class HardWallet {
       dataHandler: function () { /* Turn off default logs */ },
       errorHandler: function () { /* Turn off default logs */ },
       getAccounts: function (callback) {
-        self.hardware.getAddress(self.dpath, function (er, addr) {
+        self.getAddress(self.dpath, function (er, addr) {
           if (er) return callback(er, null);
           if (!addr) return callback(null, []);
           return callback(null, [addr.toLowerCase()]);
@@ -39,7 +39,7 @@ class HardWallet {
       },
       signTransaction: function (txParams, callback) {
         txParams.chainId = self.network;
-        self.hardware.signTransaction(self.dpath, txParams, function (er, signature) {
+        self.signTransaction(self.dpath, txParams, function (er, signature) {
           if (er) return callback(er, null);
           var signedTx = util.genRawTx(txParams).raw;
           signedTx.v = Buffer.from(signature.v, 'hex');
@@ -60,13 +60,11 @@ class HardWallet {
   init(accOpts, callback) {
     accOpts = accOpts || {};
     var engine = new Engine(this.network, this.opts());
-    this.hardware = null;
     this.dpath = util.addDPath(accOpts.path, accOpts.index);
     var ok = this.setAccount(accOpts.getAddress, accOpts.signTransaction);
     if (!ok) return callback(error.CANNOT_SET_ACCOUNT, null);
-    this.web3 = engine.web3;
     // We used callback to fomalize code interface with other classes
-    return callback(null, this.web3);
+    return callback(null, engine.web3);
   }
 
   /**
@@ -84,7 +82,8 @@ class HardWallet {
       return false;
     }
 
-    this.hardware = { getAddress: getAddress, signTransaction: signTransaction };
+    this.getAddress = getAddress;
+    this.signTransaction = signTransaction;
     return true;
   }
 }

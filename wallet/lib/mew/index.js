@@ -11,17 +11,13 @@ class MEW extends WalletInterface {
     super(net, type, restrict);
 
     this.mewConnectClient = new MEWconnect.Initiator();
-    this.connected = false;
-    this.address = null;
+    this.mewConnectClient.preventDuplicatedEvents = false;
 
-    var self = this;
     this.mewConnectClient.on('RtcClosedEvent', () => {
       console.log('RtcClosedEvent')
-      self.connected = false;
     });
     this.mewConnectClient.on('RtcDisconnectEvent', () => {
       console.log('RtcDisconnectEvent')
-      self.connected = false;
     });
   }
 
@@ -35,10 +31,10 @@ class MEW extends WalletInterface {
     });
     this.mewConnectClient.initiatorStart(SIGNALER_URL);
     this.mewConnectClient.on('RtcConnectedEvent', () => {
-      if (self.connected) return; // Prevent double calls
-      self.connected = true;
+      if (self.mewConnectClient.preventDuplicatedEvents) return; // Prevent double calls
+      self.mewConnectClient.preventDuplicatedEvents = true;
       getAuthentication.close();
-      self.provider = new Provider.HybridWallet(this.net);
+      self.provider = new Provider.HybridWallet(self.net);
       var accOpts = {
         getAddress: (cb) => self.getAddress(cb),
         signTransaction: (tx, cb) => self.signTransaction(tx, cb),
@@ -56,12 +52,9 @@ class MEW extends WalletInterface {
   }
 
   getAddress(callback) {
-    var self = this;
-    if (this.address) return callback(null, this.address);
-    if (this.connected) {
+    if (this.mewConnectClient.connected) {
       this.mewConnectClient.sendRtcMessage('address', '');
       this.mewConnectClient.once('address', data => {
-        self.address = data.address;
         return callback(null, data.address);
       });
     } else {
@@ -70,8 +63,7 @@ class MEW extends WalletInterface {
   }
 
   signTransaction(txParams, callback) {
-    var self = this;
-    if (this.connected) {
+    if (this.mewConnectClient.connected) {
       this.mewConnectClient.sendRtcMessage('signTx', txParams);
       this.mewConnectClient.once('signTx', data => {
         return callback(null, data);
