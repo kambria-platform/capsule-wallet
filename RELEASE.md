@@ -12,7 +12,7 @@
 
 ### Enhancements
 
-* Support Goerli network (Network id is 5️⃣).
+* Support Goerli network (Network ID is 5️⃣).
 
 ---
 

@@ -16,7 +16,7 @@ class Isoxys extends WalletInterface {
    * @param {*} accOpts 
    */
   setWallet(accOpts, callback) {
-    var self = this;
+    let self = this;
     this.provider = new Provider.SoftWallet(this.net);
     this.provider.init(accOpts, function (er, web3) {
       if (er) return callback(er, null);
@@ -43,7 +43,7 @@ class Isoxys extends WalletInterface {
     This function is using private key in direct.
     Eventhought it was secured by some cryptographical functions,
     but we strongly recommend to avoid using it in the production environment.`);
-    var account = Privatekey.privatekeyToAccount(privatekey);
+    let account = Privatekey.privatekeyToAccount(privatekey);
     account.getPassphrase = getPassphrase;
     this.setWallet(account, callback);
   }
@@ -59,7 +59,7 @@ class Isoxys extends WalletInterface {
     This function is using private key in direct.
     Eventhought it was secured by some cryptographical functions,
     but we strongly recommend to avoid using it in the production environment.`);
-    var account = Privatekey.privatekeyToAccount(privatekey);
+    let account = Privatekey.privatekeyToAccount(privatekey);
     return callback(null, account.address);
   }
 
@@ -146,7 +146,7 @@ class Isoxys extends WalletInterface {
    * @param {function} getPassphrase - simulate the account locking/unlocking 
    */
   setAccountByKeystore(input, password, getPassphrase, callback) {
-    var self = this;
+    let self = this;
     Keystore.recover(input, password, function (account) {
       account.getPassphrase = getPassphrase;
       self.setWallet(account, callback);

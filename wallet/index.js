@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import FiniteStateMachine from './finiteStateMachine';
+import StateMaintainer from './stateMaintainer';
 import Modal from './skin/react/core/modal';
 
 // Setup CSS Module
 import classNames from 'classnames/bind';
 import style from './skin/static/style/index.module.css';
 var cx = classNames.bind(style);
-
 
 import Header from './skin/react/core/header';
 import InputPassphrase from './skin/react/core/inputPassphrase';
@@ -44,6 +44,7 @@ class CapsuleWallet extends Component {
     super(props);
 
     this.FSM = new FiniteStateMachine();
+    this.SM = new StateMaintainer();
 
     this.state = DEFAULT_STATE;
 
@@ -102,31 +103,31 @@ class CapsuleWallet extends Component {
    */
 
   onData(er, re) {
-    let self = this;
-
     // User meets error in processing
-    if (er) return self.setState({ error: er, step: 'Error' }, () => {
-      self.FSM.reset();
+    if (er) return this.setState({ error: er, step: 'Error' }, () => {
+      this.FSM.reset();
     });
 
     // User skips the registration.
-    if (!re) return self.onClose(() => {
-      self.done(null, null);
+    if (!re) return this.onClose(() => {
+      this.done(null, null);
     });
 
     // Move to next step
-    let state = self.FSM.next(re);
+    let state = this.FSM.next(re);
+    // Operate StateMaintainer
+    this.SM.set(state);
     // Error case
-    if (state.step === 'Error') return self.setState({ error: ERROR, step: state.step }, () => {
-      self.FSM.reset();
+    if (state.step === 'Error') return this.setState({ error: ERROR, step: state.step }, () => {
+      this.FSM.reset();
     });
     // Success case
-    if (state.step === 'Success') return self.onClose(() => {
+    if (state.step === 'Success') return this.onClose(() => {
       window.capsuleWallet.provider = re.provider;
-      self.done(null, re.provider);
+      this.done(null, re.provider);
     });
     // Still in processing
-    return self.setState({ step: state.step });
+    return this.setState({ step: state.step });
   }
 
   onClose(callback) {

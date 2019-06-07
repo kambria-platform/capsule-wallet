@@ -31,12 +31,12 @@ class SoftWallet {
    * Define optional functions for engine
    */
   opts() {
-    var self = this;
+    let self = this;
     return {
       dataHandler: function () { /* Turn off default logs */ },
       errorHandler: function () { /* Turn off dÎefault logs */ },
       getAccounts: function (callback) {
-        var accounts = self.getAddress();
+        let accounts = self.getAddress();
         return callback(null, accounts);
       },
       approveTransaction: function (txParams, callback) {
@@ -46,9 +46,9 @@ class SoftWallet {
         txParams.chainId = self.network;
         self.getPassphrase(function (er, passphrase) {
           if (er || !passphrase) return callback(error.CANNOT_UNLOCK_ACCOUNT, null);
-          var priv = self.unlockAccount(passphrase);
+          let priv = self.unlockAccount(passphrase);
           if (!priv) return callback(error.CANNOT_UNLOCK_ACCOUNT, null);
-          var signedTx = util.signRawTx(txParams, priv);
+          let signedTx = util.signRawTx(txParams, priv);
           return callback(null, signedTx);
         });
       }
@@ -64,7 +64,7 @@ class SoftWallet {
   init(accOpts, callback) {
     accOpts = accOpts || {};
     this.getPassphrase = accOpts.getPassphrase;
-    var engine = new Engine(this.network, this.opts());
+    let engine = new Engine(this.network, this.opts());
     this.setAccount(accOpts.address, accOpts.privateKey, accOpts.getPassphrase, function (er, re) {
       if (er) return callback(error.CANNOT_SET_ACCOUNT, null);
       return callback(null, engine.web3);
@@ -79,7 +79,7 @@ class SoftWallet {
    * @param {function} passphrase 
    */
   setAccount(address, privateKey, getPassphrase, callback) {
-    var self = this;
+    let self = this;
 
     if (!address || !privateKey) return callback('Address or Private Key must be not null', null);
     if (!this.validatePrivateKey(address, privateKey)) return callback('Invalid address or private key', null);
@@ -92,12 +92,12 @@ class SoftWallet {
       if (!passphrase) return callback(er, 'User denied unlocking account');
 
       passphrase = passphrase.toString();
-      var salt = cryptoJS.lib.WordArray.random(128 / 8);
-      var password = self.constructPassword(passphrase, salt);
+      let salt = cryptoJS.lib.WordArray.random(128 / 8);
+      let password = self.constructPassword(passphrase, salt);
       if (!password) return callback('Cannot set up password', null);
 
-      var encryptedPriv = cryptoJS.AES.encrypt(privateKey, password).toString();
-      var acc = {
+      let encryptedPriv = cryptoJS.AES.encrypt(privateKey, password).toString();
+      let acc = {
         ADDRESS: address,
         PRIVATEKEY: encryptedPriv,
         SALT: salt
@@ -117,9 +117,9 @@ class SoftWallet {
   validatePrivateKey(addr, priv) {
     if (!addr || !priv) return false;
     priv = new Buffer(priv, 'hex');
-    var valid = true;
+    let valid = true;
     valid = valid && ethUtil.isValidPrivate(priv);
-    var _addr = '0x' + ethUtil.privateToAddress(priv).toString('hex');
+    let _addr = '0x' + ethUtil.privateToAddress(priv).toString('hex');
     valid = valid && (_addr === addr);
     return valid;
   }
@@ -132,7 +132,7 @@ class SoftWallet {
    */
   constructPassword(passphrase, salt) {
     if (!passphrase || !salt) return null;
-    var password = cryptoJS.PBKDF2(passphrase, salt, { keySize: 512 / 32, iterations: 1000 });
+    let password = cryptoJS.PBKDF2(passphrase, salt, { keySize: 512 / 32, iterations: 1000 });
     return password.toString();
   }
 
@@ -143,10 +143,10 @@ class SoftWallet {
    */
   unlockAccount(passphrase) {
     try {
-      var password = this.constructPassword(passphrase, this.getSalt());
-      var enpriv = this.getPrivateKey();
+      let password = this.constructPassword(passphrase, this.getSalt());
+      let enpriv = this.getPrivateKey();
       if (!password || !enpriv) return null;
-      var priv = cryptoJS.AES.decrypt(enpriv, password);
+      let priv = cryptoJS.AES.decrypt(enpriv, password);
       if (!priv) return null;
       priv = priv.toString(cryptoJS.enc.Utf8);
       return priv;
@@ -157,17 +157,17 @@ class SoftWallet {
    * Functions for reading store
    */
   getAddress() {
-    var acc = this.store.get('ACCOUNT');
+    let acc = this.store.get('ACCOUNT');
     if (!acc || typeof acc !== 'object') return [];
     return [acc.ADDRESS];
   }
   getPrivateKey() { // the encrypted form of private key
-    var acc = this.store.get('ACCOUNT');
+    let acc = this.store.get('ACCOUNT');
     if (!acc || typeof acc !== 'object') return null;
     return acc.PRIVATEKEY;
   }
   getSalt() {
-    var acc = this.store.get('ACCOUNT');
+    let acc = this.store.get('ACCOUNT');
     if (!acc || typeof acc !== 'object') return null;
     return acc.SALT;
   }
