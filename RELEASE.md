@@ -8,7 +8,7 @@
 
 * Remove subtitle and testing logo.
 * Normalize the exported instance of modules.
-* To avoid mistaking the package funtionality, we decide to change title form "Capsule Wallet" to "Capsule Bridge".
+* To avoid mistaking the package funtionality, we decided to change the title from "Capsule Wallet" to "Capsule Bridge".
 
 ### Enhancements
 
