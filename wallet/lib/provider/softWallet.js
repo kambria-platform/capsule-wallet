@@ -6,7 +6,7 @@ var cryptoJS = {
   lib: { WordArray: require('crypto-js/lib-typedarrays') }
 }
 var Engine = require('./engine').zeroc;
-var Store = require('./store').sessionStorage;
+var store = require('./store').sessionStorage;
 var util = require('../util');
 
 const error = require('../constant/error');
@@ -23,7 +23,6 @@ class SoftWallet {
    */
   constructor(net) {
     this.network = util.getNetworkId(net, 'number');
-    this.store = new Store();
   }
 
   /**
@@ -65,6 +64,7 @@ class SoftWallet {
     accOpts = accOpts || {};
     this.getPassphrase = accOpts.getPassphrase;
     let engine = new Engine(this.network, this.opts());
+    if (!accOpts.address || !accOpts.privateKey) return callback(null, engine.web3);
     this.setAccount(accOpts.address, accOpts.privateKey, accOpts.getPassphrase, function (er, re) {
       if (er) return callback(error.CANNOT_SET_ACCOUNT, null);
       return callback(null, engine.web3);
@@ -103,7 +103,7 @@ class SoftWallet {
         SALT: salt
       };
 
-      self.store.set('ACCOUNT', acc);
+      store.set('CAPSULE-ISOXYS', acc);
       return callback(null, acc);
     });
   }
@@ -157,17 +157,17 @@ class SoftWallet {
    * Functions for reading store
    */
   getAddress() {
-    let acc = this.store.get('ACCOUNT');
+    let acc = store.get('CAPSULE-ISOXYS');
     if (!acc || typeof acc !== 'object') return [];
     return [acc.ADDRESS];
   }
   getPrivateKey() { // the encrypted form of private key
-    let acc = this.store.get('ACCOUNT');
+    let acc = store.get('CAPSULE-ISOXYS');
     if (!acc || typeof acc !== 'object') return null;
     return acc.PRIVATEKEY;
   }
   getSalt() {
-    let acc = this.store.get('ACCOUNT');
+    let acc = store.get('CAPSULE-ISOXYS');
     if (!acc || typeof acc !== 'object') return null;
     return acc.SALT;
   }

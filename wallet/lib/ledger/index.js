@@ -2,7 +2,7 @@ var WalletInterface = require('../interface/walletInterface');
 var util = require('../util');
 var Provider = require('../provider');
 var LedgerNanoS = require('./ledgerNanoS');
-var cache = require('../cache');
+var cache = require('../provider/store').cache;
 
 
 class Ledger extends WalletInterface {
@@ -60,7 +60,7 @@ class Ledger extends WalletInterface {
   getAccountsByLedgerNanoS(path, limit, page, callback) {
     let done = function (root) {
       let addresses = util.deriveChild(limit, page, root.publicKey, root.chainCode).map(item => {
-        cache.set('ledgerNanoS-childAddress-' + util.addDPath(path, item.index), item.address, 300);
+        cache.set('ledgerNanoS-childAddress-' + util.addDPath(path, item.index), item.address);
         return item.address;
       });
       return callback(null, addresses);
@@ -74,7 +74,7 @@ class Ledger extends WalletInterface {
       LedgerNanoS.getPublickey(path, function (er, re) {
         if (er) return callback(er, null);
 
-        cache.set('ledgerNanoS-rootNode-' + path, re, 300);
+        cache.set('ledgerNanoS-rootNode-' + path, re);
         return done(re);
       });
     }

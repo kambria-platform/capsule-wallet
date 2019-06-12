@@ -19,7 +19,7 @@ class EstablishConnection extends Component {
     super(props);
 
     this.state = {
-      subType: 'mew'
+      model: 'mew'
     }
 
     this.onSelect = this.onSelect.bind(this);
@@ -30,7 +30,7 @@ class EstablishConnection extends Component {
 
   onSelect(key) {
     if (key === 'back') return window.capsuleWallet.back();
-    return this.setState({ subType: key });
+    return this.setState({ model: key });
   }
 
   onConnect(data) {
@@ -41,7 +41,7 @@ class EstablishConnection extends Component {
     return MENU.map(item => {
       return (
         <div key={item.key}
-          className={cx("col", "col-md-2", "wallet-nav", item.status, { "selected": item.key === this.state.subType }, item.css)}
+          className={cx("col", "col-md-2", "wallet-nav", item.status, { "selected": item.key === this.state.model }, item.css)}
           onClick={() => this.onSelect(item.key)}>
           <div className={cx("d-flex", "h-100", "justify-content-center", "align-items-center")}>
             <i className={cx(item.icon)} />
@@ -53,8 +53,8 @@ class EstablishConnection extends Component {
   }
 
   device() {
-    if (this.state.subType === 'mew') return <MewAsset done={this.onConnect} />
-    if (this.state.subType === 'marrella') return <MarrellaAsset done={this.onConnect} />
+    if (this.state.model === 'mew') return <MewAsset done={this.onConnect} />
+    if (this.state.model === 'marrella') return <MarrellaAsset done={this.onConnect} />
   }
 
   render() {

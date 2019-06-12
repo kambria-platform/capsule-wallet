@@ -32,7 +32,7 @@ class LedgerNanoSAsset extends Component {
       var ledger = new Ledger(window.capsuleWallet.net, 'hardwallet', true);
       ledger.getAccountsByLedgerNanoS("m/44'/60'/0'/0", 1, 0, function (er, re) {
         if (er || re.lenght <= 0) return self.setState({ message: STATUS.FAIL, loading: false });
-        return self.props.done({ wallet: 'ledger', subType: 'ledger-nano-s' });
+        return self.props.done({ wallet: 'ledger', model: 'ledger-nano-s' });
       });
     });
   }

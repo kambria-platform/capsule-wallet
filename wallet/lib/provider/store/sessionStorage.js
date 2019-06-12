@@ -1,25 +1,22 @@
 class SessionStorage {
-  constructor() {
-    this.store = window.sessionStorage;
+
+  static get(key) {
+    if (!key) return null;
+    return JSON.parse(window.sessionStorage.getItem(key));
   }
 
-  get(key) {
-    if (!key) return this.store;
-    return JSON.parse(this.store.getItem(key));
-  }
-
-  set(key, value) {
+  static set(key, value) {
     if (!key || !value) return console.error('Key or value is null');
-    return this.store.setItem(key, JSON.stringify(value));
+    return window.sessionStorage.setItem(key, JSON.stringify(value));
   }
 
-  remove(key) {
+  static remove(key) {
     if (!key) return console.error('Key is null');
-    return this.store.removeItem(key);
+    return window.sessionStorage.removeItem(key);
   }
 
-  removeAll() {
-    return this.store.clear();
+  static removeAll() {
+    return window.sessionStorage.clear();
   }
 }
 

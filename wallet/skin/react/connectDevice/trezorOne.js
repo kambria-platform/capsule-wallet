@@ -13,7 +13,7 @@ const STATUS = {
 }
 
 
-class TrezorAsset extends Component {
+class TrezorOneAsset extends Component {
   constructor(props) {
     super(props);
 
@@ -32,7 +32,7 @@ class TrezorAsset extends Component {
       var trezor = new Trezor(window.capsuleWallet.net, 'hardwallet', true);
       trezor.getAccountsByTrezorOne("m/44'/60'/0'/0", 1, 0, function (er, re) {
         if (er || re.length < 0) return self.setState({ message: STATUS.FAIL, loading: false });
-        return self.props.done({ wallet: 'trezor', subType: 'trezor-one' });
+        return self.props.done({ wallet: 'trezor', model: 'trezor-one' });
       });
     });
   }
@@ -59,4 +59,4 @@ class TrezorAsset extends Component {
   }
 }
 
-export default TrezorAsset;
+export default TrezorOneAsset;

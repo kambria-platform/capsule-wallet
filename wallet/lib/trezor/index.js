@@ -2,7 +2,7 @@ var WalletInterface = require('../interface/walletInterface');
 var util = require('../util');
 var Provider = require('../provider');
 var TrezorOne = require('./trezorOne');
-var cache = require('../cache');
+var cache = require('../provider/store').cache;
 
 class Trezor extends WalletInterface {
   constructor(net, type, restrict) {
@@ -57,9 +57,9 @@ class Trezor extends WalletInterface {
    * @param {*} page 
    */
   getAccountsByTrezorOne(path, limit, page, callback) {
-    let done = function(root){
+    let done = function (root) {
       let addresses = util.deriveChild(limit, page, root.publicKey, root.chainCode).map(item => {
-        cache.set('trezorOne-childAddress-' + util.addDPath(path, item.index), item.address, 300);
+        cache.set('trezorOne-childAddress-' + util.addDPath(path, item.index), item.address);
         return item.address;
       });
       return callback(null, addresses);
@@ -73,7 +73,7 @@ class Trezor extends WalletInterface {
       TrezorOne.getPublickey(path, function (er, re) {
         if (er) return callback(er, null);
 
-        cache.set('trezorOne-rootNode-' + path, re, 300);
+        cache.set('trezorOne-rootNode-' + path, re);
         return done(re);
       });
     }

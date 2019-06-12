@@ -80,7 +80,6 @@ LedgerNanoS.getTransport = function (callback) {
     return TransportU2F.isSupported()
   }).then(re => {
     u2fSupported = re;
-
     if (webusbSupported) return TransportWebUSB.create();
     if (u2fSupported) return TransportU2F.create();
     return callback(error.UNSUPPORT_U2F, null);

@@ -34,7 +34,7 @@ class PrivateKeyAsset extends Component {
 
   returnData2Parent() {
     return this.props.done({
-      subType: 'private-key',
+      model: 'private-key',
       asset: {
         privateKey: this.state.privateKey
       }

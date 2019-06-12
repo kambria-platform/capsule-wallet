@@ -12,7 +12,7 @@ class Isoxys extends WalletInterface {
 
   /**
    * @func setWallet
-   * (Internal function) Set up acc to store that can be used as a wallet
+   * Set up acc to store that can be used as a wallet
    * @param {*} accOpts 
    */
   setWallet(accOpts, callback) {

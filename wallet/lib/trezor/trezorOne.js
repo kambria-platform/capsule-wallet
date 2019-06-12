@@ -1,6 +1,5 @@
 var TrezorConnect = require('trezor-connect').default;
 var util = require('../util');
-var cache = require('../cache');
 const error = require('../constant/error');
 const _default = require('../constant/default');
 

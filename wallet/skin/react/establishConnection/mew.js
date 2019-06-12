@@ -29,7 +29,7 @@ class MewAsset extends Component {
   establishTheConnection() {
     this.mew.setAccountByMEW(window.capsuleWallet.getAuthentication, (er, data) => {
       if (er) return this.setState({ message: STATUS.FAIL });
-      return this.props.done({ provider: this.mew });
+      return this.props.done({ wallet: 'mew', model: 'mew', provider: this.mew });
     });
   }
 

@@ -47,7 +47,7 @@ class KeystoreAsset extends Component {
 
   returnData2Parent() {
     this.props.done({
-      subType: 'keystore',
+      model: 'keystore',
       asset: {
         keystore: this.state.keystore,
         password: this.state.password

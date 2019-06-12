@@ -12,20 +12,20 @@ const MACHINE = {
   SelectWallet: {
     currentState: 'SelectWallet',
     nextState: [
-      { step: 'InputAsset', pattern: { wallet: 'isoxys', type: 'softwallet' } },
+      { step: 'InputAsset', pattern: { type: 'softwallet', wallet: 'isoxys' } },
       { step: 'ConnectDevice', pattern: { type: 'hardwallet' } },
-      { step: 'EstablishConnection', pattern: { wallet: 'mew', type: 'hybridwallet' } },
-      { step: 'Success', pattern: { wallet: 'metamask', type: 'softwallet' } },
+      { step: 'EstablishConnection', pattern: { type: 'hybridwallet' } },
+      { step: 'Success', pattern: { type: 'softwallet', wallet: 'metamask', model: 'metamask' } },
       { step: 'Error', pattern: { wallet: '*', type: '*' } }
     ]
   },
   InputAsset: {
     currentState: 'InputAsset',
     nextState: [
-      { step: 'ConfirmAddress', pattern: { subType: 'mnemonic' } },
-      { step: 'ConfirmAddress', pattern: { subType: 'keystore' } },
-      { step: 'ConfirmAddress', pattern: { subType: 'private-key' } },
-      { step: 'Error', pattern: { subType: '*' } },
+      { step: 'ConfirmAddress', pattern: { model: 'mnemonic' } },
+      { step: 'ConfirmAddress', pattern: { model: 'keystore' } },
+      { step: 'ConfirmAddress', pattern: { model: 'private-key' } },
+      { step: 'Error', pattern: { model: '*' } },
     ]
   },
   EstablishConnection: {
@@ -38,16 +38,16 @@ const MACHINE = {
   ConnectDevice: {
     currentState: 'ConnectDevice',
     nextState: [
-      { step: 'ConfirmAddress', pattern: { wallet: 'ledger', subType: 'ledger-nano-s' } },
-      { step: 'ConfirmAddress', pattern: { wallet: 'trezor', subType: 'trezor-one' } },
-      { step: 'Error', pattern: { subType: '*' } },
+      { step: 'ConfirmAddress', pattern: { wallet: 'ledger', model: 'ledger-nano-s' } },
+      { step: 'ConfirmAddress', pattern: { wallet: 'trezor', model: 'trezor-one' } },
+      { step: 'Error', pattern: { model: '*' } },
     ]
   },
   ConfirmAddress: {
     currentState: 'ConfirmAddress',
     nextState: [
-      { step: 'Success', pattern: { provider: true } },
-      { step: 'Error', pattern: { provider: false } },
+      { step: 'Success', pattern: { dpath: true } },
+      { step: 'Error', pattern: { dpath: false } },
     ]
   },
   Error: {
@@ -70,10 +70,11 @@ const MACHINE = {
  */
 const DEFAULT = {
   step: STATE[0],
-  wallet: null, // metamask, isoxys, ledger, trezor, mew
   type: null, // softwallet, hardwallet, hybridwallet
-  subType: null, // mnemonic, keystore, private-key, ledger-nano-s, trezor-one, mew
-  provider: null,
+  wallet: null, // metamask, isoxys, ledger, trezor, mew
+  model: null, // mnemonic, keystore, private-key, ledger-nano-s, trezor-one, mew
+  dpath: null,
+  index: null,
   asset: null
 }
 

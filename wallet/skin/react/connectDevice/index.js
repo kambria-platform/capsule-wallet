@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import LedgerNanoSAsset from './ledgerNanoS';
-import TrezorAsset from './trezor';
+import TrezorOneAsset from './trezorOne';
 
 // Setup CSS Module
 import classNames from 'classnames/bind';
@@ -9,7 +9,7 @@ var cx = classNames.bind(style);
 
 const MENU = [
   { key: 'ledger-nano-s', label: 'Ledger', icon: 'ledger', status: 'active', css: '' },
-  { key: 'trezor', label: 'Trezor', icon: 'trezor', status: 'active', css: '' },
+  { key: 'trezor-one', label: 'Trezor', icon: 'trezor', status: 'active', css: '' },
   { key: 'back', label: 'Back', icon: 'arrow-left', status: 'standard', css: 'ml-auto' },
 ];
 
@@ -19,7 +19,7 @@ class ConnectDevice extends Component {
     super(props);
 
     this.state = {
-      subType: 'ledger-nano-s'
+      model: 'ledger-nano-s'
     }
 
     this.onSelect = this.onSelect.bind(this);
@@ -30,7 +30,7 @@ class ConnectDevice extends Component {
 
   onSelect(key) {
     if (key === 'back') return window.capsuleWallet.back();
-    return this.setState({ subType: key });
+    return this.setState({ model: key });
   }
 
   onConnect(data) {
@@ -41,7 +41,7 @@ class ConnectDevice extends Component {
     return MENU.map(item => {
       return (
         <div key={item.key}
-          className={cx("col", "col-md-2", "wallet-nav", item.status, { "selected": item.key === this.state.subType }, item.css)}
+          className={cx("col", "col-md-2", "wallet-nav", item.status, { "selected": item.key === this.state.model }, item.css)}
           onClick={() => this.onSelect(item.key)}>
           <div className={cx("d-flex", "h-100", "justify-content-center", "align-items-center")}>
             <i className={cx(item.icon)} />
@@ -53,8 +53,8 @@ class ConnectDevice extends Component {
   }
 
   device() {
-    if (this.state.subType === 'ledger-nano-s') return <LedgerNanoSAsset done={this.onConnect} />
-    if (this.state.subType === 'trezor') return <TrezorAsset done={this.onConnect} />
+    if (this.state.model === 'ledger-nano-s') return <LedgerNanoSAsset done={this.onConnect} />
+    if (this.state.model === 'trezor-one') return <TrezorOneAsset done={this.onConnect} />
   }
 
   render() {

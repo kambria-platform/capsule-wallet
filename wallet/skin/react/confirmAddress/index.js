@@ -8,6 +8,7 @@ var cx = classNames.bind(style);
 
 const ERROR = 'No address found';
 const LIMIT = 5, PAGE = 0;
+const DEFAULT_HD_PATH = "m/44'/60'/0'/0";
 
 const DEFAULT_STATE = {
   addressList: [],
@@ -38,7 +39,7 @@ class ConfirmAddress extends Component {
   getAddress(data, limit, page, callback) {
     if (data.wallet === 'isoxys') {
       this.setState({ loading: true }, function () {
-        ConfirmAddressHelper.getAddressByIsoxys(data, limit, page).then(re => {
+        ConfirmAddressHelper.getAddressByIsoxys(data, DEFAULT_HD_PATH, limit, page).then(re => {
           return callback(null, re);
         }).catch(er => {
           if (er) return callback(ERROR, null);
@@ -47,7 +48,7 @@ class ConfirmAddress extends Component {
     }
     else if (data.wallet === 'ledger') {
       this.setState({ loading: true }, function () {
-        ConfirmAddressHelper.getAddressByLedger(data, limit, page).then(re => {
+        ConfirmAddressHelper.getAddressByLedger(data, DEFAULT_HD_PATH, limit, page).then(re => {
           return callback(null, re);
         }).catch(er => {
           if (er) return callback(ERROR, null);
@@ -56,7 +57,7 @@ class ConfirmAddress extends Component {
     }
     else if (data.wallet === 'trezor') {
       this.setState({ loading: true }, function () {
-        ConfirmAddressHelper.getAddressByTrezor(data, limit, page).then(re => {
+        ConfirmAddressHelper.getAddressByTrezor(data, DEFAULT_HD_PATH, limit, page).then(re => {
           return callback(null, re);
         }).catch(er => {
           if (er) return callback(ERROR, null);
@@ -77,33 +78,8 @@ class ConfirmAddress extends Component {
   }
 
   onConfirm() {
-    let self = this;
     let index = this.state.i + this.state.limit * this.state.page;
-    if (this.props.data.wallet === 'isoxys') {
-      ConfirmAddressHelper.setAddressByIsoxys(this.props.data, index).then(isoxys => {
-        self.done(null, { provider: isoxys });
-      }).catch(er => {
-        self.done(er, null);
-      });
-    }
-    else if (this.props.data.wallet === 'ledger') {
-      ConfirmAddressHelper.setAddressByLedger(this.props.data, index).then(ledger => {
-        self.done(null, { provider: ledger });
-      }).catch(er => {
-        self.done(er, null);
-      });
-    }
-    else if (this.props.data.wallet === 'trezor') {
-      ConfirmAddressHelper.setAddressByTrezor(this.props.data, index).then(trezor => {
-        self.done(null, { provider: trezor });
-      }).catch(er => {
-        self.done(er, null);
-      });
-    }
-    else {
-      this.onClose(ERROR);
-    }
-
+    this.done(null, { dpath: DEFAULT_HD_PATH, index: index });
     this.setState(DEFAULT_STATE);
   }
 

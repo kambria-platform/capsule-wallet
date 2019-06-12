@@ -21,7 +21,7 @@ class InputAsset extends Component {
     super(props);
 
     this.state = {
-      subType: 'mnemonic'
+      model: 'mnemonic'
     }
 
     this.onSelect = this.onSelect.bind(this);
@@ -32,7 +32,7 @@ class InputAsset extends Component {
 
   onSelect(key) {
     if (key === 'back') return window.capsuleWallet.back();
-    return this.setState({ subType: key });
+    return this.setState({ model: key });
   }
 
   onReceive(data) {
@@ -43,7 +43,7 @@ class InputAsset extends Component {
     return MENU.map(item => {
       return (
         <div key={item.key}
-          className={cx("col", "col-md-2", "wallet-nav", item.status, { "selected": item.key === this.state.subType }, item.css)}
+          className={cx("col", "col-md-2", "wallet-nav", item.status, { "selected": item.key === this.state.model }, item.css)}
           onClick={() => { this.onSelect(item.key) }}>
           <div className={cx("d-flex", "h-100", "justify-content-center", "align-items-center")}>
             <i className={cx(item.icon)} />
@@ -55,9 +55,9 @@ class InputAsset extends Component {
   }
 
   asset() {
-    if (this.state.subType === 'mnemonic') return <MnemonicAsset done={this.onReceive} />
-    if (this.state.subType === 'keystore') return <KeystoreAsset done={this.onReceive} />
-    if (this.state.subType === 'private-key') return <PrivateKeyAsset done={this.onReceive} />
+    if (this.state.model === 'mnemonic') return <MnemonicAsset done={this.onReceive} />
+    if (this.state.model === 'keystore') return <KeystoreAsset done={this.onReceive} />
+    if (this.state.model === 'private-key') return <PrivateKeyAsset done={this.onReceive} />
   }
 
   render() {

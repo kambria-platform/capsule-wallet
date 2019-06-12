@@ -14,15 +14,20 @@ class Metamask extends WalletInterface {
     this.provider = window.ethereum;
     if (!this.provider)
       return callback(ERROR.CANNOT_FOUND_PROVIDER, null);
-    if (util.getNetworkId(this.provider.networkVersion, 'number') != util.getNetworkId(this.net, 'number'))
-      return callback(ERROR.INVALID_NETWORK, null);
 
-    this.provider.enable().then(re => {
-      self.web3 = new Web3(self.provider);
-      return callback(null, web3);
-    }).catch(er => {
-      return callback(er, null);
-    });
+    if (!this.provider.networkVersion) { // networkVersion delayed sometime, so we give it a chance
+      setTimeout(function () {
+        if (util.getNetworkId(self.provider.networkVersion, 'number') != util.getNetworkId(self.net, 'number'))
+          return callback(ERROR.INVALID_NETWORK, null);
+
+        self.provider.enable().then(re => {
+          self.web3 = new Web3(self.provider);
+          return callback(null, web3);
+        }).catch(er => {
+          return callback(er, null);
+        });
+      }, 1000); // Wait for 1 minute
+    }
   }
 }
 

@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 
-var Metamask = require('../../../lib/metamask');
-
 // Setup CSS Module
 import classNames from 'classnames/bind';
 import style from '../../static/style/index.module.css';
 var cx = classNames.bind(style);
 
 
-class SellectWallet extends Component {
+class SellectType extends Component {
   constructor(props) {
     super(props);
 
@@ -33,40 +31,33 @@ class SellectWallet extends Component {
 
   onMetamask() {
     this.setState({ visible: false });
-    var self = this;
-    let type = 'softwallet';
-    let wallet = 'metamask';
-    var metamask = new Metamask(window.capsuleWallet.net, type, true);
-    metamask.setAccountByMetamask(function (er, re) {
-      if (er) return self.done(er, null);
-
-      self.done(null, {
-        wallet: wallet,
-        type: type,
-        provider: metamask
-      });
+    this.done(null, {
+      type: 'softwallet',
+      wallet: 'metamask',
+      model: 'metamask'
     });
   }
 
   onHardwallet() {
     this.setState({ visible: false });
-    let type = 'hardwallet';
-    let wallet = 'ledger';
-    this.done(null, { wallet: wallet, type: type });
+    this.done(null, {
+      type: 'hardwallet'
+    });
   }
 
   onHybridwallet() {
     this.setState({ visible: false });
-    let type = 'hybridwallet';
-    let wallet = 'mew';
-    this.done(null, { wallet: wallet, type: type });
+    this.done(null, {
+      type: 'hybridwallet'
+    });
   }
 
   onSoftwallet() {
     this.setState({ visible: false });
-    let type = 'softwallet';
-    let wallet = 'isoxys';
-    this.done(null, { wallet: wallet, type: type });
+    this.done(null, {
+      type: 'softwallet',
+      wallet: 'isoxys'
+    });
   }
 
   componentDidUpdate(prevProps) {
@@ -109,4 +100,4 @@ class SellectWallet extends Component {
   }
 }
 
-export default SellectWallet;
+export default SellectType;

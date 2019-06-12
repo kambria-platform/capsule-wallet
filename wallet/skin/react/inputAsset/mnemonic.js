@@ -41,7 +41,7 @@ class MnemonicAsset extends Component {
 
   returnData2Parent() {
     return this.props.done({
-      subType: 'mnemonic',
+      model: 'mnemonic',
       asset: {
         mnemonic: this.state.mnemonic,
         password: this.state.password

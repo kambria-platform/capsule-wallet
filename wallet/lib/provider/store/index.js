@@ -1,7 +1,9 @@
 var localStorage = require('./localStorage');
 var sessionStorage = require('./sessionStorage'); // Recommend to use
+var cache = require('./cache');
 
 module.exports = {
-  localStorage,
-  sessionStorage
+  localStorage: localStorage,
+  sessionStorage: sessionStorage,
+  cache: cache
 }
