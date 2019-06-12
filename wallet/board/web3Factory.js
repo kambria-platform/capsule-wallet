@@ -158,7 +158,7 @@ class Web3Factory {
       case 'isoxys':
         let isoxys = new Isoxys(window.capsuleWallet.net, state.type, true);
         let accOpts = { getPassphrase: window.capsuleWallet.getPassphrase.open };
-        isoxys.setWallet(accOpts, function (er, re) {
+        return isoxys.setWallet(accOpts, function (er, re) {
           if (er) return callback(er, null);
           return callback(null, isoxys);
         });

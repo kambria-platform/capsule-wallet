@@ -151,7 +151,7 @@ class CapsuleWallet extends Component {
   }
 
   onError(er) {
-    return this.setState({ error: er, step: 'Error' }, () => {
+    return this.setState({ visible: true, error: er, step: 'Error' }, () => {
       this.FSM.reset();
     });
   }
