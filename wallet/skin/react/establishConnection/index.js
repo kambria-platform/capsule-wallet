@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import MewAsset from './mew';
+import MarrellaAsset from './marrella';
 
 // Setup CSS Module
 import classNames from 'classnames/bind';
@@ -7,7 +8,8 @@ import style from '../../static/style/index.module.css';
 var cx = classNames.bind(style);
 
 const MENU = [
-  { key: 'mew', label: 'MEW', icon: 'mew-solid', status: 'active', css: '' },
+  { key: 'mew', label: 'MEW', icon: 'mew', status: 'active', css: '' },
+  { key: 'marrella', label: 'Marrella', icon: 'marrella', status: 'active', css: '' },
   { key: 'back', label: 'Back', icon: 'arrow-left', status: 'standard', css: 'ml-auto' },
 ];
 
@@ -52,6 +54,7 @@ class EstablishConnection extends Component {
 
   device() {
     if (this.state.subType === 'mew') return <MewAsset done={this.onConnect} />
+    if (this.state.subType === 'marrella') return <MarrellaAsset done={this.onConnect} />
   }
 
   render() {

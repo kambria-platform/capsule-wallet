@@ -125,22 +125,6 @@ i.metamask {
   }
 }
 
-i.mew {
-  background-image: url("../images/mew.png");
-  background-repeat: no-repeat;
-  background-size: 50%;
-  background-position: center;
-  width: 100%;
-  padding-top: 100%;
-  display: inline-flex;
-  cursor: pointer;
-  transition: background-size 0.15s ease-out;
-
-  &:hover {
-    background-size: 53%;
-  }
-}
-
 i.hardwallet {
   background-image: url("../images/pendrive.svg");
   background-repeat: no-repeat;
@@ -157,8 +141,24 @@ i.hardwallet {
   }
 }
 
+i.hybridwallet {
+  background-image: url("../images/lock.svg");
+  background-repeat: no-repeat;
+  background-size: 50%;
+  background-position: center;
+  width: 100%;
+  padding-top: 100%;
+  display: inline-flex;
+  cursor: pointer;
+  transition: background-size 0.15s ease-out;
+
+  &:hover {
+    background-size: 53%;
+  }
+}
+
 i.softwallet {
-  background-image: url("../images/binary-code.svg");
+  background-image: url("../images/folder.svg");
   background-repeat: no-repeat;
   background-size: 50%;
   background-position: center;
@@ -195,10 +195,21 @@ i.trezor {
   cursor: pointer;
 }
 
-i.mew-solid {
+i.marrella {
+  background-image: url("../images/kambria-solid.svg");
+  background-repeat: no-repeat;
+  background-size: 60%;
+  background-position: center;
+  width: 2em;
+  height: 100%;
+  display: inline-flex;
+  cursor: pointer;
+}
+
+i.mew {
   background-image: url("../images/mew-solid.svg");
   background-repeat: no-repeat;
-  background-size: 50%;
+  background-size: 60%;
   background-position: center;
   width: 2em;
   height: 100%;

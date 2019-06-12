@@ -21,9 +21,9 @@ class SellectWallet extends Component {
 
     this.onClose = this.onClose.bind(this);
     this.onMetamask = this.onMetamask.bind(this);
-    this.onLedger = this.onLedger.bind(this);
-    this.onIsoxys = this.onIsoxys.bind(this);
-    this.onMew = this.onMew.bind(this);
+    this.onHardwallet = this.onHardwallet.bind(this);
+    this.onSoftwallet = this.onSoftwallet.bind(this);
+    this.onHybridwallet = this.onHybridwallet.bind(this);
   }
 
   onClose() {
@@ -48,24 +48,24 @@ class SellectWallet extends Component {
     });
   }
 
-  onLedger() {
+  onHardwallet() {
     this.setState({ visible: false });
     let type = 'hardwallet';
     let wallet = 'ledger';
     this.done(null, { wallet: wallet, type: type });
   }
 
-  onIsoxys() {
-    this.setState({ visible: false });
-    let type = 'softwallet';
-    let wallet = 'isoxys';
-    this.done(null, { wallet: wallet, type: type });
-  }
-
-  onMew() {
+  onHybridwallet() {
     this.setState({ visible: false });
     let type = 'hybridwallet';
     let wallet = 'mew';
+    this.done(null, { wallet: wallet, type: type });
+  }
+
+  onSoftwallet() {
+    this.setState({ visible: false });
+    let type = 'softwallet';
+    let wallet = 'isoxys';
     this.done(null, { wallet: wallet, type: type });
   }
 
@@ -86,19 +86,19 @@ class SellectWallet extends Component {
             </div>
           </div>
           <div className={cx("col-6", "col-sm-3", "col-lg")}>
-            <div className={cx("box", "active")} onClick={this.onLedger}>
+            <div className={cx("box", "active")} onClick={this.onHardwallet}>
               <i className={cx("hardwallet")} />
               <p>Hardwallet</p>
             </div>
           </div>
           <div className={cx("col-6", "col-sm-3", "col-lg")}>
-            <div className={cx("box", "active")} onClick={this.onMew}>
-              <i className={cx("mew")} />
-              <p>MEW</p>
+            <div className={cx("box", "active")} onClick={this.onHybridwallet}>
+              <i className={cx("hybridwallet")} />
+              <p>Hybridwallet</p>
             </div>
           </div>
           <div className={cx("col-6", "col-sm-3", "col-lg")}>
-            <div className={cx("box", "negative")} onClick={this.onIsoxys}>
+            <div className={cx("box", "negative")} onClick={this.onSoftwallet}>
               <i className={cx("softwallet")} />
               <p>Softwallet</p>
             </div>
