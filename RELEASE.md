@@ -1,6 +1,6 @@
 # RELEASE LOG
 
-## 1.10.0
+## 1.1.0
 
 * Major release.
 
