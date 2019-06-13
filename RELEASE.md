@@ -1,18 +1,24 @@
 # RELEASE LOG
 
-## 1.0.11
+## 1.10.0
 
-* Minor release.
+* Major release.
 
 ### Fixes
 
+* Update the documents.
 * Remove subtitle and testing logo.
-* Normalize the exported instance of modules.
+* Beautify Softwallet icon.
 * To avoid mistaking the package funtionality, we decided to change the title from "Capsule Wallet" to "Capsule Bridge".
 
 ### Enhancements
 
 * Support Goerli network (Network ID is 5️⃣).
+* Support Page-Refreshing, that led us to introduce `window.capsuleWallet.logout()` function, new `props` includes `networkId, restrictedNetwork, pageRefreshing`.
+* Group MEW to the type of Hybridwallet.
+* A 🎁 would be hidden for fun, let's find it.
+* [DEVELOPER TRIGGED] We unified the way of generating `web3` instance by `web3Factory`.
+* [DEVELOPER TRIGGED] Use `sessionStorage` as a safe way for cache. Then we can say goodbye to `node-cache`.
 
 ---
 

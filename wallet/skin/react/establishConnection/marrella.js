@@ -38,8 +38,10 @@ class MarrellaAsset extends Component {
         </div>
         <div className={cx("row", "mb-3")}>
           <div className={cx("col-6", "col-md-8", "col-lg-9", "d-flex", "align-items-end")}>
-            <p className={cx("text-left")}>Woohoo! You find out a easter egg.</p>
-            <p className={cx("text-left")}>Marrella wallet is powered by Kambria and we are bringing it to you, very soon.</p>
+            <p className={cx("text-left")}>
+              Woohoo! You found out the 🎁. This is Marrella wallet.<br />
+              Marrella is powered by Kambria and we are bringing it to you, very soon.
+            </p>
           </div>
           {/* <div className={cx("col-6", "col-md-8", "col-lg-9", "d-flex", "align-items-end")}>
             <p className={cx("text-left", { "warning": this.state.message === STATUS.FAIL })}>{this.state.message}</p>

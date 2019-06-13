@@ -29,7 +29,7 @@ class Header extends Component {
         <div className={cx("container", "h-100")}>
           <div className={cx("h-100", "d-flex", "flex-column")}>
             <div className={cx("row")}>
-              <h1 className={cx("font-weight-bold", "secondary")}>CAPSULE BRIDGE</h1>
+              <h1 className={cx("font-weight-bold", "secondary")}>Capsule Bridge</h1>
             </div>
             <div className={cx("row", "flex-grow-1", "justify-content-end", "align-items-end")}>
               {this.net()}

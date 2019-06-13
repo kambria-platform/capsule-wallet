@@ -21,7 +21,10 @@ npm install --save capsule-wallet
 Capsule Wallet component has 3 props:
 
 * `visible`: takes boolean value to toogle the process.
-* `net`: Ethereum network id [(Network id detail)](https://ethereum.stackexchange.com/questions/17051/how-to-select-a-network-id-or-is-there-a-list-of-network-ids).
+* `options`: includes `networkId`, `restrictedNetwork` and `pageRefreshing`.
+  * `networkId`: <Number> Ethereum network id [(Network id detail)](https://ethereum.stackexchange.com/questions/17051/how-to-select-a-network-id-or-is-there-a-list-of-network-ids). Default: `1`.
+  * `restrictedNetwork`: <Boolean> Allow or not changing network when operating (mostly for Metamask). Default: `true`.
+  * `pageRefreshing`: <Boolean> Support or not Page-Refreshing. Default: `false`.
 * `done`: callback function that returns the provider when register had done.
 
 ```
@@ -30,7 +33,7 @@ import Wallet from 'capsule-wallet';
 // ... Something React here
 
 render() {
-  <Wallet visible={visible} net={networkId} done={callback} />
+  <Wallet visible={visible} options={options} done={callback} />
 }
 ```
 
@@ -47,6 +50,41 @@ import { Metamask, MEW, Ledger, Isoxys, Trezor } from 'capsule-wallet';
 Following the API section below to see the configuration for using the modules.
 
 # API
+
+## Fetch account info
+
+After received a `provider` instance by `done` prop. You can fetch account info by `fetch` function.
+
+```
+window.capsuleWallet.provider.fetch().then(result => {
+  console.log('Result:', result);
+}).catch(error => {
+  console.log('Error:', error);
+});
+```
+
+## Watch changes of account info
+
+After received a `provider` instance by `done` prop. You can watch account info if any changes by `watch` function.
+
+```
+window.capsuleWallet.provider.watch().then(watcher => {
+  watcher.event.on('data', result => {
+    console.log('Result:', result);
+  });
+  watcher.event.on('error', error => {
+    console.log('Error:', error);
+  });
+}).catch(er => {
+  console.log('Error:', error);
+});
+```
+
+To stop watching,
+
+```
+watcher.stopWatching();
+```
 
 ## Metamask module
 
@@ -240,7 +278,12 @@ class Example extends Component {
   constructor() {
     super();
     this.state = {
-      visible: false
+      visible: false,
+      options: {
+        networkId: 4,
+        restrictedNetwork: true,
+        pageRefreshing: true
+      }
     }
 
     this.register = this.register.bind(this);
@@ -252,17 +295,18 @@ class Example extends Component {
   }
 
   done(er, provider) {
-    if (er) return console.error(er)
+    if (er) return console.error(er);
+    if(!provider) return console.error('User skipped to connect to the wallet');
 
-    console.log('Web3:', provider.web3)
-    console.log('Also web3:', window.capsuleWallet.provider.web3)
+    console.log('Web3:', provider.web3);
+    console.log('Also web3:', window.capsuleWallet.provider.web3);
   }
 
   render() {
     return (
       <div>
         <button onClick={this.register}>Register</button>
-        <Wallet visible={this.state.visible} net={4} done={this.done} />
+        <Wallet visible={this.state.visible} options={this.state.options} done={this.done} />
       </div>
     );
   }
