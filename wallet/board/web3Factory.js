@@ -25,7 +25,9 @@ class Web3Factory {
   }
 
   clearSession() {
-    this.store.clear();
+    window.sessionStorage.removeItem('CAPSULE-MAINTAINER');
+    window.sessionStorage.removeItem('CAPSULE-CACHE');
+    window.sessionStorage.removeItem('CAPSULE-ISOXYS');
   }
 
   generate(state, callback) {

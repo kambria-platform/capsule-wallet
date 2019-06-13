@@ -66,7 +66,7 @@ class TestWallet extends Component {
 
   done(er, provider) {
     if (er) return this.setState({ error: JSON.stringify(er) });
-    if (!provider) return this.setState({ error: 'Use skip the registration' });
+    if (!provider) return console.log('Use skip the registration');
 
     let self = this;
     window.capsuleWallet.provider.watch().then(watcher => {
@@ -74,7 +74,6 @@ class TestWallet extends Component {
         return self.setState(re);
       });
       watcher.event.on('error', er => {
-        if (er === 'User has logged out') watcher.stopWatching();
         return self.setState({ error: JSON.stringify(er) });
       });
     }).catch(er => {

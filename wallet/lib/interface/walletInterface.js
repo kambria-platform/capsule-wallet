@@ -115,6 +115,8 @@ class WalletInterface {
     var self = this;
     return new Promise((resolve) => {
       var watchCurrentAccount = setInterval(() => {
+        if (!window.capsuleWallet.isConnected) return stopWatching();
+
         // Watch switching network event
         self.getNetwork().then(re => {
           if (self.restricted) {
