@@ -1,3 +1,9 @@
+@import url("https://fonts.googleapis.com/css?family=Raleway");
+
 .secondary {
   color: blue !important;
+}
+
+* {
+  font-family: 'Raleway', serif;
 }

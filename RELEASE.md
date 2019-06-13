@@ -9,7 +9,8 @@
 * Update the documents.
 * Remove subtitle and testing logo.
 * Beautify Softwallet icon.
-* To avoid mistaking the package funtionality, we decided to change the title from "Capsule Wallet" to "Capsule Bridge".
+* To avoid mistaking the package funtionality 🤯, we decided to change the title from "Capsule Wallet" to "Capsule Bridge".
+* No longer use a seperate font, for now we will follow the font in your sides.
 
 ### Enhancements
 
