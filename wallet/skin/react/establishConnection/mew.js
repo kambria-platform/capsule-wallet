@@ -22,7 +22,7 @@ class MewAsset extends Component {
       message: STATUS.INIT,
     }
 
-    this.mew = new MEW(window.capsuleWallet.net, 'hybridwallet', true);
+    this.mew = new MEW(window.capsuleWallet.networkId, 'hybridwallet', true);
     this.establishTheConnection = this.establishTheConnection.bind(this);
   }
 

@@ -7,7 +7,7 @@ const ERROR = 'No address found';
 class ConfirmAddressHelper {
 
   static getAddressByIsoxys(data, dpath, limit, page) {
-    var isoxys = new Isoxys(window.capsuleWallet.net, data.type, true);
+    var isoxys = new Isoxys(window.capsuleWallet.networkId, data.type, true);
     return new Promise((resolve, reject) => {
       switch (data.model) {
         // Mnemonic
@@ -47,7 +47,7 @@ class ConfirmAddressHelper {
   }
 
   static getAddressByLedger(data, dpath, limit, page) {
-    var ledger = new Ledger(window.capsuleWallet.net, data.type, true);
+    var ledger = new Ledger(window.capsuleWallet.networkId, data.type, true);
     return new Promise((resolve, reject) => {
       switch (data.model) {
         // Ledger Nano S
@@ -68,7 +68,7 @@ class ConfirmAddressHelper {
   }
 
   static getAddressByTrezor(data, dpath, limit, page) {
-    var trezor = new Trezor(window.capsuleWallet.net, data.type, true);
+    var trezor = new Trezor(window.capsuleWallet.networkId, data.type, true);
     return new Promise((resolve, reject) => {
       switch (data.model) {
         // Trezor One

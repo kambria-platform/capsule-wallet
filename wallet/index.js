@@ -35,6 +35,11 @@ const DEFAULT_STATE = {
   authetication: false,
   qrcode: null,
 }
+const DEFAULT_OPT = {
+  networkId: 1,
+  restrictedNetwork: true,
+  pageRefreshing: false
+}
 
 
 class CapsuleWallet extends Component {
@@ -46,15 +51,14 @@ class CapsuleWallet extends Component {
    */
   constructor(props) {
     super(props);
-    let self = this;
-
-    this.FSM = new FiniteStateMachine();
-    this.W3F = new Web3Factory(true);
-
+    this.options = { ...DEFAULT_OPT, ...props.options }
     this.state = {
       ...DEFAULT_STATE,
       step: this.props.visible ? this.FSM.next().step : 'Idle'
     };
+
+    this.FSM = new FiniteStateMachine();
+    this.W3F = new Web3Factory(this.options.restrictedNetwork, this.options.pageRefreshing);
 
     this.done = this.props.done;
     this.onData = this.onData.bind(this);
@@ -64,8 +68,9 @@ class CapsuleWallet extends Component {
     /**
      * Group of global functions
      */
+    let self = this;
     window.capsuleWallet = { author: 'Tu Phan', git: 'https://github.com/kambria-platform/capsule-wallet' }
-    window.capsuleWallet.net = this.props.net ? this.props.net : 1; // mainnet as default;
+    window.capsuleWallet.networkId = this.options.networkId; // mainnet as default;
     window.capsuleWallet.getPassphrase = {
       open: function (callback) {
         self.setState({ passphrase: false, returnPassphrase: null }, () => {
@@ -96,6 +101,12 @@ class CapsuleWallet extends Component {
       let state = self.FSM.back();
       return self.setState({ step: state.step });
     }
+    window.capsuleWallet.isConnected = false;
+    window.capsuleWallet.logout = function () {
+      self.W3F.clearSession();
+      window.capsuleWallet.isConnected = false;
+      window.capsuleWallet.provider = null;
+    }
   }
 
   componentDidMount() {
@@ -103,8 +114,8 @@ class CapsuleWallet extends Component {
     let self = this;
     let session = this.W3F.isSessionMaintained();
     if (session) this.W3F.regenerate(session, function (er, provider) {
-      if (er) return self.onError(er);
-
+      if (er) return;
+      window.capsuleWallet.isConnected = true;
       window.capsuleWallet.provider = provider;
       return self.done(null, provider);
     });
@@ -124,24 +135,20 @@ class CapsuleWallet extends Component {
   onData(er, re) {
     // User meets error in processing
     if (er) return this.onError(er);
-    // User skips the registration.
-    if (!re) return this.onClose(() => {
-      this.done(null, null);
-    });
 
     // Heros are working :)
     // Move to next step
     let state = this.FSM.next(re);
 
     // Run to next step
+    let self = this;
     // Error case
     if (state.step === 'Error') return this.onError(ERROR);
     // Success case
     if (state.step === 'Success') return this.onClose(() => {
-      let self = this;
       this.W3F.generate(state, function (er, provider) {
         if (er) return self.onError(er);
-
+        window.capsuleWallet.isConnected = true;
         window.capsuleWallet.provider = provider;
         return self.done(null, provider);
       });
@@ -159,10 +166,10 @@ class CapsuleWallet extends Component {
   onClose(callback) {
     this.setState({ visible: true }, () => {
       this.setState({ visible: false }, () => {
-        if (callback) callback();
         this.setState(DEFAULT_STATE, () => {
           this.FSM.reset();
         });
+        if (callback) callback();
       });
     });
   }
@@ -173,7 +180,7 @@ class CapsuleWallet extends Component {
         <Modal visible={this.state.visible} className={cx("animated", "slideInUp")} >
           <div className={cx("modal-body", "wallet")}>
             <div className={cx("row", "justify-content-end")}>
-              <button className={cx("close-btn")} onClick={() => this.onClose()} />
+              <button className={cx("close-btn")} onClick={() => this.onClose(this.done)} />
             </div>
             <div className={cx("container")}>
               <Header />
@@ -183,7 +190,7 @@ class CapsuleWallet extends Component {
               {this.state.step === 'ConnectDevice' ? <ConnectDevice data={this.FSM.data} done={this.onData} /> : null}
               {this.state.step === 'ConfirmAddress' ? <ConfirmAddress data={this.FSM.data} done={this.onData} /> : null}
               {this.state.step === 'Error' ? <ErrorForm error={this.state.error} done={() => this.onClose(() => { this.done(this.state.error, null) })} /> : null}
-              <Footer skip={() => this.onClose()} />
+              <Footer skip={() => this.onClose(this.done)} />
             </div>
           </div>
           <Author />

@@ -13,7 +13,7 @@ class Header extends Component {
   }
 
   net() {
-    let net = util.getNetworkId(window.capsuleWallet.net, 'string');
+    let net = util.getNetworkId(window.capsuleWallet.networkId, 'string');
     let Net = net.charAt(0).toUpperCase() + net.slice(1)
     return (
       <div className={cx("box-line", net)}>

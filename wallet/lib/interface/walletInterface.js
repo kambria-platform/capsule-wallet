@@ -47,6 +47,7 @@ class WalletInterface {
     var self = this;
     return new Promise((resolve, reject) => {
       self.web3.version.getNetwork((er, re) => {
+        if (!window.capsuleWallet.isConnected) return reject(ERROR.USER_LOGOUT);
         if (er) return reject(er);
         return resolve(re);
       });
@@ -59,8 +60,7 @@ class WalletInterface {
   getAccount() {
     var self = this;
     return new Promise((resolve, reject) => {
-      if (this.type === TYPE.HARDWALLET && this.user.account) return resolve(this.user.account);
-
+      if (!window.capsuleWallet.isConnected) return reject(ERROR.USER_LOGOUT);
       this.web3.eth.getAccounts((er, re) => {
         if (er) return reject(er);
         if (re.length <= 0 || !re[0] || !self.isAddress(re[0])) return reject(ERROR.CANNOT_GET_ACCOUNT);
@@ -76,7 +76,8 @@ class WalletInterface {
   getBalance(address) {
     var self = this;
     return new Promise((resolve, reject) => {
-      if (!self.isAddress(address)) return reject(ERROR.CANNOT_GET_BALANCE);
+      if (!window.capsuleWallet.isConnected) return reject(ERROR.USER_LOGOUT);
+      if (!self.isAddress(address)) return reject(ERROR.INVALID_ADDRESS);
       self.web3.eth.getBalance(address, (er, re) => {
         if (er) return reject(er);
         return resolve(Number(re));
@@ -156,7 +157,7 @@ class WalletInterface {
           self.user.balance = null;
           return self.emitter.emit('error', er);
         });
-      }, 2000);
+      }, 3000);
 
       var stopWatching = function () {
         clearInterval(watchCurrentAccount);

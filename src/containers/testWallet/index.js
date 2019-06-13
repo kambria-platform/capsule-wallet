@@ -5,7 +5,7 @@ import Wallet from 'capsule-wallet';
 import style from './index.module.css';
 
 const NET = {
-  MAINET: {
+  MAINNET: {
     id: 1,
     etherscan: ''
   },
@@ -22,22 +22,32 @@ const NET = {
     etherscan: 'rinkeby.'
   },
 }
+
+const DEFAULT_STATE = {
+  visible: false,
+  network: null,
+  account: null,
+  balance: null,
+  txId: null,
+  error: null
+}
+
 class TestWallet extends Component {
   constructor() {
     super();
-    this.state = {
-      visible: false,
-      provider: null,
-      network: null,
-      account: null,
-      balance: null,
-      txId: null,
-      error: null
-    }
+    this.state = DEFAULT_STATE;
 
-    this.net = NET.RINKEBY;
+    // Test params here
+    this.net = 'RINKEBY';
+    this.options = {
+      networkId: NET[this.net].id,
+      restrictedNetwork: true,
+      pageRefreshing: true
+    };
+
+    this.done = this.done.bind(this)
     this.register = this.register.bind(this);
-    this.done = this.done.bind(this);
+    this.logout = this.logout.bind(this);
     this.sendTx = this.sendTx.bind(this);
   }
 
@@ -50,34 +60,36 @@ class TestWallet extends Component {
     else this.setState({ visible: true });
   }
 
-  done(er, provider) {
-    var self = this;
-    if (er) return this.setState({ error: JSON.stringify(er) });
+  logout() {
+    window.capsuleWallet.logout();
+  }
 
-    provider.watch().then(watcher => {
+  done(er, provider) {
+    if (er) return this.setState({ error: JSON.stringify(er) });
+    if (!provider) return this.setState({ error: 'Use skip the registration' });
+
+    let self = this;
+    window.capsuleWallet.provider.watch().then(watcher => {
       watcher.event.on('data', re => {
-        console.log("DEBUG", re)
         return self.setState(re);
       });
       watcher.event.on('error', er => {
-        console.log("DEBUG", er)
+        if (er === 'User has logged out') watcher.stopWatching();
         return self.setState({ error: JSON.stringify(er) });
       });
     }).catch(er => {
       return self.setState({ error: JSON.stringify(er) });
     });
-
-    return this.setState({ provider: provider });
   }
 
   sendTx() {
     var self = this;
-    this.state.provider.web3.eth.sendTransaction({
+    window.capsuleWallet.provider.web3.eth.sendTransaction({
       from: self.state.account,
       to: '0x5a926b235e992d6ba52d98415e66afe5078a1690',
       value: '1000000000000000'
     }, function (er, txId) {
-      if (er) return self.setState({ error: JSON.stringify(er), txId: null });
+      if (er) return self.setState({ error: JSON.stringify(er) });
       return self.setState({ txId: txId.toString(), error: null });
     });
   }
@@ -92,11 +104,15 @@ class TestWallet extends Component {
           <p>Network: {this.state.network}</p>
           <p>Account: {this.state.account}</p>
           <p>Balance: {this.state.balance}</p>
-          <p>Previous tx id: <a target="_blank" rel="noopener noreferrer" href={`https://${this.net.etherscan}etherscan.io/tx/${this.state.txId}`}>{this.state.txId}</a></p>
+          <p>Previous tx id: <a target="_blank" rel="noopener noreferrer" href={`https://${NET[this.net].etherscan}etherscan.io/tx/${this.state.txId}`}>{this.state.txId}</a></p>
           <button onClick={this.sendTx}>Send Tx</button>
+          <button onClick={this.logout}>Logout</button>
           {this.state.error ? <p>{this.state.error}</p> : null}
         </div>
-        <Wallet visible={this.state.visible} net={this.net.id} done={this.done} />
+        <Wallet
+          visible={this.state.visible}
+          options={this.options}
+          done={this.done} />
       </div>
     );
   }

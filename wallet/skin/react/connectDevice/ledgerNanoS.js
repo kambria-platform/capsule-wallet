@@ -29,7 +29,7 @@ class LedgerNanoSAsset extends Component {
     var self = this;
     this.setState({ message: STATUS.TEST, loading: true }, () => {
       // Fetch the first address to know whether devide connected
-      var ledger = new Ledger(window.capsuleWallet.net, 'hardwallet', true);
+      var ledger = new Ledger(window.capsuleWallet.networkId, 'hardwallet', true);
       ledger.getAccountsByLedgerNanoS("m/44'/60'/0'/0", 1, 0, function (er, re) {
         if (er || re.lenght <= 0) return self.setState({ message: STATUS.FAIL, loading: false });
         return self.props.done({ wallet: 'ledger', model: 'ledger-nano-s' });
