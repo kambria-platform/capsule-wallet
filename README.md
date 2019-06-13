@@ -24,7 +24,7 @@ Capsule Wallet component has 3 props:
 * `options`: includes `networkId`, `restrictedNetwork` and `pageRefreshing`.
   * `networkId`: <Number> Ethereum network id [(Network id detail)](https://ethereum.stackexchange.com/questions/17051/how-to-select-a-network-id-or-is-there-a-list-of-network-ids). Default: `1`.
   * `restrictedNetwork`: <Boolean> Allow or not changing network when operating (Mostly for Metamask, in case of `false`, if you change the network, it would not release any error). Default: `true`.
-  * `pageRefreshing`: <Boolean> Support or not Page-Refreshing (if `true` your account will be kept at the end of session even though window refreshing). Default: `false`.
+  * `pageRefreshing`: <Boolean> Support or not Page-Refreshing (if `true`, your account will be kept at the end of session even though window refreshing). Default: `false`.
 * `done`: callback function that returns the provider when register had done.
 
 ```
