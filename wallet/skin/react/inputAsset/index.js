@@ -68,9 +68,7 @@ class InputAsset extends Component {
             <div className={cx("row", "wallet-tab")}>
               {this.menu()}
             </div>
-            <div className={cx("wallet-form")}>
-              {this.asset()}
-            </div>
+            {this.asset()}
           </div>
         </div>
       </div>

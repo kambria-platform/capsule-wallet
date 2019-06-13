@@ -21,6 +21,10 @@ const NET = {
     id: 4,
     etherscan: 'rinkeby.'
   },
+  GOERLI: {
+    id: 5,
+    etherscan: 'goerli.'
+  },
 }
 
 const DEFAULT_STATE = {
