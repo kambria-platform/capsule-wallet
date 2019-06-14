@@ -103,7 +103,7 @@ class CapsuleWallet extends Component {
     }
     window.capsuleWallet.isConnected = false;
     window.capsuleWallet.logout = function () {
-      self.W3F.clearSession();
+      self.W3F.clearSession(true);
       window.capsuleWallet.isConnected = false;
       window.capsuleWallet.provider = null;
     }

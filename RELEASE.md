@@ -1,5 +1,20 @@
 # RELEASE LOG
 
+## 1.1.2
+
+* Major release.
+
+### Fixes
+
+* Update the documents.
+* Logout would delete everything even cache.
+
+### Enhancements
+
+* 
+
+---
+
 ## 1.1.1
 
 * Major release.

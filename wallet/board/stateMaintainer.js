@@ -42,13 +42,20 @@ class StateMaintainer {
     this.maintainer.setItem(ADDRESS.MAINTAINER, JSON.stringify(state));
   }
 
-  clearState() {
-    this._clearState();
+  clearState(strong) {
+    this._clearState(strong);
     this._emitEvent(EVENT.CLEAR_DATA);
   }
 
   _clearState() {
-    this.maintainer.removeItem(ADDRESS.MAINTAINER);
+    if (strong) {
+      this.maintainer.removeItem(ADDRESS.MAINTAINER);
+      this.maintainer.removeItem(ADDRESS.PROVIDER);
+      this.maintainer.removeItem(ADDRESS.CACHE);
+    }
+    else {
+      this.maintainer.removeItem(ADDRESS.MAINTAINER);
+    }
   }
 
   _shareState() {

@@ -26,8 +26,8 @@ class Web3Factory {
     return this.SM.getState(callback);
   }
 
-  clearSession() {
-    this.SM.clearState();
+  clearSession(strong) {
+    this.SM.clearState(strong);
   }
 
   generate(state, callback) {
