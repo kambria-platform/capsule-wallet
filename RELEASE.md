@@ -2,7 +2,7 @@
 
 ## 1.1.2
 
-* Major release.
+* Minor release.
 
 ### Fixes
 
@@ -11,7 +11,7 @@
 
 ### Enhancements
 
-* 
+* None
 
 ---
 
