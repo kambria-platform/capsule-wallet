@@ -11,7 +11,7 @@ module.exports = {
   INVALID_MNEMONIC: 'Invalid mnemonic',
   INVALID_SEED: 'Invalid seed',
   INVALID_TX: 'Invalid transaction',
-  UNSUPPORT_U2F: 'Browser did not support U2F',
+  UNSUPPORT_HARDWARE: 'Browser did not support hardware connection',
   CANNOT_CONNECT_HARDWARE: 'Cannot connect to hardware',
   CANNOT_SIGN_TX: 'Cannot sign the transaction',
   META_STATUS_UNSUPPORTED: 'metaStatus function was not supported by this kind of wallet',

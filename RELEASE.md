@@ -1,5 +1,20 @@
 # RELEASE LOG
 
+## 1.1.1
+
+* Major release.
+
+### Fixes
+
+* Update the documents.
+
+### Enhancements
+
+* New hero - StateMaintainer - came and supported session maintained in new tabs 🤝🤝🤝.
+* [DEVELOPER TRIGGED] Because of reliable reasons, U2F is preferred to use.
+
+---
+
 ## 1.1.0
 
 * Major release.

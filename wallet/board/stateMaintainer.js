@@ -49,8 +49,6 @@ class StateMaintainer {
 
   _clearState() {
     this.maintainer.removeItem(ADDRESS.MAINTAINER);
-    this.maintainer.removeItem(ADDRESS.PROVIDER);
-    this.maintainer.removeItem(ADDRESS.CACHE);
   }
 
   _shareState() {

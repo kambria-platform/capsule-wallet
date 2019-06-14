@@ -53,6 +53,7 @@ LedgerNanoS.signTransaction = function (dpath, txParams, callback) {
 
     eth.signTransaction(dpath, rawTx).then(re => {
       if (!re) return callback(error.CANNOT_CONNECT_HARDWARE, null);
+      
       return callback(null, re);
     }).catch(er => {
       return callback(er, null);
@@ -77,12 +78,12 @@ LedgerNanoS.getTransport = function (callback) {
 
   TransportWebUSB.isSupported().then(re => {
     webusbSupported = re;
-    return TransportU2F.isSupported()
+    return TransportU2F.isSupported();
   }).then(re => {
     u2fSupported = re;
-    if (webusbSupported) return TransportWebUSB.create();
     if (u2fSupported) return TransportU2F.create();
-    return callback(error.UNSUPPORT_U2F, null);
+    if (webusbSupported) return TransportWebUSB.create();
+    return callback(error.UNSUPPORT_HARDWARE, null);
   }).then(transport => {
     return callback(null, transport);
   }).catch(er => {
