@@ -7,6 +7,7 @@
 ### Fixes
 
 * Update the documents.
+* No longer using `prop-types` package.
 
 ### Enhancements
 
