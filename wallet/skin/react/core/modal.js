@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 // Setup CSS Module
 import classNames from 'classnames/bind';
@@ -25,22 +24,6 @@ function modalWillHide() {
 }
 
 class Modal extends React.Component {
-  static propTypes = {
-    children: PropTypes.node.isRequired,
-    onClickBackdrop: PropTypes.func,
-    visible: PropTypes.bool.isRequired,
-    wrapperProps: PropTypes.object, // eslint-disable-line react/forbid-prop-types
-    className: PropTypes.string,
-    dialogClassName: PropTypes.string
-  };
-
-  static defaultProps = {
-    onClickBackdrop: null,
-    wrapperProps: null,
-    className: null,
-    dialogClassName: null
-  };
-
   constructor(props) {
     super(props);
 
