@@ -396,7 +396,7 @@ The app will be run on port `3000` with `https` and support hot-loading. (If the
 ### Version of important dependencies
 
 ```
-"web3": "^0.20.6"
+"web3": "^0.20.7"
 ```
 
 ### Cheatsheet
