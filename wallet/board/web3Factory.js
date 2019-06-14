@@ -2,6 +2,7 @@ var Metamask = require('../lib/metamask');
 var Ledger = require('../lib/ledger');
 var Trezor = require('../lib/trezor');
 var Isoxys = require('../lib/isoxys');
+var StateMaintainer = require('./stateMaintainer');
 
 var ERROR = 'Invalid state';
 
@@ -9,25 +10,24 @@ class Web3Factory {
   constructor(restriedNetwork, pageRefreshing) {
     this.restriedNetwork = restriedNetwork;
     this.pageRefreshing = pageRefreshing;
-    this.store = window.sessionStorage;
+
+    this.StateMaintainer = new StateMaintainer();
 
     this.isSessionMaintained = this.isSessionMaintained.bind(this);
     this.clearSession = this.clearSession.bind(this);
     this.generate = this.generate.bind(this);
     this.regenerate = this.regenerate.bind(this);
 
-    if (!this.pageRefreshing) this.clearSession();
+    if (!this.pageRefreshing) this.StateMaintainer.clearState();
   }
 
   isSessionMaintained() {
     if (!this.pageRefreshing) return null;
-    return JSON.parse(this.store.getItem('CAPSULE-MAINTAINER'));
+    return this.StateMaintainer.getState();
   }
 
   clearSession() {
-    window.sessionStorage.removeItem('CAPSULE-MAINTAINER');
-    window.sessionStorage.removeItem('CAPSULE-CACHE');
-    window.sessionStorage.removeItem('CAPSULE-ISOXYS');
+    this.StateMaintainer.clearState();
   }
 
   generate(state, callback) {
@@ -36,13 +36,7 @@ class Web3Factory {
       if (er) return callback(er, null);
       if (self.pageRefreshing && state.step === 'Success') {
         // Not support Hybridwallet and Trezor yet
-        if (state.type !== 'hybridwallet') {
-          let data = JSON.parse(JSON.stringify(state));
-          delete data.step;
-          delete data.asset;
-          delete data.provider;
-          self.store.setItem('CAPSULE-MAINTAINER', JSON.stringify(data));
-        }
+        if (state.type !== 'hybridwallet') self.StateMaintainer.setState(state);
       }
       return callback(null, provider);
     }

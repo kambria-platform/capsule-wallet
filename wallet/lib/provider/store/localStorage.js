@@ -1,22 +1,18 @@
+var ADDRESS = require('./address');
+
 class LocalStorage {
 
-  static get(key) {
-    if (!key) return null;
-    return JSON.parse(window.localStorage.getItem(key));
+  static get() {
+    return JSON.parse(window.localStorage.getItem(ADDRESS.PROVIDER));
   }
 
-  static set(key, value) {
-    if (!key || !value) return console.error('Key or value is null');
-    return window.localStorage.setItem(key, JSON.stringify(value));
+  static set(value) {
+    if (!value) return console.error('Key or value is null');
+    return window.localStorage.setItem(ADDRESS.PROVIDER, JSON.stringify(value));
   }
 
-  static remove(key) {
-    if (!key) return console.error('Key is null');
-    return window.localStorage.removeItem(key);
-  }
-
-  static removeAll() {
-    return window.localStorage.clear();
+  static remove() {
+    return window.localStorage.removeItem(ADDRESS.PROVIDER);
   }
 }
 

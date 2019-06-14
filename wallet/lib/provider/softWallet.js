@@ -103,7 +103,7 @@ class SoftWallet {
         SALT: salt
       };
 
-      store.set('CAPSULE-ISOXYS', acc);
+      store.set(acc);
       return callback(null, acc);
     });
   }
@@ -157,17 +157,17 @@ class SoftWallet {
    * Functions for reading store
    */
   getAddress() {
-    let acc = store.get('CAPSULE-ISOXYS');
+    let acc = store.get();
     if (!acc || typeof acc !== 'object') return [];
     return [acc.ADDRESS];
   }
   getPrivateKey() { // the encrypted form of private key
-    let acc = store.get('CAPSULE-ISOXYS');
+    let acc = store.get();
     if (!acc || typeof acc !== 'object') return null;
     return acc.PRIVATEKEY;
   }
   getSalt() {
-    let acc = store.get('CAPSULE-ISOXYS');
+    let acc = store.get();
     if (!acc || typeof acc !== 'object') return null;
     return acc.SALT;
   }
