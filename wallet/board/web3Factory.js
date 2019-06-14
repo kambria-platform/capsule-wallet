@@ -11,23 +11,23 @@ class Web3Factory {
     this.restriedNetwork = restriedNetwork;
     this.pageRefreshing = pageRefreshing;
 
-    this.StateMaintainer = new StateMaintainer();
+    this.SM = new StateMaintainer();
 
     this.isSessionMaintained = this.isSessionMaintained.bind(this);
     this.clearSession = this.clearSession.bind(this);
     this.generate = this.generate.bind(this);
     this.regenerate = this.regenerate.bind(this);
 
-    if (!this.pageRefreshing) this.StateMaintainer.clearState();
+    if (!this.pageRefreshing) this.SM.clearState();
   }
 
-  isSessionMaintained() {
-    if (!this.pageRefreshing) return null;
-    return this.StateMaintainer.getState();
+  isSessionMaintained(callback) {
+    if (!this.pageRefreshing) return callback(null);
+    return this.SM.getState(callback);
   }
 
   clearSession() {
-    this.StateMaintainer.clearState();
+    this.SM.clearState();
   }
 
   generate(state, callback) {
@@ -36,7 +36,7 @@ class Web3Factory {
       if (er) return callback(er, null);
       if (self.pageRefreshing && state.step === 'Success') {
         // Not support Hybridwallet and Trezor yet
-        if (state.type !== 'hybridwallet') self.StateMaintainer.setState(state);
+        if (state.type !== 'hybridwallet') self.SM.setState(state);
       }
       return callback(null, provider);
     }

@@ -112,12 +112,13 @@ class CapsuleWallet extends Component {
   componentDidMount() {
     // Reconnect to wallet if still maintaining
     let self = this;
-    let session = this.W3F.isSessionMaintained();
-    if (session) this.W3F.regenerate(session, function (er, provider) {
-      if (er) return;
-      window.capsuleWallet.isConnected = true;
-      window.capsuleWallet.provider = provider;
-      return self.done(null, provider);
+    this.W3F.isSessionMaintained(session => {
+      if (session) self.W3F.regenerate(session, function (er, provider) {
+        if (er) return;
+        window.capsuleWallet.isConnected = true;
+        window.capsuleWallet.provider = provider;
+        return self.done(null, provider);
+      });
     });
   }
 

@@ -21,20 +21,18 @@ class StateMaintainer {
     this._emitEvent = this._emitEvent.bind(this);
 
     // Setup listener
-    if (window.addEventListener) {
-      // Modern browser
-      window.addEventListener('storage', this._handleEvent, false);
-    } else {
-      // IE8 and lower
-      window.attachEvent('onstorage', this._handleEvent);
-    };
-
-    // Ask other tabs for session storage (this is ONLY to trigger event)
-    if (!this.getState()) this._emitEvent(EVENT.GET_DATA);
+    window.addEventListener('storage', this._handleEvent, false);
   }
 
-  getState() {
-    return JSON.parse(this.maintainer.getItem(ADDRESS.MAINTAINER));
+  getState(callback) {
+    let data = JSON.parse(this.maintainer.getItem(ADDRESS.MAINTAINER));
+    if (data) return callback(data);
+    let self = this;
+    this._emitEvent(EVENT.GET_DATA);
+    setTimeout(function () {
+      data = JSON.parse(self.maintainer.getItem(ADDRESS.MAINTAINER));
+      return callback(data);
+    }, 1000);
   }
 
   setState(value) {
@@ -57,18 +55,23 @@ class StateMaintainer {
 
   _shareState() {
     let data = {};
-    data[ADDRESS.MAINTAINER] = this.maintainer.getItem(ADDRESS.MAINTAINER);
-    data[ADDRESS.PROVIDER] = this.maintainer.getItem(ADDRESS.PROVIDER);
-    data[ADDRESS.CACHE] = this.maintainer.getItem(ADDRESS.CACHE);
+    let MAINTAINER = this.maintainer.getItem(ADDRESS.MAINTAINER);
+    let PROVIDER = this.maintainer.getItem(ADDRESS.PROVIDER);
+    let CACHE = this.maintainer.getItem(ADDRESS.CACHE);
+    if (MAINTAINER) data[ADDRESS.MAINTAINER] = MAINTAINER;
+    if (PROVIDER) data[ADDRESS.PROVIDER] = PROVIDER;
+    if (CACHE) data[ADDRESS.CACHE] = CACHE;
     this.porter.setItem(ADDRESS.PORTER, JSON.stringify(data));
     this.porter.removeItem(ADDRESS.PORTER);
   }
 
   _handleEvent(event) {
     // I need data
-    if (event.key == ADDRESS.EVENT && event.newValue == EVENT.GET_DATA) this._shareState();
+    if (event.key == ADDRESS.EVENT && event.newValue == EVENT.GET_DATA)
+      this._shareState();
     // We clear data
-    if (event.key == ADDRESS.EVENT && event.newValue == EVENT.CLEAR_DATA) this._clearState();
+    if (event.key == ADDRESS.EVENT && event.newValue == EVENT.CLEAR_DATA)
+      this._clearState();
     // I will send you data
     if (event.key == ADDRESS.PORTER) {
       let data = JSON.parse(event.newValue);
@@ -80,7 +83,7 @@ class StateMaintainer {
 
   _emitEvent(event) {
     this.porter.setItem(ADDRESS.EVENT, event);
-    this.porter.removeItem(ADDRESS.EVENT, event);
+    this.porter.removeItem(ADDRESS.EVENT);
   }
 }
 
