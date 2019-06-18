@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-var Ledger = require('../../../lib/ledger');
+var { Ledger } = require('capsule-core-js');
 
 // Setup CSS Module
 import classNames from 'classnames/bind';

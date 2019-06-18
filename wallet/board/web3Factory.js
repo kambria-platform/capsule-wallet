@@ -1,7 +1,4 @@
-var Metamask = require('../lib/metamask');
-var Ledger = require('../lib/ledger');
-var Trezor = require('../lib/trezor');
-var Isoxys = require('../lib/isoxys');
+var { Metamask, Ledger, Trezor, Isoxys } = require('capsule-core-js');
 var StateMaintainer = require('./stateMaintainer');
 
 var ERROR = 'Invalid state';
@@ -26,8 +23,8 @@ class Web3Factory {
     return this.SM.getState(callback);
   }
 
-  clearSession(strong) {
-    this.SM.clearState(strong);
+  clearSession(all) {
+    this.SM.clearState(all);
   }
 
   generate(state, callback) {

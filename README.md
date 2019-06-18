@@ -39,235 +39,7 @@ render() {
 
 Returned provider will be assigned in `window.capsuleWallet.provider` as a global variable for your Dapp can access it anywhere.
 
-### Advance use:
-
-If you don't want to use the default UI or user flow, you could develop another one on the Capsule Wallet's core.
-
-```
-import { Metamask, MEW, Ledger, Isoxys, Trezor } from 'capsule-wallet';
-```
-
-Following the API section below to see the configuration for using the modules.
-
-# API
-
-## Fetch account info
-
-After received a `provider` instance by `done` prop. You can fetch account info by `fetch` function.
-
-```
-window.capsuleWallet.provider.fetch().then(result => {
-  console.log('Result:', result);
-}).catch(error => {
-  console.log('Error:', error);
-});
-```
-
-## Watch changes of account info
-
-After received a `provider` instance by `done` prop. You can watch account info if any changes by `watch` function.
-
-```
-window.capsuleWallet.provider.watch().then(watcher => {
-  watcher.event.on('data', result => {
-    console.log('Result:', result);
-  });
-  watcher.event.on('error', error => {
-    console.log('Error:', error);
-  });
-}).catch(er => {
-  console.log('Error:', error);
-});
-```
-
-To stop watching,
-
-```
-watcher.stopWatching();
-```
-
-## Metamask module
-
-```
-import { Metamask } from 'capsule-wallet';
-
-var net = 4 \\ Your network id
-var type = 'softwallet' \\ Don't modify it
-var restrictMode = true \\ If true, this mode won't allow network changing. If false, vice versa.
-
-var metamask = new Metamask(net, type, restrictMode);
-metamask.setAccountByMetamask(function (er, re) {
-  if (er) return console.error(er);
-
-  console.log('Provider instance is:', metamask);
-});
-```
-
-## MEW (MyEtherwallet) module
-
-```
-import { MEW } from 'capsule-wallet';
-
-var net = 4 \\ Your network id
-var type = 'hybridwallet' \\ Don't modify it
-var restrictMode = true \\ If true, this mode won't allow network changing. If false, vice versa.
-
-var getAuthentication = function(qrcode, callback) {
-  // This function is to show off the QRcode to user
-  // User must use MEW application on their phone to scan the QRcode and establish the connection
-  // When the connection is established, callback will be called
-}
-
-var mew = new MEW(net, type, restrictMode);
-mew.setAccountByMEW(getAuthentication, (er, re) => {
-  if (er) return console.error(er);
-
-  console.log('Provider instance is:', mew);
-});
-```
-
-## Isoxys module
-
-Isoxys is a group of software wallets. It includes mnemonic, keystore and private key. All of them are sensitive data, so we do not recommend to use it.
-
-```
-import { Isoxys } from 'capsule-wallet';
-
-var net = 4 \\ Your network id
-var type = 'softwallet' \\ Don't modify it
-var restrictMode = true \\ If true, this mode won't allow network changing. If false, vice versa.
-
-var getPassphrase = function(callback) {
-  // This function to show off the input form
-  // User must enter a temporary passphrase to protect the data in this session
-  // When user entered passphrase, return callback(null, passphrase)
-  // If denied, return callback('Reason msg', null)
-}
-
-var isoxys = new Isoxys(net, type, restrictMode);
-
-
-// Privatekey
-
-var privatekey = ... // Private key
-isoxys.getAccountByPrivatekey(privatekey, (er, address) => {
-  if (er) return console.error(er);
-
-  console.log('Address:', address);
-});
-
-var privatekey = ... // Private key
-isoxys.setAccountByPrivatekey(privatekey, getPassphrase, (er, re) => {
-  if (er) return console.error(er);
-
-  console.log('Provider instance is:', isoxys);
-});
-
-
-// Mnemonic
-
-var mnemonic = ... // Mnemonic string
-var password = ... // Mnemonic password
-var path = ... // Derivation path
-var limit = ... // The number of records in a page (pagination)
-var page = ... // Page index (pagination)
-isoxys.getAccountsByMnemonic(mnemonic, password, path, limit, page, (er, addresses) => {
-  if (er) return console.error(er);
-
-  console.log('Address list:', addresses);
-});
-
-var mnemonic = ... // Mnemonic string
-var password = ... // Mnemonic password
-var path = ... // Derivation path
-var index = ... // Derivation child index
-isoxys.setAccountByMnemonic(mnemonic, password, path, index, getPassphrase, (er, re) => {
-  if (er) return console.error(er);
-
-  console.log('Provider instance is:', isoxys);
-});
-
-
-// Keystore
-
-var input = ... // Json object of keystore
-var password = .. // Keystore password
-isoxys.getAccountByKeystore(input, password, (er, address) => {
-  if (er) return console.error(er);
-
-  console.log('Address:', address);
-});
-
-var input = ... // Json object of keystore
-var password = .. // Keystore password
-isoxys.setAccountByKeystore(input, password, getPassphrase, (er, re) => {
-  if (er) return console.error(er);
-
-  console.log('Provider instance is:', isoxys);
-});
-```
-
-## Ledger module
-
-```
-import { Ledger } from 'capsule-wallet';
-
-var net = 4 \\ Your network id
-var type = 'hardwallet' \\ Don't modify it
-var restrictMode = true \\ If true, this mode won't allow network changing. If false, vice versa.
-
-var ledger = new Ledger(net, type, restrictMode);
-
-var path = ... // Derivation path
-var limit = ... // The number of records in a page (pagination)
-var page = ... // Page index (pagination)
-ledger.getAccountsByLedgerNanoS(path, limit, page, (er, addresses) => {
-  if (er) return console.error(er);
-
-  console.log('Address list:', addresses);
-});
-
-var path = ... // Derivation path
-var index = ... // Derivation child index
-ledger.setAccountByLedgerNanoS(path, index, (er, re) => {
-  if (er) return console.error(er);
-
-  console.log('Provider instance is:', ledger);
-});
-```
-
-## Trezor module
-
-```
-import { Trezor } from 'capsule-wallet';
-
-var net = 4 \\ Your network id
-var type = 'hardwallet' \\ Don't modify it
-var restrictMode = true \\ If true, this mode won't allow network changing. If false, vice versa.
-
-var trezor = new Trezor(net, type, restrictMode);
-
-var path = ... // Derivation path
-var limit = ... // The number of records in a page (pagination)
-var page = ... // Page index (pagination)
-trezor.getAccountsByTrezorOne(path, limit, page, (er, addresses) => {
-  if (er) return console.error(er);
-
-  console.log('Address list:', addresses);
-});
-
-var path = ... // Derivation path
-var index = ... // Derivation child index
-trezor.setAccountByTrezorOne(path, index, (er, re) => {
-  if (er) return console.error(er);
-
-  console.log('Provider instance is:', trezor);
-});
-```
-
 # Examples
-
-## Basic example
 
 ```
 import React, { Component } from 'react';
@@ -315,75 +87,15 @@ class Example extends Component {
 export default Example;
 ```
 
-## Advance examples
+# How to test?
 
-```
-import React, { Component } from 'react';
-import { Isoxys } from 'capsule-wallet';
-
-const NETWORK = 'rinkeby';
-const TYPE = 'softwallet';
-const RESTRICT = true;
-
-const accOpts = {
-  mnemonic: 'expand lake',
-  password: null,
-  path: "m/44'/60'/0'/0",
-  i: 0
-}
-
-class Example extends Component {
-  constructor() {
-    super();
-
-    this.isoxys = new Isoxys(NETWORK, TYPE, RESTRICT);
-  }
-
-  componentDidMount() {
-    var self = this;
-    this.isoxys.setAccountByMnemonic(accOpts.mnemonic, accOpts.password, accOpts.path, accOpts.index, this.getPassphrase, (er, re) => {
-      if (er) return console.error(er);
-
-      console.log('Provider instance is:', self.isoxys);
-    });
-  }
-
-  getPassphrase(callback) {
-    var passphrase = window.prompt('Please enter passphrase:');
-    if (!passphrase) return callback('User denied signing transaction', null);
-    return callback(null, passphrase);
-  }
-}
-
-export default Example;
-```
-
-# For Contributors
-
-## The structure
-
-The `wallet` folder contains the main source code. It has 2 sub-folders namely `lib` and `skin`, `lib` contains source code of the zero clients, `skin` contains source code of React.
-
-The `src` folder contains test files. However, it can be viewed as an example, so
-to know how to use them, you can refer to `src/*` for details.
-
-## How to build library?
-
-```
-npm run build
-```
-
-The `index.js` file and `dist` folder would be the destination of compiling.
-
-## How to test?
-
-### Unit test
+## Unit test
 
 ```
 Not yet
 ```
 
-### Tool test
+## Tool test
 
 ```
 npm start
@@ -391,15 +103,15 @@ npm start
 
 The app will be run on port `3000` with `https` and support hot-loading. (If the browser asks something, please trust it and process straight forward)
 
-## Appendix
+# Appendix
 
-### Version of important dependencies
+## Version of important dependencies
 
 ```
 "web3": "^0.20.7"
 ```
 
-### Cheatsheet
+## Cheatsheet
 
 |   #   | Commands        | Descriptions                  |
 | :---: | --------------- | ----------------------------- |

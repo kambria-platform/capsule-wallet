@@ -1,4 +1,4 @@
-var { ADDRESS } = require('../lib/provider/store');
+var ADDRESS = require('./address');
 
 const EVENT = {
   GET_DATA: 'GET_DATA',
@@ -42,13 +42,13 @@ class StateMaintainer {
     this.maintainer.setItem(ADDRESS.MAINTAINER, JSON.stringify(state));
   }
 
-  clearState(strong) {
-    this._clearState(strong);
+  clearState(all) {
+    this._clearState(all);
     this._emitEvent(EVENT.CLEAR_DATA);
   }
 
-  _clearState() {
-    if (strong) {
+  _clearState(all) {
+    if (all) {
       this.maintainer.removeItem(ADDRESS.MAINTAINER);
       this.maintainer.removeItem(ADDRESS.PROVIDER);
       this.maintainer.removeItem(ADDRESS.CACHE);

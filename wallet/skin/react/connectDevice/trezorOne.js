@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-var Trezor = require('../../../lib/trezor');
+var { Trezor } = require('capsule-core-js');
 
 // Setup CSS Module
 import classNames from 'classnames/bind';

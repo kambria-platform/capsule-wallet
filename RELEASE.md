@@ -2,16 +2,16 @@
 
 ## 1.1.2
 
-* Minor release.
-
 ### Fixes
 
+* We stop saying something nonsense such as "Minor release", "Major release"
 * Update the documents.
 * Logout function would delete everything even cache.
 
 ### Enhancements
 
 * We decided the `pageRefreshing` parameter of options will be `true` in default.
+* Use `capsule-core-js` which detached from this repository and built as as separate repository.
 
 ---
 

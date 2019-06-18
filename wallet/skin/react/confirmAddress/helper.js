@@ -1,6 +1,4 @@
-var Isoxys = require('../../../lib/isoxys');
-var Ledger = require('../../../lib/ledger');
-var Trezor = require('../../../lib/trezor');
+var { Isoxys, Ledger, Trezor } = require('capsule-core-js');
 
 const ERROR = 'No address found';
 

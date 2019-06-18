@@ -5,7 +5,7 @@ import classNames from 'classnames/bind';
 import style from '../../static/style/index.module.css';
 var cx = classNames.bind(style);
 
-var util = require('../../../lib/util');
+var util = require('capsule-core-js/dist/util');
 
 class Header extends Component {
   constructor(props) {
