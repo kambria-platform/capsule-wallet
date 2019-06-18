@@ -38,7 +38,7 @@ const DEFAULT_STATE = {
 const DEFAULT_OPT = {
   networkId: 1,
   restrictedNetwork: true,
-  pageRefreshing: false
+  pageRefreshing: true
 }
 
 

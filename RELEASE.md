@@ -7,11 +7,11 @@
 ### Fixes
 
 * Update the documents.
-* Logout would delete everything even cache.
+* Logout function would delete everything even cache.
 
 ### Enhancements
 
-* None
+* We decided the `pageRefreshing` parameter of options will be `true` in default.
 
 ---
 
