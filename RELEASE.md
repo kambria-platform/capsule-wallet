@@ -4,7 +4,7 @@
 
 ### Fixes
 
-* We stop saying something nonsense such as "Minor release", "Major release"
+* We stop saying something nonsense such as "Minor release", "Major release".
 * Update the documents.
 * Logout function would delete everything even cache.
 * Replace package `node-sass` by `sass`.
@@ -12,7 +12,7 @@
 ### Enhancements
 
 * We decided the `pageRefreshing` parameter of options will be `true` in default.
-* Use `capsule-core-js` which detached from this repository and built as as separate repository.
+* Use `capsule-core-js` which detached from this repository and built as a separate repository.
 
 ---
 
