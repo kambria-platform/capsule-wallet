@@ -32,8 +32,7 @@ const DEFAULT_STATE = {
   network: null,
   account: null,
   balance: null,
-  txId: null,
-  error: null
+  txId: null
 }
 
 class TestWallet extends Component {
@@ -69,8 +68,8 @@ class TestWallet extends Component {
   }
 
   done(er, provider) {
-    if (er) return this.setState({ error: JSON.stringify(er) });
-    if (!provider) return console.log('Use skip the registration');
+    if (er) return console.error(er);
+    if (!provider) return console.error('Use skip the registration');
 
     let self = this;
     window.capsuleWallet.provider.watch().then(watcher => {
@@ -78,10 +77,10 @@ class TestWallet extends Component {
         return self.setState(re);
       });
       watcher.event.on('error', er => {
-        return self.setState({ error: JSON.stringify(er) });
+        if (er) return console.error(er);
       });
     }).catch(er => {
-      return self.setState({ error: JSON.stringify(er) });
+      if (er) return console.error(er);
     });
   }
 
@@ -92,7 +91,7 @@ class TestWallet extends Component {
       to: '0x5a926b235e992d6ba52d98415e66afe5078a1690',
       value: '1000000000000000'
     }, function (er, txId) {
-      if (er) return self.setState({ error: JSON.stringify(er) });
+      if (er) return console.error(er);
       return self.setState({ txId: txId.toString(), error: null });
     });
   }
