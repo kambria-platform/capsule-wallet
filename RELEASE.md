@@ -7,6 +7,7 @@
 * We stop saying something nonsense such as "Minor release", "Major release"
 * Update the documents.
 * Logout function would delete everything even cache.
+* Replace package `node-sass` by `sass`.
 
 ### Enhancements
 

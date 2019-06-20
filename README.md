@@ -107,6 +107,8 @@ The app will be run on port `3000` with `https` and support hot-loading. (If the
 
 ## Version of important dependencies
 
+Because we're using `capsule-core-js` which based on `web3@^0.20.7`, so we are.
+
 ```
 "web3": "^0.20.7"
 ```
