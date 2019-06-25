@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+var { Isoxys } = require('capsule-core-js');
 
 // Setup CSS Module
 import classNames from 'classnames/bind';
@@ -8,7 +9,9 @@ var cx = classNames.bind(style);
 const DEFAULT_STATE = {
   filename: '',
   keystore: null,
-  password: ''
+  password: '',
+  error: null,
+  loading: false
 }
 
 
@@ -23,6 +26,7 @@ class KeystoreAsset extends Component {
     this.handleChangeFile = this.handleChangeFile.bind(this);
     this.handleChangePassword = this.handleChangePassword.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.checkKeystore = this.checkKeystore.bind(this);
   }
 
   handleChangeFile(e) {
@@ -31,18 +35,32 @@ class KeystoreAsset extends Component {
     var read = new FileReader();
     read.readAsText(file);
     read.onloadend = function () {
-      self.setState({ filename: file.name, keystore: JSON.parse(read.result) });
+      self.setState({ filename: file.name, keystore: JSON.parse(read.result), error: null });
     }
   }
 
   handleChangePassword(e) {
-    this.setState({ password: e.target.value });
+    this.setState({ password: e.target.value, error: null });
   }
 
   handleSubmit() {
-    this.returnData2Parent();
-    // Clear history
-    this.setState(DEFAULT_STATE);
+    this.checkKeystore(ok => {
+      if (!ok) return this.setState({ error: 'Cannot decrypt your keystore!' });
+
+      this.returnData2Parent();
+    });
+  }
+
+  checkKeystore(callback) {
+    this.setState({ loading: true }, () => {
+      // Fetch the first address to know whether good file
+      var isoxys = new Isoxys(window.capsuleWallet.networkId, 'softwallet', true);
+      isoxys.getAccountByKeystore(this.state.keystore, this.state.password, (er, re) => {
+        this.setState({ loading: false });
+        if (er || re.lenght <= 0) return callback(false);
+        return callback(true);
+      });
+    });
   }
 
   returnData2Parent() {
@@ -53,6 +71,11 @@ class KeystoreAsset extends Component {
         password: this.state.password
       }
     });
+  }
+
+  componentWillUnmount() {
+    // Clear history
+    this.setState(DEFAULT_STATE);
   }
 
   render() {
@@ -90,7 +113,7 @@ class KeystoreAsset extends Component {
         </div>
         <div className={cx("row", "mb-3")}>
           <div className={cx("col-6", "col-md-8", "col-lg-9", "d-flex", "align-items-end")}>
-            <p className={cx("warning", "text-bottom")}></p>
+            <p className={cx("warning", "text-bottom")}>{this.state.error}</p>
           </div>
           <div className={cx("col-6", "col-md-4", "col-lg-3", "d-flex")}>
             <button className={cx("primary-btn")} onClick={this.handleSubmit}>OK</button>

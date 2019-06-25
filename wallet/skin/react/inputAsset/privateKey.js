@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+var { Isoxys } = require('capsule-core-js');
 
 // Setup CSS Module
 import classNames from 'classnames/bind';
@@ -6,7 +7,9 @@ import style from '../../static/style/index.module.css';
 var cx = classNames.bind(style);
 
 const DEFAULT_STATE = {
-  privateKey: ''
+  privateKey: '',
+  error: null,
+  loading: false
 }
 
 
@@ -20,16 +23,31 @@ class PrivateKeyAsset extends Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.checkPrivatekey = this.checkPrivatekey.bind(this);
   }
 
   handleChange(e) {
-    this.setState({ privateKey: e.target.value });
+    this.setState({ privateKey: e.target.value, error: null });
   }
 
   handleSubmit() {
-    this.returnData2Parent();
-    // Clear history
-    this.setState(DEFAULT_STATE);
+    this.checkPrivatekey(ok => {
+      if (!ok) return this.setState({ error: 'Invalid private key!' });
+
+      this.returnData2Parent();
+    });
+  }
+
+  checkPrivatekey(callback) {
+    this.setState({ loading: true }, () => {
+      // Fetch the first address to know whether good file
+      var isoxys = new Isoxys(window.capsuleWallet.networkId, 'softwallet', true);
+      isoxys.getAccountByPrivatekey(this.state.privateKey, (er, re) => {
+        this.setState({ loading: false });
+        if (er || re.lenght <= 0) return callback(false);
+        return callback(true);
+      });
+    });
   }
 
   returnData2Parent() {
@@ -39,6 +57,11 @@ class PrivateKeyAsset extends Component {
         privateKey: this.state.privateKey
       }
     });
+  }
+
+  componentWillUnmount() {
+    // Clear history
+    this.setState(DEFAULT_STATE);
   }
 
   render() {
@@ -62,7 +85,7 @@ class PrivateKeyAsset extends Component {
         </div>
         <div className={cx("row", "mb-3")}>
           <div className={cx("col-6", "col-md-8", "col-lg-9", "d-flex", "align-items-end")}>
-            <p className={cx("warning", "text-bottom")}></p>
+            <p className={cx("warning", "text-bottom")}>{this.state.error}</p>
           </div>
           <div className={cx("col-6", "col-md-4", "col-lg-3", "d-flex")}>
             <button className={cx("primary-btn")} onClick={this.handleSubmit}>OK</button>

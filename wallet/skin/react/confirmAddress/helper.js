@@ -1,6 +1,6 @@
 var { Isoxys, Ledger, Trezor } = require('capsule-core-js');
 
-const ERROR = 'No address found';
+const ERROR = 'Cannot load addresses';
 
 class ConfirmAddressHelper {
 

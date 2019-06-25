@@ -5,10 +5,11 @@
 .wallet {
   margin: 0;
   padding: 0;
-  background-image: linear-gradient($c-primary 445px, $c-white 0%);
-  -webkit-background-image: linear-gradient($c-primary 445px, $c-white 0%);
-  -moz-background-image: linear-gradient($c-primary 445px, $c-white 0%);
-  -o-background-image: linear-gradient($c-primary 445px, $c-white 0%);
+  background-color: $c-primary;
+  // background-image: linear-gradient($c-primary 445px, $c-white 0%);
+  // -webkit-background-image: linear-gradient($c-primary 445px, $c-white 0%);
+  // -moz-background-image: linear-gradient($c-primary 445px, $c-white 0%);
+  // -o-background-image: linear-gradient($c-primary 445px, $c-white 0%);
 }
 
 .wallet-header {

@@ -26,7 +26,7 @@
   },
   "homepage": "https://github.com/kambria-platform/capsule-wallet#readme",
   "dependencies": {
-    "capsule-core-js": "^1.0.2",
+    "capsule-core-js": "^1.0.3",
     "classnames": "^2.2.6",
     "qrcode.react": "^0.9.3"
   },

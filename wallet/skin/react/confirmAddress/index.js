@@ -6,16 +6,18 @@ import classNames from 'classnames/bind';
 import style from '../../static/style/index.module.css';
 var cx = classNames.bind(style);
 
-const ERROR = 'No address found';
-const LIMIT = 5, PAGE = 0;
+const ERROR = 'Cannot load addresses';
+const LIMIT = 6, PAGE = 0;
 const DEFAULT_HD_PATH = "m/44'/60'/0'/0";
 
 const DEFAULT_STATE = {
   addressList: [],
   i: 0,
+  dpath: DEFAULT_HD_PATH,
   limit: LIMIT,
   page: PAGE,
-  loading: false
+  loading: false,
+  error: null,
 }
 
 
@@ -30,7 +32,7 @@ class ConfirmAddress extends Component {
     this.done = this.props.done;
 
     this.getAddress = this.getAddress.bind(this);
-    this.onClose = this.onClose.bind(this);
+    this.onDpath = this.onDpath.bind(this);
     this.onConfirm = this.onConfirm.bind(this);
     this.onSelect = this.onSelect.bind(this);
     this.onPage = this.onPage.bind(this);
@@ -38,30 +40,24 @@ class ConfirmAddress extends Component {
 
   getAddress(data, limit, page, callback) {
     if (data.wallet === 'isoxys') {
-      this.setState({ loading: true }, function () {
-        ConfirmAddressHelper.getAddressByIsoxys(data, DEFAULT_HD_PATH, limit, page).then(re => {
-          return callback(null, re);
-        }).catch(er => {
-          if (er) return callback(ERROR, null);
-        });
+      ConfirmAddressHelper.getAddressByIsoxys(data, this.state.dpath, limit, page).then(re => {
+        return callback(null, re);
+      }).catch(er => {
+        if (er) return callback(ERROR, null);
       });
     }
     else if (data.wallet === 'ledger') {
-      this.setState({ loading: true }, function () {
-        ConfirmAddressHelper.getAddressByLedger(data, DEFAULT_HD_PATH, limit, page).then(re => {
-          return callback(null, re);
-        }).catch(er => {
-          if (er) return callback(ERROR, null);
-        });
+      ConfirmAddressHelper.getAddressByLedger(data, this.state.dpath, limit, page).then(re => {
+        return callback(null, re);
+      }).catch(er => {
+        if (er) return callback(ERROR, null);
       });
     }
     else if (data.wallet === 'trezor') {
-      this.setState({ loading: true }, function () {
-        ConfirmAddressHelper.getAddressByTrezor(data, DEFAULT_HD_PATH, limit, page).then(re => {
-          return callback(null, re);
-        }).catch(er => {
-          if (er) return callback(ERROR, null);
-        });
+      ConfirmAddressHelper.getAddressByTrezor(data, this.state.dpath, limit, page).then(re => {
+        return callback(null, re);
+      }).catch(er => {
+        if (er) return callback(ERROR, null);
       });
     }
     else {
@@ -73,13 +69,23 @@ class ConfirmAddress extends Component {
    * UI controllers
    */
 
-  onClose(er) {
-    return this.done(er, null);
+  onDpath(e) {
+    this.setState({ dpath: e.target.value }, () => {
+      if (this.timeout) clearTimeout(this.timeout);
+      this.timeout = setTimeout(() => {
+        this.setState({ loading: true }, () => {
+          this.getAddress(this.props.data, this.state.limit, this.state.page, (er, re) => {
+            if (er) return this.setState({ loading: false, error: er });
+            return this.setState({ loading: false, addressList: re, error: null });
+          });
+        });
+      }, 3000);
+    });
   }
 
   onConfirm() {
     let index = this.state.i + this.state.limit * this.state.page;
-    this.done(null, { dpath: DEFAULT_HD_PATH, index: index });
+    this.done(null, { dpath: this.state.dpath, index: index });
     this.setState(DEFAULT_STATE);
   }
 
@@ -92,20 +98,20 @@ class ConfirmAddress extends Component {
     if (page < 0) page = 0;
     if (page == this.state.page) return;
 
-    let self = this;
-    this.getAddress(this.props.data, this.state.limit, page, function (er, re) {
-      if (er) return self.onClose(ERROR);
-
-      return self.setState({ loading: false, page: page, addressList: re });
+    this.setState({ loading: true }, () => {
+      this.getAddress(this.props.data, this.state.limit, page, (er, re) => {
+        if (er) return this.setState({ loading: false, error: er });
+        return this.setState({ loading: false, page: page, addressList: re, error: null });
+      });
     });
   }
 
   componentDidMount() {
-    let self = this;
-    this.getAddress(this.props.data, this.state.limit, this.state.page, function (er, re) {
-      if (er) return self.onClose(ERROR);
-
-      return self.setState({ loading: false, addressList: re });
+    this.setState({ loading: true }, () => {
+      this.getAddress(this.props.data, this.state.limit, this.state.page, (er, re) => {
+        if (er) return this.setState({ loading: false, error: er });
+        return this.setState({ loading: false, addressList: re, error: null });
+      });
     });
   }
 
@@ -113,7 +119,7 @@ class ConfirmAddress extends Component {
   showAddresses(defaultIndex, addressList) {
     return addressList.map((address, index) => {
       return (
-        <ul key={address} className={cx("col-12", "col-lg-6", "address-checkbox", "justify-content-center", "animated", "fadeInUp")}>
+        <ul key={address} className={cx("col-12", "col-lg-6", "address-checkbox", "animated", "fadeInUp", "mt-3", "mb-3")}>
           <li >
             <input
               type="checkbox"
@@ -136,34 +142,58 @@ class ConfirmAddress extends Component {
 
             <div className={cx("row", "pt-3", "mb-3")}>
               <div className={cx("col")}>
-                <h2>Choose Your Wallet Address {this.state.loading}</h2>
+                <h2>Choose Your Address</h2>
               </div>
             </div>
 
-            <div className={cx("row", "mb-3")}>
-              {this.showAddresses(this.state.i, this.state.addressList)}
-
-              <div className={cx("col")}>
-                <div className={cx("row", "h-100")}>
-                  <div className={cx("col-4", "col-sm-2", "d-flex", "justify-content-center", "align-items-center", "mt-2", "mb-2")}>
-                    <button className={cx("small-circle-btn")} onClick={() => { this.onPage(-1) }}><i className={cx("previous")} /></button>
+            {this.state.addressList && this.state.addressList.length > 1 ?
+              <div className={cx("row", "mb-3")}>
+                <div className={cx("col-12", "col-lg-6", "mt-3", "mb-3")}>
+                  <div className={cx("row", "h-100", "ml-3", "mr-3")}>
+                    {this.state.error ?
+                      <div className={cx("col", "d-flex", "justify-content-center", "align-items-center")}>
+                        <p className={cx("warning")}>{this.state.error}</p>
+                      </div>
+                      : null}
+                    <div className={cx("col", "d-flex", "justify-content-center", "align-items-center")}>
+                      <input type="text" className={cx("input")} value={this.state.dpath} onChange={this.onDpath} />
+                    </div>
                   </div>
-                  <div className={cx("col-4", "col-sm-2", "d-flex", "justify-content-center", "align-items-center", "mt-2", "mb-2")}>
-                    <button className={cx("small-circle-btn")}>{this.state.page + 1}</button>
-                  </div>
-                  <div className={cx("col-4", "col-sm-2", "d-flex", "justify-content-center", "align-items-center", "mt-2", "mb-2")}>
-                    <button className={cx("small-circle-btn")} onClick={() => { this.onPage(1) }}><i className={cx("next")} /></button>
-                  </div>
-                  <div className={cx("col-12", "col-sm-6", "d-flex", "justify-content-center", "align-items-center", "mt-2", "mb-2")}>
-                    <button className={cx("primary-btn")} onClick={this.onConfirm}>OK</button>
+                </div>
+                {this.showAddresses(this.state.i, this.state.addressList)}
+                < div className={cx("col-12", "col-lg-6", "mt-3", "mb-3")}>
+                  <div className={cx("row", "h-100")}>
+                    <div className={cx("col-3", "col-sm-2", "d-flex", "justify-content-center", "align-items-center")}>
+                      <button className={cx("small-circle-btn")} onClick={() => { this.onPage(-1) }}><i className={cx("previous")} /></button>
+                    </div>
+                    <div className={cx("col-2", "col-sm-2", "d-flex", "justify-content-center", "align-items-center")}>
+                      <button className={cx("small-circle-btn")}>{this.state.page + 1}</button>
+                    </div>
+                    <div className={cx("col-3", "col-sm-2", "d-flex", "justify-content-center", "align-items-center")}>
+                      <button className={cx("small-circle-btn")} onClick={() => { this.onPage(1) }}><i className={cx("next")} /></button>
+                    </div>
+                    <div className={cx("col-4", "col-sm-6", "d-flex", "justify-content-center", "align-items-center")}>
+                      <button className={cx("primary-btn")} onClick={this.onConfirm}>OK</button>
+                    </div>
                   </div>
                 </div>
               </div>
+              :
+              <div className={cx("row", "mb-3")}>
+                {this.showAddresses(this.state.i, this.state.addressList)}
+                <div className={cx("col-12", "col-lg-6", "mt-3", "mb-3")}>
+                  <div className={cx("row", "h-100")}>
+                    <div className={cx("col", "d-flex", "justify-content-center", "align-items-center")}>
+                      <button className={cx("primary-btn")} onClick={this.onConfirm}>OK</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            }
 
-            </div>
           </div>
         </div>
-      </div>
+      </div >
     );
   }
 }

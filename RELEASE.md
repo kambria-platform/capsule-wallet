@@ -11,6 +11,8 @@
 
 ### Enhancements
 
+* Pre-validate format of Isoxys wallets before executions.
+* Allow editting derivation path.
 * We decided the `pageRefreshing` parameter of options will be `true` in default.
 * Use `capsule-core-js` which detached from this repository and built as a separate repository.
 

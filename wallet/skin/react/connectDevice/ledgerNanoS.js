@@ -26,13 +26,12 @@ class LedgerNanoSAsset extends Component {
   }
 
   checkTheConnection() {
-    var self = this;
     this.setState({ message: STATUS.TEST, loading: true }, () => {
       // Fetch the first address to know whether devide connected
       var ledger = new Ledger(window.capsuleWallet.networkId, 'hardwallet', true);
-      ledger.getAccountsByLedgerNanoS("m/44'/60'/0'/0", 1, 0, function (er, re) {
-        if (er || re.lenght <= 0) return self.setState({ message: STATUS.FAIL, loading: false });
-        return self.props.done({ wallet: 'ledger', model: 'ledger-nano-s' });
+      ledger.getAccountsByLedgerNanoS("m/44'/60'/0'/0", 1, 0, (er, re) => {
+        if (er || re.lenght <= 0) return this.setState({ message: STATUS.FAIL, loading: false });
+        return this.props.done({ wallet: 'ledger', model: 'ledger-nano-s' });
       });
     });
   }
