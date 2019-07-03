@@ -1,59 +1,52 @@
 var { Metamask, Ledger, Trezor, Isoxys } = require('capsule-core-js');
 var StateMaintainer = require('./stateMaintainer');
 
-var ERROR = 'Invalid state';
+const ERROR = 'Invalid state of finite state machine';
 
 class Web3Factory {
   constructor(restriedNetwork, pageRefreshing) {
     this.restriedNetwork = restriedNetwork;
     this.pageRefreshing = pageRefreshing;
-
     this.SM = new StateMaintainer();
-
-    this.isSessionMaintained = this.isSessionMaintained.bind(this);
-    this.clearSession = this.clearSession.bind(this);
-    this.generate = this.generate.bind(this);
-    this.regenerate = this.regenerate.bind(this);
 
     if (!this.pageRefreshing) this.SM.clearState();
   }
 
-  isSessionMaintained(callback) {
+  isSessionMaintained = (callback) => {
     if (!this.pageRefreshing) return callback(null);
     return this.SM.getState(callback);
   }
 
-  clearSession(all) {
+  clearSession = (all) => {
     this.SM.clearState(all);
   }
 
-  generate(state, callback) {
-    let self = this;
-    let _callback = function (er, provider) {
+  generate = (fmState, callback) => {
+    let _callback = (er, provider) => {
       if (er) return callback(er, null);
-      if (self.pageRefreshing && state.step === 'Success') {
+      if (this.pageRefreshing && fmState.step === 'Success') {
         // Not support Hybridwallet and Trezor yet
-        if (state.type !== 'hybridwallet') self.SM.setState(state);
+        if (fmState.type !== 'hybridwallet') this.SM.setState(fmState);
       }
       return callback(null, provider);
     }
 
-    switch (state.wallet) {
+    switch (fmState.wallet) {
 
       // Metamask
       case 'metamask':
-        let metamask = new Metamask(window.capsuleWallet.networkId, state.type, this.restriedNetwork);
-        return metamask.setAccountByMetamask(function (er, re) {
+        let metamask = new Metamask(window.capsuleWallet.networkId, fmState.type, this.restriedNetwork);
+        return metamask.setAccountByMetamask((er, re) => {
           if (er) return _callback(er, null);
           return _callback(null, metamask);
         });
 
       // Ledger
       case 'ledger':
-        let ledger = new Ledger(window.capsuleWallet.networkId, state.type, this.restriedNetwork);
-        switch (state.model) {
+        let ledger = new Ledger(window.capsuleWallet.networkId, fmState.type, this.restriedNetwork);
+        switch (fmState.model) {
           case 'ledger-nano-s':
-            return ledger.setAccountByLedgerNanoS(state.dpath, state.index, function (er, re) {
+            return ledger.setAccountByLedgerNanoS(fmState.dpath, fmState.index, (er, re) => {
               if (er) return _callback(er, null);
               return _callback(null, ledger);
             });
@@ -63,10 +56,10 @@ class Web3Factory {
 
       // Trezor
       case 'trezor':
-        let trezor = new Trezor(window.capsuleWallet.networkId, state.type, this.restriedNetwork);
-        switch (state.model) {
+        let trezor = new Trezor(window.capsuleWallet.networkId, fmState.type, this.restriedNetwork);
+        switch (fmState.model) {
           case 'trezor-one':
-            return trezor.setAccountByTrezorOne(state.dpath, state.index, function (er, re) {
+            return trezor.setAccountByTrezorOne(fmState.dpath, fmState.index, (er, re) => {
               if (er) return _callback(er, null);
               return _callback(null, trezor);
             });
@@ -76,41 +69,41 @@ class Web3Factory {
 
       // MyEtherWallet
       case 'mew':
-        return _callback(null, state.provider);
+        return _callback(null, fmState.provider);
 
       // Marrella
       case 'marrella':
-        return _callback(null, state.provider);
+        return _callback(null, fmState.provider);
 
       // Isoxys
       case 'isoxys':
-        let isoxys = new Isoxys(window.capsuleWallet.networkId, state.type, this.restriedNetwork);
-        switch (state.model) {
+        let isoxys = new Isoxys(window.capsuleWallet.networkId, fmState.type, this.restriedNetwork);
+        switch (fmState.model) {
           case 'mnemonic':
             return isoxys.setAccountByMnemonic(
-              state.asset.mnemonic,
-              state.asset.password,
-              state.dpath,
-              state.index,
+              fmState.asset.mnemonic,
+              fmState.asset.password,
+              fmState.dpath,
+              fmState.index,
               window.capsuleWallet.getPassphrase.open,
-              function (er, re) {
+              (er, re) => {
                 if (er) return _callback(er, null);
                 return _callback(null, isoxys);
               });
           case 'keystore':
             return isoxys.setAccountByKeystore(
-              state.asset.keystore,
-              state.asset.password,
+              fmState.asset.keystore,
+              fmState.asset.password,
               window.capsuleWallet.getPassphrase.open,
-              function (er, re) {
+              (er, re) => {
                 if (er) return _callback(er, null);
                 return _callback(null, isoxys);
               });
           case 'private-key':
             return isoxys.setAccountByPrivatekey(
-              state.asset.privateKey,
+              fmState.asset.privateKey,
               window.capsuleWallet.getPassphrase.open,
-              function (er, re) {
+              (er, re) => {
                 if (er) return _callback(er, null);
                 return _callback(null, isoxys);
               });
@@ -124,23 +117,23 @@ class Web3Factory {
     }
   }
 
-  regenerate(state, callback) {
-    switch (state.wallet) {
+  regenerate = (fmState, callback) => {
+    switch (fmState.wallet) {
 
       // Metamask
       case 'metamask':
-        let metamask = new Metamask(window.capsuleWallet.networkId, state.type, this.restriedNetwork);
-        return metamask.setAccountByMetamask(function (er, re) {
+        let metamask = new Metamask(window.capsuleWallet.networkId, fmState.type, this.restriedNetwork);
+        return metamask.setAccountByMetamask((er, re) => {
           if (er) return callback(er, null);
           return callback(null, metamask);
         });
 
       // Ledger
       case 'ledger':
-        let ledger = new Ledger(window.capsuleWallet.networkId, state.type, this.restriedNetwork);
-        switch (state.model) {
+        let ledger = new Ledger(window.capsuleWallet.networkId, fmState.type, this.restriedNetwork);
+        switch (fmState.model) {
           case 'ledger-nano-s':
-            return ledger.setAccountByLedgerNanoS(state.dpath, state.index, function (er, re) {
+            return ledger.setAccountByLedgerNanoS(fmState.dpath, fmState.index, (er, re) => {
               if (er) return callback(er, null);
               return callback(null, ledger);
             });
@@ -150,10 +143,10 @@ class Web3Factory {
 
       // Trezor
       case 'trezor':
-        let trezor = new Trezor(window.capsuleWallet.networkId, state.type, this.restriedNetwork);
-        switch (state.model) {
+        let trezor = new Trezor(window.capsuleWallet.networkId, fmState.type, this.restriedNetwork);
+        switch (fmState.model) {
           case 'trezor-one':
-            return trezor.setAccountByTrezorOne(state.dpath, state.index, function (er, re) {
+            return trezor.setAccountByTrezorOne(fmState.dpath, fmState.index, (er, re) => {
               if (er) return callback(er, null);
               return callback(null, trezor);
             });
@@ -163,9 +156,9 @@ class Web3Factory {
 
       // Isoxys
       case 'isoxys':
-        let isoxys = new Isoxys(window.capsuleWallet.networkId, state.type, this.restriedNetwork);
+        let isoxys = new Isoxys(window.capsuleWallet.networkId, fmState.type, this.restriedNetwork);
         let accOpts = { getPassphrase: window.capsuleWallet.getPassphrase.open };
-        return isoxys.setWallet(accOpts, function (er, re) {
+        return isoxys.setWallet(accOpts, (er, re) => {
           if (er) return callback(er, null);
           return callback(null, isoxys);
         });

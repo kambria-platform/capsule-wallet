@@ -86,7 +86,7 @@ class FiniteStateMachine {
     this.history = [this.data];
   }
 
-  reset() {
+  reset = () => {
     this.data = DEFAULT;
     this.index = 0;
     for (let i = 0; i < this.history.length; i++) {
@@ -96,7 +96,7 @@ class FiniteStateMachine {
     this.history = [this.data];
   }
 
-  match(pattern, data) {
+  match = (pattern, data) => {
     if (data == null) throw new Error('Finite State Machine was broken');
     if (pattern == null) return true;
     let keys = Object.keys(pattern);
@@ -109,7 +109,7 @@ class FiniteStateMachine {
     return true;
   }
 
-  back() {
+  back = () => {
     if (this.index > 0) {
       delete this.history[this.history.length - 1];
       this.history.length = this.index;
@@ -119,7 +119,7 @@ class FiniteStateMachine {
     return this.data;
   }
 
-  next(data) {
+  next = (data) => {
     this.data = { ...this.data, ...data }
 
     this.history.push(this.data);

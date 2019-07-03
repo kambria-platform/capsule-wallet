@@ -1,5 +1,17 @@
 # RELEASE LOG
 
+## 1.1.3
+
+### Fixes
+
+* Using arrow function, the code no longer needed `bind(this)` for functions.
+* Safety clear history.
+
+### Enhancements
+
+* 
+---
+
 ## 1.1.2
 
 ### Fixes

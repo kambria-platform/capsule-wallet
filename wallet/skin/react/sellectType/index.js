@@ -14,22 +14,15 @@ class SellectType extends Component {
       visible: this.props.visible
     }
 
-    this.data = this.props.data;
-    this.done = this.props.done;
-
-    this.onClose = this.onClose.bind(this);
-    this.onMetamask = this.onMetamask.bind(this);
-    this.onHardwallet = this.onHardwallet.bind(this);
-    this.onSoftwallet = this.onSoftwallet.bind(this);
-    this.onHybridwallet = this.onHybridwallet.bind(this);
+    this.done = props.done;
   }
 
-  onClose() {
+  onClose = () => {
     this.setState({ visible: false });
     this.done(null, null);
   }
 
-  onMetamask() {
+  onMetamask = () => {
     this.setState({ visible: false });
     this.done(null, {
       type: 'softwallet',
@@ -38,21 +31,21 @@ class SellectType extends Component {
     });
   }
 
-  onHardwallet() {
+  onHardwallet = () => {
     this.setState({ visible: false });
     this.done(null, {
       type: 'hardwallet'
     });
   }
 
-  onHybridwallet() {
+  onHybridwallet = () => {
     this.setState({ visible: false });
     this.done(null, {
       type: 'hybridwallet'
     });
   }
 
-  onSoftwallet() {
+  onSoftwallet = () => {
     this.setState({ visible: false });
     this.done(null, {
       type: 'softwallet',

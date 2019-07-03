@@ -51,59 +51,55 @@ class CapsuleWallet extends Component {
    */
   constructor(props) {
     super(props);
-    this.options = { ...DEFAULT_OPT, ...props.options }
+
     this.state = {
       ...DEFAULT_STATE,
-      step: this.props.visible ? this.FSM.next().step : 'Idle'
+      step: props.visible ? this.FSM.next().step : 'Idle'
     };
 
+    this.done = props.done;
+    this.options = { ...DEFAULT_OPT, ...props.options }
     this.FSM = new FiniteStateMachine();
     this.W3F = new Web3Factory(this.options.restrictedNetwork, this.options.pageRefreshing);
-
-    this.done = this.props.done;
-    this.onData = this.onData.bind(this);
-    this.onError = this.onError.bind(this);
-    this.onClose = this.onClose.bind(this);
 
     /**
      * Group of global functions
      */
-    let self = this;
     window.capsuleWallet = { author: 'Tu Phan', git: 'https://github.com/kambria-platform/capsule-wallet' }
     window.capsuleWallet.networkId = this.options.networkId; // mainnet as default;
     window.capsuleWallet.getPassphrase = {
-      open: function (callback) {
-        self.setState({ passphrase: false, returnPassphrase: null }, () => {
-          self.setState({ passphrase: true, returnPassphrase: callback });
+      open: (callback) => {
+        this.setState({ passphrase: false, returnPassphrase: null }, () => {
+          this.setState({ passphrase: true, returnPassphrase: callback });
         });
       },
-      close: function () {
-        self.setState({ passphrase: false, returnPassphrase: null });
+      close: () => {
+        this.setState({ passphrase: false, returnPassphrase: null });
       },
     }
     window.capsuleWallet.getAuthentication = {
-      open: function (qrcode, callback) {
-        self.setState({ authetication: false, qrcode: null }, () => {
-          self.setState({ authetication: true, qrcode: qrcode, returnAuthetication: callback });
+      open: (qrcode, callback) => {
+        this.setState({ authetication: false, qrcode: null }, () => {
+          this.setState({ authetication: true, qrcode: qrcode, returnAuthetication: callback });
         });
       },
-      close: function () {
-        self.setState({ authetication: false, qrcode: null, returnAuthetication: null });
+      close: () => {
+        this.setState({ authetication: false, qrcode: null, returnAuthetication: null });
       },
     }
-    window.capsuleWallet.term = function () {
+    window.capsuleWallet.term = () => {
       window.open('https://github.com/kambria-platform/capsule-wallet/blob/master/LICENSE', '_blank');
     }
-    window.capsuleWallet.support = function () {
+    window.capsuleWallet.support = () => {
       window.open('https://github.com/kambria-platform/capsule-wallet/issues', '_blank');
     }
-    window.capsuleWallet.back = function () {
-      let state = self.FSM.back();
-      return self.setState({ step: state.step });
+    window.capsuleWallet.back = () => {
+      let state = this.FSM.back();
+      return this.setState({ step: state.step });
     }
     window.capsuleWallet.isConnected = false;
-    window.capsuleWallet.logout = function () {
-      self.W3F.clearSession(true);
+    window.capsuleWallet.logout = () => {
+      this.W3F.clearSession(true);
       window.capsuleWallet.isConnected = false;
       window.capsuleWallet.provider = null;
     }
@@ -111,21 +107,20 @@ class CapsuleWallet extends Component {
 
   componentDidMount() {
     // Reconnect to wallet if still maintaining
-    let self = this;
     this.W3F.isSessionMaintained(session => {
-      if (session) self.W3F.regenerate(session, function (er, provider) {
+      if (session) this.W3F.regenerate(session, (er, provider) => {
         if (er) return;
         window.capsuleWallet.isConnected = true;
         window.capsuleWallet.provider = provider;
-        return self.done(null, provider);
+        return this.done(null, provider);
       });
     });
   }
 
   componentDidUpdate(prevProps) {
     if (this.props.visible !== prevProps.visible) {
-      if (this.props.visible) this.setState({ visible: true, step: this.FSM.next().step });
-      else this.setState(DEFAULT_STATE);
+      if (this.props.visible) return this.setState({ visible: true, step: this.FSM.next().step });
+      return this.setState({ ...DEFAULT_STATE });
     }
   }
 
@@ -133,7 +128,7 @@ class CapsuleWallet extends Component {
    * Flow management
    */
 
-  onData(er, re) {
+  onData = (er, re) => {
     // User meets error in processing
     if (er) return this.onError(er);
 
@@ -142,32 +137,31 @@ class CapsuleWallet extends Component {
     let state = this.FSM.next(re);
 
     // Run to next step
-    let self = this;
     // Error case
     if (state.step === 'Error') return this.onError(ERROR);
     // Success case
     if (state.step === 'Success') return this.onClose(() => {
-      this.W3F.generate(state, function (er, provider) {
-        if (er) return self.onError(er);
+      this.W3F.generate(state, (er, provider) => {
+        if (er) return this.onError(er);
         window.capsuleWallet.isConnected = true;
         window.capsuleWallet.provider = provider;
-        return self.done(null, provider);
+        return this.done(null, provider);
       });
     });
     // Still in processing
     return this.setState({ step: state.step });
   }
 
-  onError(er) {
+  onError = (er) => {
     return this.setState({ visible: true, error: er, step: 'Error' }, () => {
       this.FSM.reset();
     });
   }
 
-  onClose(callback) {
+  onClose = (callback) => {
     this.setState({ visible: true }, () => {
       this.setState({ visible: false }, () => {
-        this.setState(DEFAULT_STATE, () => {
+        this.setState({ ...DEFAULT_STATE }, () => {
           this.FSM.reset();
         });
         if (callback) callback();

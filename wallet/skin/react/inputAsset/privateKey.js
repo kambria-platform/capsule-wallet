@@ -21,16 +21,14 @@ class PrivateKeyAsset extends Component {
       ...DEFAULT_STATE
     }
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.checkPrivatekey = this.checkPrivatekey.bind(this);
+    this.done = props.done;
   }
 
-  handleChange(e) {
+  handleChange = (e) => {
     this.setState({ privateKey: e.target.value, error: null });
   }
 
-  handleSubmit() {
+  handleSubmit = () => {
     this.checkPrivatekey(ok => {
       if (!ok) return this.setState({ error: 'Invalid private key!' });
 
@@ -38,10 +36,10 @@ class PrivateKeyAsset extends Component {
     });
   }
 
-  checkPrivatekey(callback) {
+  checkPrivatekey = (callback) => {
     this.setState({ loading: true }, () => {
       // Fetch the first address to know whether good file
-      var isoxys = new Isoxys(window.capsuleWallet.networkId, 'softwallet', true);
+      let isoxys = new Isoxys(window.capsuleWallet.networkId, 'softwallet', true);
       isoxys.getAccountByPrivatekey(this.state.privateKey, (er, re) => {
         this.setState({ loading: false });
         if (er || re.lenght <= 0) return callback(false);
@@ -50,8 +48,8 @@ class PrivateKeyAsset extends Component {
     });
   }
 
-  returnData2Parent() {
-    return this.props.done({
+  returnData2Parent = () => {
+    return this.done({
       model: 'private-key',
       asset: {
         privateKey: this.state.privateKey
@@ -61,7 +59,7 @@ class PrivateKeyAsset extends Component {
 
   componentWillUnmount() {
     // Clear history
-    this.setState(DEFAULT_STATE);
+    this.setState({ ...DEFAULT_STATE });
   }
 
   render() {

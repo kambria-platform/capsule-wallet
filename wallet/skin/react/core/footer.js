@@ -11,11 +11,11 @@ class Footer extends Component {
     super(props);
   }
 
-  support() {
+  support = () => {
     window.capsuleWallet.support();
   }
 
-  term() {
+  term = () => {
     window.capsuleWallet.term();
   }
 
@@ -28,7 +28,7 @@ class Footer extends Component {
               <button className={cx("circle-btn")} data-toggle="tooltip" title="Prevent phishing attack (comming soon)"><i className={cx("prevent-fish")} /></button>
             </div>
             <div className={cx("col", "text-center")}>
-              <button className={cx("circle-btn") } onClick={this.term} data-toggle="tooltip" title="Term & Privacy"><i className={cx("term-privacy")} /></button>
+              <button className={cx("circle-btn")} onClick={this.term} data-toggle="tooltip" title="Term & Privacy"><i className={cx("term-privacy")} /></button>
             </div>
             <div className={cx("col", "text-center")}>
               <button className={cx("circle-btn")} onClick={this.support} data-toggle="tooltip" title="Get supports"><i className={cx("support")} /></button>

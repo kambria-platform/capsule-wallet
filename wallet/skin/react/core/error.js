@@ -7,6 +7,11 @@ var cx = classNames.bind(style);
 
 
 class ErrorForm extends Component {
+  constructor(props){
+    super(props);
+
+    this.done = props.done;
+  }
 
   render() {
     return (
@@ -26,7 +31,7 @@ class ErrorForm extends Component {
                 <p className={cx("lengthy")}>Details: {this.props.error}</p>
               </div>
               <div className={cx("col-12", "col-md-6", "d-flex", "align-items-end", "mb-3")}>
-                <button className={cx("primary-btn")} onClick={this.props.done}>OK</button>
+                <button className={cx("primary-btn")} onClick={this.done}>OK</button>
               </div>
             </div>
           </div>

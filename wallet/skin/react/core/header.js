@@ -8,11 +8,8 @@ var cx = classNames.bind(style);
 var util = require('capsule-core-js/dist/util');
 
 class Header extends Component {
-  constructor(props) {
-    super(props);
-  }
 
-  net() {
+  net = () => {
     let net = util.getNetworkId(window.capsuleWallet.networkId, 'string');
     let Net = net.charAt(0).toUpperCase() + net.slice(1)
     return (

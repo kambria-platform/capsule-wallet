@@ -5,7 +5,7 @@ const ERROR = 'Cannot load addresses';
 class ConfirmAddressHelper {
 
   static getAddressByIsoxys(data, dpath, limit, page) {
-    var isoxys = new Isoxys(window.capsuleWallet.networkId, data.type, true);
+    let isoxys = new Isoxys(window.capsuleWallet.networkId, data.type, true);
     return new Promise((resolve, reject) => {
       switch (data.model) {
         // Mnemonic
@@ -16,7 +16,7 @@ class ConfirmAddressHelper {
             dpath,
             limit,
             page,
-            function (er, re) {
+            (er, re) => {
               if (er || re.length <= 0) return reject(ERROR);
               return resolve(re);
             });
@@ -25,7 +25,7 @@ class ConfirmAddressHelper {
           return isoxys.getAccountByKeystore(
             data.asset.keystore,
             data.asset.password,
-            function (er, re) {
+            (er, re) => {
               if (er || !re) return reject(ERROR);
               return resolve([re]);
             });
@@ -33,7 +33,7 @@ class ConfirmAddressHelper {
         case 'private-key':
           return isoxys.getAccountByPrivatekey(
             data.asset.privateKey,
-            function (er, re) {
+            (er, re) => {
               if (er || !re) return reject(ERROR);
               return resolve([re]);
             });
@@ -45,7 +45,7 @@ class ConfirmAddressHelper {
   }
 
   static getAddressByLedger(data, dpath, limit, page) {
-    var ledger = new Ledger(window.capsuleWallet.networkId, data.type, true);
+    let ledger = new Ledger(window.capsuleWallet.networkId, data.type, true);
     return new Promise((resolve, reject) => {
       switch (data.model) {
         // Ledger Nano S
@@ -54,7 +54,7 @@ class ConfirmAddressHelper {
             dpath,
             limit,
             page,
-            function (er, re) {
+            (er, re) => {
               if (er || re.length <= 0) return reject(ERROR);
               return resolve(re);
             });
@@ -66,7 +66,7 @@ class ConfirmAddressHelper {
   }
 
   static getAddressByTrezor(data, dpath, limit, page) {
-    var trezor = new Trezor(window.capsuleWallet.networkId, data.type, true);
+    let trezor = new Trezor(window.capsuleWallet.networkId, data.type, true);
     return new Promise((resolve, reject) => {
       switch (data.model) {
         // Trezor One
@@ -75,7 +75,7 @@ class ConfirmAddressHelper {
             dpath,
             limit,
             page,
-            function (er, re) {
+            (er, re) => {
               if (er || re.length < 0) return reject(ERROR);
               return resolve(re);
             });

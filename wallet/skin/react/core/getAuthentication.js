@@ -21,14 +21,13 @@ class getAuthentication extends Component {
       qrcode: this.props.qrcode
     }
 
-    this.done = this.props.done;
-
-    this.onClose = this.onClose.bind(this);
+    this.done = props.done;
   }
 
-  onClose() {
-    this.setState({ visible: false, qrcode: null });
-    this.done(ERROR, null);
+  onClose = () => {
+    this.setState({ visible: false, qrcode: null }, () => {
+      this.done(ERROR, null);
+    });
   }
 
   componentDidUpdate(prevProps) {

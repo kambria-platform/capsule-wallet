@@ -29,16 +29,10 @@ class ConfirmAddress extends Component {
       ...DEFAULT_STATE
     }
 
-    this.done = this.props.done;
-
-    this.getAddress = this.getAddress.bind(this);
-    this.onDpath = this.onDpath.bind(this);
-    this.onConfirm = this.onConfirm.bind(this);
-    this.onSelect = this.onSelect.bind(this);
-    this.onPage = this.onPage.bind(this);
+    this.done = props.done;
   }
 
-  getAddress(data, limit, page, callback) {
+  getAddress = (data, limit, page, callback) => {
     if (data.wallet === 'isoxys') {
       ConfirmAddressHelper.getAddressByIsoxys(data, this.state.dpath, limit, page).then(re => {
         return callback(null, re);
@@ -69,7 +63,7 @@ class ConfirmAddress extends Component {
    * UI controllers
    */
 
-  onDpath(e) {
+  onDpath = (e) => {
     this.setState({ dpath: e.target.value }, () => {
       if (this.timeout) clearTimeout(this.timeout);
       this.timeout = setTimeout(() => {
@@ -79,21 +73,21 @@ class ConfirmAddress extends Component {
             return this.setState({ loading: false, addressList: re, error: null });
           });
         });
-      }, 3000);
+      }, 1000);
     });
   }
 
-  onConfirm() {
+  onConfirm = () => {
     let index = this.state.i + this.state.limit * this.state.page;
     this.done(null, { dpath: this.state.dpath, index: index });
-    this.setState(DEFAULT_STATE);
+    this.setState({ ...DEFAULT_STATE });
   }
 
-  onSelect(index) {
+  onSelect = (index) => {
     this.setState({ i: index });
   }
 
-  onPage(step) {
+  onPage = (step) => {
     let page = this.state.page + step;
     if (page < 0) page = 0;
     if (page == this.state.page) return;
@@ -116,7 +110,7 @@ class ConfirmAddress extends Component {
   }
 
   // UI conventions
-  showAddresses(defaultIndex, addressList) {
+  showAddresses = (defaultIndex, addressList) => {
     return addressList.map((address, index) => {
       return (
         <ul key={address} className={cx("col-12", "col-lg-6", "address-checkbox", "animated", "fadeInUp", "mt-3", "mb-3")}>

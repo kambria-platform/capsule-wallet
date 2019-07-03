@@ -19,11 +19,9 @@ class MarrellaAsset extends Component {
     this.state = {
       message: STATUS.INIT,
     }
-
-    this.establishTheConnection = this.establishTheConnection.bind(this);
   }
 
-  establishTheConnection() {
+  establishTheConnection = () => {
     // Do nothing
   }
 

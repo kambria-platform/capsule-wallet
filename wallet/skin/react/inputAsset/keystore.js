@@ -23,27 +23,23 @@ class KeystoreAsset extends Component {
       ...DEFAULT_STATE
     }
 
-    this.handleChangeFile = this.handleChangeFile.bind(this);
-    this.handleChangePassword = this.handleChangePassword.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.checkKeystore = this.checkKeystore.bind(this);
+    this.done = props.done;
   }
 
-  handleChangeFile(e) {
-    var self = this;
-    var file = e.target.files[0];
-    var read = new FileReader();
-    read.readAsText(file);
-    read.onloadend = function () {
-      self.setState({ filename: file.name, keystore: JSON.parse(read.result), error: null });
+  handleChangeFile = (e) => {
+    let file = e.target.files[0];
+    let reader = new FileReader();
+    reader.readAsText(file);
+    reader.onloadend = () => {
+      this.setState({ filename: file.name, keystore: JSON.parse(reader.result), error: null });
     }
   }
 
-  handleChangePassword(e) {
+  handleChangePassword = (e) => {
     this.setState({ password: e.target.value, error: null });
   }
 
-  handleSubmit() {
+  handleSubmit = () => {
     this.checkKeystore(ok => {
       if (!ok) return this.setState({ error: 'Cannot decrypt your keystore!' });
 
@@ -51,10 +47,10 @@ class KeystoreAsset extends Component {
     });
   }
 
-  checkKeystore(callback) {
+  checkKeystore = (callback) => {
     this.setState({ loading: true }, () => {
       // Fetch the first address to know whether good file
-      var isoxys = new Isoxys(window.capsuleWallet.networkId, 'softwallet', true);
+      let isoxys = new Isoxys(window.capsuleWallet.networkId, 'softwallet', true);
       isoxys.getAccountByKeystore(this.state.keystore, this.state.password, (er, re) => {
         this.setState({ loading: false });
         if (er || re.lenght <= 0) return callback(false);
@@ -63,8 +59,8 @@ class KeystoreAsset extends Component {
     });
   }
 
-  returnData2Parent() {
-    this.props.done({
+  returnData2Parent = () => {
+    this.done({
       model: 'keystore',
       asset: {
         keystore: this.state.keystore,
@@ -75,7 +71,7 @@ class KeystoreAsset extends Component {
 
   componentWillUnmount() {
     // Clear history
-    this.setState(DEFAULT_STATE);
+    this.setState({ ...DEFAULT_STATE });
   }
 
   render() {

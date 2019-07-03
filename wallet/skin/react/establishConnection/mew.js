@@ -22,14 +22,14 @@ class MewAsset extends Component {
       message: STATUS.INIT,
     }
 
+    this.done = props.done;
     this.mew = new MEW(window.capsuleWallet.networkId, 'hybridwallet', true);
-    this.establishTheConnection = this.establishTheConnection.bind(this);
   }
 
-  establishTheConnection() {
-    this.mew.setAccountByMEW(window.capsuleWallet.getAuthentication, (er, data) => {
+  establishTheConnection = () => {
+    this.mew.setAccountByMEW(window.capsuleWallet.getAuthentication, (er, re) => {
       if (er) return this.setState({ message: STATUS.FAIL });
-      return this.props.done({ wallet: 'mew', model: 'mew', provider: this.mew });
+      return this.done({ wallet: 'mew', model: 'mew', provider: this.mew });
     });
   }
 

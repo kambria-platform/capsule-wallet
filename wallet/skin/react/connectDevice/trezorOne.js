@@ -21,18 +21,17 @@ class TrezorOneAsset extends Component {
       message: STATUS.INIT,
       loading: false
     }
-
-    this.checkTheConnection = this.checkTheConnection.bind(this);
+    
+    this.done = props.done;
   }
 
-  checkTheConnection() {
-    var self = this;
+  checkTheConnection = () => {
     this.setState({ message: STATUS.TEST, loading: true }, () => {
       // Fetch the first address to know whether devide connected
-      var trezor = new Trezor(window.capsuleWallet.networkId, 'hardwallet', true);
-      trezor.getAccountsByTrezorOne("m/44'/60'/0'/0", 1, 0, function (er, re) {
-        if (er || re.length < 0) return self.setState({ message: STATUS.FAIL, loading: false });
-        return self.props.done({ wallet: 'trezor', model: 'trezor-one' });
+      let trezor = new Trezor(window.capsuleWallet.networkId, 'hardwallet', true);
+      trezor.getAccountsByTrezorOne("m/44'/60'/0'/0", 1, 0, (er, re) => {
+        if (er || re.length < 0) return this.setState({ message: STATUS.FAIL, loading: false });
+        return this.done({ wallet: 'trezor', model: 'trezor-one' });
       });
     });
   }

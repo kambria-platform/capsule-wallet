@@ -23,33 +23,31 @@ class InputPassphrase extends Component {
       ...DEFAULT_STATE
     }
 
-    this.done = this.props.done;
-
-    this.onClose = this.onClose.bind(this);
-    this.onChange = this.onChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.done = props.done;
   }
 
-  onClose() {
-    this.setState({ visible: false });
-    this.done(ERROR, null);
-
-    // Clear history
-    this.setState(DEFAULT_STATE);
+  onClose = () => {
+    this.setState({ visible: false }, () => {
+      this.done(ERROR, null);
+    });
   }
 
-  handleSubmit() {
-    this.setState({ visible: false });
-    if (!this.state.passphrase) this.done(ERROR, null);
-    else this.done(null, this.state.passphrase);
-
-    // Clear history
-    this.setState(DEFAULT_STATE);
+  handleSubmit = () => {
+    this.setState({ visible: false }, () => {
+      if (!this.state.passphrase) return this.done(ERROR, null);
+      return this.done(null, this.state.passphrase);
+    });
   }
 
-  onChange(e) {
+  onChange = (e) => {
     this.setState({ passphrase: e.target.value });
   }
+
+  componentWillUnmount() {
+    // Clear history
+    this.setState({ ...DEFAULT_STATE });
+  }
+
 
   componentDidMount() {
     // Listen Enter button

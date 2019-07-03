@@ -22,22 +22,19 @@ class EstablishConnection extends Component {
       model: 'mew'
     }
 
-    this.onSelect = this.onSelect.bind(this);
-    this.onConnect = this.onConnect.bind(this);
-    this.menu = this.menu.bind(this);
-    this.device = this.device.bind(this);
+    this.done = props.done;
   }
 
-  onSelect(key) {
+  onSelect = (key) => {
     if (key === 'back') return window.capsuleWallet.back();
     return this.setState({ model: key });
   }
 
-  onConnect(data) {
-    this.props.done(null, data);
+  onConnect = (data) => {
+    this.done(null, data);
   }
 
-  menu() {
+  menu = () => {
     return MENU.map(item => {
       return (
         <div key={item.key}
@@ -52,7 +49,7 @@ class EstablishConnection extends Component {
     });
   }
 
-  device() {
+  device = () => {
     if (this.state.model === 'mew') return <MewAsset done={this.onConnect} />
     if (this.state.model === 'marrella') return <MarrellaAsset done={this.onConnect} />
   }

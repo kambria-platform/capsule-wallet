@@ -19,34 +19,34 @@ class MnemonicAsset extends Component {
       ...DEFAULT_STATE
     }
 
-    this.handleChangeMnemonic = this.handleChangeMnemonic.bind(this);
-    this.handleChangePassword = this.handleChangePassword.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.returnData2Parent = this.returnData2Parent.bind(this);
+    this.done = props.done;
   }
 
-  handleChangeMnemonic(e) {
+  handleChangeMnemonic = (e) => {
     this.setState({ mnemonic: e.target.value });
   }
 
-  handleChangePassword(e) {
+  handleChangePassword = (e) => {
     this.setState({ password: e.target.value });
   }
 
-  handleSubmit() {
+  handleSubmit = () => {
     this.returnData2Parent();
-    // Clear history
-    this.setState(DEFAULT_STATE);
   }
 
-  returnData2Parent() {
-    return this.props.done({
+  returnData2Parent = () => {
+    return this.done({
       model: 'mnemonic',
       asset: {
         mnemonic: this.state.mnemonic,
         password: this.state.password
       }
     });
+  }
+
+  componentWillUnmount() {
+    // Clear history
+    this.setState({ ...DEFAULT_STATE });
   }
 
   render() {

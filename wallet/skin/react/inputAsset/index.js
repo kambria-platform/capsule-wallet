@@ -24,22 +24,19 @@ class InputAsset extends Component {
       model: 'mnemonic'
     }
 
-    this.onSelect = this.onSelect.bind(this);
-    this.onReceive = this.onReceive.bind(this);
-    this.menu = this.menu.bind(this);
-    this.asset = this.asset.bind(this);
+    this.done = props.done;
   }
 
-  onSelect(key) {
+  onSelect = (key) => {
     if (key === 'back') return window.capsuleWallet.back();
     return this.setState({ model: key });
   }
 
-  onReceive(data) {
-    this.props.done(null, data);
+  onReceive = (data) => {
+    this.done(null, data);
   }
 
-  menu() {
+  menu = () => {
     return MENU.map(item => {
       return (
         <div key={item.key}
@@ -54,7 +51,7 @@ class InputAsset extends Component {
     });
   }
 
-  asset() {
+  asset = () => {
     if (this.state.model === 'mnemonic') return <MnemonicAsset done={this.onReceive} />
     if (this.state.model === 'keystore') return <KeystoreAsset done={this.onReceive} />
     if (this.state.model === 'private-key') return <PrivateKeyAsset done={this.onReceive} />

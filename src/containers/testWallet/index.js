@@ -38,43 +38,35 @@ const DEFAULT_STATE = {
 class TestWallet extends Component {
   constructor() {
     super();
-    this.state = DEFAULT_STATE;
+
+    this.state = { ...DEFAULT_STATE };
 
     // Test params here
-    this.net = 'RINKEBY';
+    this.net = 'ROPSTEN';
     this.options = {
       networkId: NET[this.net].id,
       restrictedNetwork: true,
       pageRefreshing: true
     };
-
-    this.done = this.done.bind(this)
-    this.register = this.register.bind(this);
-    this.logout = this.logout.bind(this);
-    this.sendTx = this.sendTx.bind(this);
   }
 
-  register(force) {
-    if (force) {
-      this.setState({ visible: false }, function () {
-        this.setState({ visible: true });
-      });
-    }
-    else this.setState({ visible: true });
+  register = () => {
+    this.setState({ visible: false }, () => {
+      this.setState({ visible: true });
+    });
   }
 
-  logout() {
+  logout = () => {
     window.capsuleWallet.logout();
   }
 
-  done(er, provider) {
+  done = (er, provider) => {
     if (er) return console.error(er);
     if (!provider) return console.error('Use skip the registration');
 
-    let self = this;
     window.capsuleWallet.provider.watch().then(watcher => {
       watcher.event.on('data', re => {
-        return self.setState(re);
+        return this.setState(re);
       });
       watcher.event.on('error', er => {
         if (er) return console.error(er);
@@ -84,15 +76,14 @@ class TestWallet extends Component {
     });
   }
 
-  sendTx() {
-    var self = this;
+  sendTx = () => {
     window.capsuleWallet.provider.web3.eth.sendTransaction({
-      from: self.state.account,
+      from: this.state.account,
       to: '0x5a926b235e992d6ba52d98415e66afe5078a1690',
       value: '1000000000000000'
-    }, function (er, txId) {
+    }, (er, txId) => {
       if (er) return console.error(er);
-      return self.setState({ txId: txId.toString(), error: null });
+      return this.setState({ txId: txId.toString(), error: null });
     });
   }
 
@@ -100,7 +91,7 @@ class TestWallet extends Component {
     return (
       <div>
         <h1 className={style.secondary}>Wallet testing</h1>
-        <button onClick={() => this.register(true)}>Register</button>
+        <button onClick={this.register}>Register</button>
 
         <div>
           <p>Network: {this.state.network}</p>
