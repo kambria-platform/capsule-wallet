@@ -1,8 +1,10 @@
 var { Isoxys, Ledger, Trezor } = require('capsule-core-js');
+var { NonWallet } = require('capsule-core-js');
+var kam
 
 const ERROR = 'Cannot load addresses';
 
-class ConfirmAddressHelper {
+class Helper {
 
   static getAddressByIsoxys(data, dpath, limit, page) {
     let isoxys = new Isoxys(window.capsuleWallet.networkId, data.type, true);
@@ -85,6 +87,20 @@ class ConfirmAddressHelper {
       }
     });
   }
+
+  static getBalance(address) {
+    return new Promise((resolve, reject) => {
+      let nonWallet = new NonWallet(window.capsuleWallet.networkId);
+      nonWallet.init((er, web3) => {
+        if (er) return reject(er);
+
+        web3.eth.getBalance(address, (er, re) => {
+          if (er) return reject(er);
+          return resolve(web3.fromWei(re.toString(), 'ether').slice(0, 6));
+        });
+      });
+    });
+  }
 }
 
-export default ConfirmAddressHelper;
+export default Helper;

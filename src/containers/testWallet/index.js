@@ -42,7 +42,7 @@ class TestWallet extends Component {
     this.state = { ...DEFAULT_STATE };
 
     // Test params here
-    this.net = 'ROPSTEN';
+    this.net = 'RINKEBY';
     this.options = {
       networkId: NET[this.net].id,
       restrictedNetwork: true,

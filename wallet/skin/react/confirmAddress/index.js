@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ConfirmAddressHelper from './helper';
+import Helper from './helper';
 
 // Setup CSS Module
 import classNames from 'classnames/bind';
@@ -33,35 +33,61 @@ class ConfirmAddress extends Component {
   }
 
   getAddress = (data, limit, page, callback) => {
+    let _callback = (er, addresses) => {
+      if (er) return callback(er, null);
+      let re = [];
+      for (let i = 0; i < addresses.length; i++) {
+        let address = addresses[i];
+        re[i] = { address: address };
+        Helper.getBalance(address).then(balance => {
+          re[i].balance = balance;
+          return callback(null, re);
+        }).catch(er => {
+          re[i].balance = 0;
+          return callback(null, re);
+        });
+      }
+    }
+
     if (data.wallet === 'isoxys') {
-      ConfirmAddressHelper.getAddressByIsoxys(data, this.state.dpath, limit, page).then(re => {
-        return callback(null, re);
+      Helper.getAddressByIsoxys(data, this.state.dpath, limit, page).then(re => {
+        return _callback(null, re);
       }).catch(er => {
-        if (er) return callback(ERROR, null);
+        if (er) return _callback(ERROR, null);
       });
     }
     else if (data.wallet === 'ledger') {
-      ConfirmAddressHelper.getAddressByLedger(data, this.state.dpath, limit, page).then(re => {
-        return callback(null, re);
+      Helper.getAddressByLedger(data, this.state.dpath, limit, page).then(re => {
+        return _callback(null, re);
       }).catch(er => {
-        if (er) return callback(ERROR, null);
+        if (er) return _callback(ERROR, null);
       });
     }
     else if (data.wallet === 'trezor') {
-      ConfirmAddressHelper.getAddressByTrezor(data, this.state.dpath, limit, page).then(re => {
-        return callback(null, re);
+      Helper.getAddressByTrezor(data, this.state.dpath, limit, page).then(re => {
+        return _callback(null, re);
       }).catch(er => {
-        if (er) return callback(ERROR, null);
+        if (er) return _callback(ERROR, null);
       });
     }
     else {
-      return callback(ERROR, null);
+      return _callback(ERROR, null);
     }
   }
 
   /**
    * UI controllers
    */
+
+  onConfirm = () => {
+    let index = this.state.i + this.state.limit * this.state.page;
+    this.done(null, { dpath: this.state.dpath, index: index });
+    this.setState({ ...DEFAULT_STATE });
+  }
+
+  onSelect = (index) => {
+    this.setState({ i: index });
+  }
 
   onDpath = (e) => {
     this.setState({ dpath: e.target.value }, () => {
@@ -75,16 +101,6 @@ class ConfirmAddress extends Component {
         });
       }, 1000);
     });
-  }
-
-  onConfirm = () => {
-    let index = this.state.i + this.state.limit * this.state.page;
-    this.done(null, { dpath: this.state.dpath, index: index });
-    this.setState({ ...DEFAULT_STATE });
-  }
-
-  onSelect = (index) => {
-    this.setState({ i: index });
   }
 
   onPage = (step) => {
@@ -111,17 +127,17 @@ class ConfirmAddress extends Component {
 
   // UI conventions
   showAddresses = (defaultIndex, addressList) => {
-    return addressList.map((address, index) => {
+    return addressList.map((item, index) => {
       return (
-        <ul key={address} className={cx("col-12", "col-lg-6", "address-checkbox", "animated", "fadeInUp", "mt-3", "mb-3")}>
+        <ul key={item.address} className={cx("col-12", "col-lg-6", "address-checkbox", "animated", "fadeInUp", "mt-3", "mb-3")}>
           <li >
             <input
               type="checkbox"
-              id={"checkbox-options-" + address}
-              value={address}
+              id={"checkbox-options-" + item.address}
+              value={item.address}
               onChange={() => this.onSelect(index)}
               checked={index === defaultIndex} />
-            <label htmlFor={"checkbox-options-" + address}>{address}</label>
+            <label htmlFor={"checkbox-options-" + item.address}>{item.address} / {item.balance} ETH</label>
           </li>
         </ul>
       );

@@ -6,10 +6,12 @@
 
 * Using arrow function, the code no longer needed `bind(this)` for functions.
 * Safety clear history.
+* Update `capsule-core-js` version `1.0.4`
 
 ### Enhancements
 
-* 
+* Add reference balance when selecting the address.
+
 ---
 
 ## 1.1.2
