@@ -8,12 +8,16 @@ var cx = classNames.bind(style);
 
 class Author extends Component {
 
+  kambria = () => {
+    window.open('https://kambria.io/', '_blank');
+  }
+
   render() {
     return (
       <div className={cx("row", "wallet-copyright")}>
         <div className={cx("col")}>
           <div className={cx("d-flex", "h-100", "justify-content-start", "align-items-center")}>
-            <p className={cx("white")}>A product powered by</p><i className={cx("kambria")} />
+            <p className={cx("white")}>A product powered by</p><i onClick={this.kambria} className={cx("kambria")} />
           </div>
         </div>
         <div className={cx("col")}>

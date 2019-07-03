@@ -6,7 +6,8 @@
 
 * Using arrow function, the code no longer needed `bind(this)` for functions.
 * Safety clear history.
-* Update `capsule-core-js` version `1.0.4`
+* Update `capsule-core-js` version `1.0.4`.
+* Add Kambria footer link.
 
 ### Enhancements
 
