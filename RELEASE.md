@@ -1,5 +1,18 @@
 # RELEASE LOG
 
+## 1.1.4
+
+### Fixes
+
+* Update `capsule-core-js` version `1.0.5`.
+* Remove `window.capsuleWallet.isConnected`.
+
+### Enhancements
+
+* None
+
+---
+
 ## 1.1.3
 
 ### Fixes

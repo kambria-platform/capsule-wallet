@@ -97,10 +97,9 @@ class CapsuleWallet extends Component {
       let state = this.FSM.back();
       return this.setState({ step: state.step });
     }
-    window.capsuleWallet.isConnected = false;
     window.capsuleWallet.logout = () => {
       this.W3F.clearSession(true);
-      window.capsuleWallet.isConnected = false;
+      if (window.capsuleWallet.provider) window.capsuleWallet.provider.logout();
       window.capsuleWallet.provider = null;
     }
   }
@@ -110,7 +109,6 @@ class CapsuleWallet extends Component {
     this.W3F.isSessionMaintained(session => {
       if (session) this.W3F.regenerate(session, (er, provider) => {
         if (er) return;
-        window.capsuleWallet.isConnected = true;
         window.capsuleWallet.provider = provider;
         return this.done(null, provider);
       });
@@ -143,7 +141,6 @@ class CapsuleWallet extends Component {
     if (state.step === 'Success') return this.onClose(() => {
       this.W3F.generate(state, (er, provider) => {
         if (er) return this.onError(er);
-        window.capsuleWallet.isConnected = true;
         window.capsuleWallet.provider = provider;
         return this.done(null, provider);
       });

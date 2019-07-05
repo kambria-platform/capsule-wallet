@@ -64,15 +64,9 @@ class TestWallet extends Component {
     if (er) return console.error(er);
     if (!provider) return console.error('Use skip the registration');
 
-    window.capsuleWallet.provider.watch().then(watcher => {
-      watcher.event.on('data', re => {
-        return this.setState(re);
-      });
-      watcher.event.on('error', er => {
-        if (er) return console.error(er);
-      });
-    }).catch(er => {
+    window.capsuleWallet.provider.watch((er, re) => {
       if (er) return console.error(er);
+      return this.setState(re);
     });
   }
 
@@ -80,7 +74,7 @@ class TestWallet extends Component {
     window.capsuleWallet.provider.web3.eth.sendTransaction({
       from: this.state.account,
       to: '0x5a926b235e992d6ba52d98415e66afe5078a1690',
-      value: '1000000000000000'
+      value: '1000000000000000',
     }, (er, txId) => {
       if (er) return console.error(er);
       return this.setState({ txId: txId.toString(), error: null });

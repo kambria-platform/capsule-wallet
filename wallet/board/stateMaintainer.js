@@ -47,7 +47,7 @@ class StateMaintainer {
   _clearState = (all) => {
     if (all) {
       this.maintainer.removeItem(ADDRESS.MAINTAINER);
-      this.maintainer.removeItem(ADDRESS.PROVIDER);
+      this.maintainer.removeItem(ADDRESS.STORAGE);
       this.maintainer.removeItem(ADDRESS.CACHE);
     }
     else {
@@ -58,10 +58,10 @@ class StateMaintainer {
   _shareState = () => {
     let data = {};
     let MAINTAINER = this.maintainer.getItem(ADDRESS.MAINTAINER);
-    let PROVIDER = this.maintainer.getItem(ADDRESS.PROVIDER);
+    let STORAGE = this.maintainer.getItem(ADDRESS.STORAGE);
     let CACHE = this.maintainer.getItem(ADDRESS.CACHE);
     if (MAINTAINER) data[ADDRESS.MAINTAINER] = MAINTAINER;
-    if (PROVIDER) data[ADDRESS.PROVIDER] = PROVIDER;
+    if (STORAGE) data[ADDRESS.STORAGE] = STORAGE;
     if (CACHE) data[ADDRESS.CACHE] = CACHE;
     this.porter.setItem(ADDRESS.PORTER, JSON.stringify(data));
     this.porter.removeItem(ADDRESS.PORTER);
