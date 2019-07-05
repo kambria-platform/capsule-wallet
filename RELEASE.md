@@ -1,25 +1,13 @@
 # RELEASE LOG
 
-## 1.1.4
-
-### Fixes
-
-* Update `capsule-core-js` version `1.0.5`.
-* Remove `window.capsuleWallet.isConnected`.
-
-### Enhancements
-
-* None
-
----
-
 ## 1.1.3
 
 ### Fixes
 
+* Remove `window.capsuleWallet.isConnected`.
 * Using arrow function, the code no longer needed `bind(this)` for functions.
 * Safety clear history.
-* Update `capsule-core-js` version `1.0.4`.
+* Update `capsule-core-js` version `1.0.5`.
 * Add Kambria footer link.
 
 ### Enhancements
