@@ -1,6 +1,6 @@
 {
   "name": "capsule-wallet",
-  "version": "1.1.3",
+  "version": "1.1.4",
   "description": "🚀 Capsule Wallet - The bridge of your Dapps to Blockchain.",
   "main": "index.js",
   "scripts": {
@@ -26,7 +26,7 @@
   },
   "homepage": "https://github.com/kambria-platform/capsule-wallet#readme",
   "dependencies": {
-    "capsule-core-js": "^1.0.6",
+    "capsule-core-js": "^1.0.7",
     "classnames": "^2.2.6",
     "qrcode.react": "^0.9.3"
   },

@@ -1,6 +1,4 @@
-var { Isoxys, Ledger, Trezor } = require('capsule-core-js');
-var { NonWallet } = require('capsule-core-js');
-var kam
+var { NonWallet, Isoxys, Ledger, Trezor } = require('capsule-core-js');
 
 const ERROR = 'Cannot load addresses';
 

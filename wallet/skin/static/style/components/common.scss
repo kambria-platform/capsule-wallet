@@ -52,7 +52,7 @@
   animation-duration: 3s;
   animation-iteration-count: infinite;
   pointer-events: none;
-  border-bottom: 4px solid;
+  border-bottom: 6px solid;
   @keyframes myloading {
     0% {
       border-bottom-color: $c-primary;

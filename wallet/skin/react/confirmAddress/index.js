@@ -137,7 +137,7 @@ class ConfirmAddress extends Component {
               value={item.address}
               onChange={() => this.onSelect(index)}
               checked={index === defaultIndex} />
-            <label htmlFor={"checkbox-options-" + item.address}>{item.address} / {item.balance} ETH</label>
+            <label htmlFor={"checkbox-options-" + item.address}>{item.address}<span className={cx("font-weight-bold")}> / {item.balance} ETH</span></label>
           </li>
         </ul>
       );

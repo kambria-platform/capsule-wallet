@@ -1,9 +1,8 @@
+var capsuleCoreMemmory = require('capsule-core-js/dist/storage').sessionStorage;
+var capsuleCoreCache = require('capsule-core-js/dist/storage').cache;
 const ADDRESS = require('./address');
+const EVENT = require('./event');
 
-const EVENT = {
-  GET_DATA: 'GET_DATA',
-  CLEAR_DATA: 'CLEAR_DATA',
-}
 
 class StateMaintainer {
   constructor() {
@@ -33,10 +32,11 @@ class StateMaintainer {
     delete state.step;
     delete state.asset;
     this.maintainer.setItem(ADDRESS.MAINTAINER, JSON.stringify(state));
+    this._emitEvent(EVENT.SET_DATA);
   }
 
-  clearState = (all) => {
-    this._clearState(all);
+  clearState = () => {
+    this._clearState();
     this._emitEvent(EVENT.CLEAR_DATA);
   }
 
@@ -44,25 +44,21 @@ class StateMaintainer {
    * Internal functions
    */
 
-  _clearState = (all) => {
-    if (all) {
-      this.maintainer.removeItem(ADDRESS.MAINTAINER);
-      this.maintainer.removeItem(ADDRESS.STORAGE);
-      this.maintainer.removeItem(ADDRESS.CACHE);
-    }
-    else {
-      this.maintainer.removeItem(ADDRESS.MAINTAINER);
-    }
+  _clearState = () => {
+    this.maintainer.removeItem(ADDRESS.MAINTAINER);
+    try { window.capsuleWallet.provider.logout(); }
+    catch (er) { console.error('User already logged out'); }
+    finally { window.capsuleWallet.provider = null; }
   }
 
   _shareState = () => {
     let data = {};
     let MAINTAINER = this.maintainer.getItem(ADDRESS.MAINTAINER);
-    let STORAGE = this.maintainer.getItem(ADDRESS.STORAGE);
-    let CACHE = this.maintainer.getItem(ADDRESS.CACHE);
+    let CAPSULE_CORE_MEMORY = capsuleCoreMemmory.get();
+    let CAPSULE_CORE_CACHE = capsuleCoreCache.getAll();
     if (MAINTAINER) data[ADDRESS.MAINTAINER] = MAINTAINER;
-    if (STORAGE) data[ADDRESS.STORAGE] = STORAGE;
-    if (CACHE) data[ADDRESS.CACHE] = CACHE;
+    if (CAPSULE_CORE_MEMORY) data[ADDRESS.CAPSULE_CORE_MEMORY] = CAPSULE_CORE_MEMORY;
+    if (CAPSULE_CORE_CACHE) data[ADDRESS.CAPSULE_CORE_CACHE] = CAPSULE_CORE_CACHE;
     this.porter.setItem(ADDRESS.PORTER, JSON.stringify(data));
     this.porter.removeItem(ADDRESS.PORTER);
   }
@@ -71,6 +67,9 @@ class StateMaintainer {
     // I need data
     if (event.key == ADDRESS.EVENT && event.newValue == EVENT.GET_DATA)
       this._shareState();
+    // I got data, I would like to share
+    if (event.key == ADDRESS.EVENT && event.newValue == EVENT.SET_DATA)
+      this._shareState();
     // We clear data
     if (event.key == ADDRESS.EVENT && event.newValue == EVENT.CLEAR_DATA)
       this._clearState();
@@ -78,7 +77,15 @@ class StateMaintainer {
     if (event.key == ADDRESS.PORTER) {
       let data = JSON.parse(event.newValue);
       for (let key in data) {
-        this.maintainer.setItem(key, data[key]);
+        if (key == 'CAPSULE_CORE_MEMORY') {
+          capsuleCoreMemmory.set(data[key]);
+        }
+        if (key == 'CAPSULE_CORE_CACHE') {
+          capsuleCoreCache.setAll(data[key]);
+        }
+        else {
+          this.maintainer.setItem(key, data[key]);
+        }
       }
     }
   }

@@ -98,9 +98,7 @@ class CapsuleWallet extends Component {
       return this.setState({ step: state.step });
     }
     window.capsuleWallet.logout = () => {
-      this.W3F.clearSession(true);
-      if (window.capsuleWallet.provider) window.capsuleWallet.provider.logout();
-      window.capsuleWallet.provider = null;
+      this.W3F.clearSession();
     }
   }
 
