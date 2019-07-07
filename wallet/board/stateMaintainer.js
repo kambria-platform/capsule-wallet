@@ -54,21 +54,18 @@ class StateMaintainer {
   _shareState = () => {
     let data = {};
     let MAINTAINER = this.maintainer.getItem(ADDRESS.MAINTAINER);
-    let CAPSULE_CORE_MEMORY = capsuleCoreMemmory.get();
-    let CAPSULE_CORE_CACHE = capsuleCoreCache.getAll();
+    let CAPSULE_JS_MEMORY = capsuleCoreMemmory.get();
+    let CAPSULE_JS_CACHE = capsuleCoreCache.getAll();
     if (MAINTAINER) data[ADDRESS.MAINTAINER] = MAINTAINER;
-    if (CAPSULE_CORE_MEMORY) data[ADDRESS.CAPSULE_CORE_MEMORY] = CAPSULE_CORE_MEMORY;
-    if (CAPSULE_CORE_CACHE) data[ADDRESS.CAPSULE_CORE_CACHE] = CAPSULE_CORE_CACHE;
+    if (CAPSULE_JS_MEMORY) data[ADDRESS.CAPSULE_JS_MEMORY] = CAPSULE_JS_MEMORY;
+    if (CAPSULE_JS_CACHE) data[ADDRESS.CAPSULE_JS_CACHE] = CAPSULE_JS_CACHE;
     this.porter.setItem(ADDRESS.PORTER, JSON.stringify(data));
     this.porter.removeItem(ADDRESS.PORTER);
   }
 
   _handleEvent = (event) => {
-    // I need data
+    // Some tags need data, we must share
     if (event.key == ADDRESS.EVENT && event.newValue == EVENT.GET_DATA)
-      this._shareState();
-    // I got data, I would like to share
-    if (event.key == ADDRESS.EVENT && event.newValue == EVENT.SET_DATA)
       this._shareState();
     // We clear data
     if (event.key == ADDRESS.EVENT && event.newValue == EVENT.CLEAR_DATA)
@@ -77,10 +74,10 @@ class StateMaintainer {
     if (event.key == ADDRESS.PORTER) {
       let data = JSON.parse(event.newValue);
       for (let key in data) {
-        if (key == 'CAPSULE_CORE_MEMORY') {
+        if (key == ADDRESS.CAPSULE_JS_MEMORY) {
           capsuleCoreMemmory.set(data[key]);
         }
-        if (key == 'CAPSULE_CORE_CACHE') {
+        if (key == ADDRESS.CAPSULE_JS_CACHE) {
           capsuleCoreCache.setAll(data[key]);
         }
         else {

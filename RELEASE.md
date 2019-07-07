@@ -4,7 +4,7 @@
 
 ### Fixes
 
-* Update `capsule-core-js` version `1.0.7`.
+* Update `capsule-core-js` version `1.0.8`.
 
 ### Enhancements
 
